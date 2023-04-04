@@ -4,8 +4,6 @@
  * bellow is O(m^2 * log(n) * q) ). But you can still run it in
  * codeforces and see it does not get WA, passing the first 7 test cases :)
  * This should be enough to demonstrate the code is working as intended.
- * 
- * If you want to get AC in this problem use Sparse Table
 */
 
 #include <bits/stdc++.h>
@@ -22,7 +20,7 @@ int m;
 template<typename T>
 class SegmentTree{
 
-using vT = vector<T>;
+    using vT = vector<T>;
 
 private:
     /**

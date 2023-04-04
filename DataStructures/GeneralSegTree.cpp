@@ -4,7 +4,7 @@ using namespace std;
 template<typename T>
 class SegmentTree{
 
-using vT = vector<T>;
+    using vT = vector<T>;
 
 private:
     /**
