@@ -16,21 +16,19 @@ int main(){
         else if(c == ')')
             A.emplace_back(0,0,1);
 
-    struct mergeIntervals{
-        iii operator() (iii left, iii right){
-            auto [leftMatches, leftOpen, leftClosed] = left;
-            auto [rightMatches, rightOpen, rightClosed] = right;
-            int newMatches = min(leftOpen, rightClosed);
-            return {
-                leftMatches + rightMatches + newMatches,
-                leftOpen + rightOpen - newMatches,
-                leftClosed + rightClosed - newMatches
-            };
-        }
+    auto mergeIntervals = [](iii left, iii right){
+        auto [leftMatches, leftOpen, leftClosed] = left;
+        auto [rightMatches, rightOpen, rightClosed] = right;
+        int newMatches = min(leftOpen, rightClosed);
+        return make_tuple(
+            leftMatches + rightMatches + newMatches,
+            leftOpen + rightOpen - newMatches,
+            leftClosed + rightClosed - newMatches
+        );
     };
 
-    const iii identity{0, 0, 0};
-    FrozenSegTree<iii, mergeIntervals> segTree(A, identity);
+    const iii ERROR{0, 0, 0};
+    FrozenSegTree<iii> segTree(A, mergeIntervals, ERROR);
 
     using ii = pair<int, int>;
     using vii = vector<ii>;

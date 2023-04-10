@@ -1,34 +1,30 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-/**
- * T is the type of the data stored in the segTree.
- * 
- * Conquerer must be a functor with an associative operator over two T.
- * It does not need to be commutative.
- * 
- * Updator must be a functor that takes the current value, the update value
- * and returns the new value. It does not change the current value in place.
- * It must be distributive over the conquerer result.
- * 
- * ConquererIdentity is a value such that
- * Conquerer(val, ConquererIdentity) = Conquerer(ConquererIdentity, val) = val
- * 
- * UpdatorIdentity is used as OFF flag for lazy update. We must have
- * Update(UpdatorIdentity, val) = val
-*/
-template<typename T, typename Conquerer, typename Updator>
+template<typename T>
 class LazySegTree{
 
     using vT = vector<T>;
+    using opT = function<T(T,T)>;
 
 private:
+    opT conquerer;
+    opT updator;
+
+    T RANGE_ERROR;
+    T LAZY_OFF;
+
     int n;             // n = (int)A.size()
     vT A, st, lazy;    // the arrays
-    T ConquererIdentity, UpdatorIdentity; // special values
 
     int l(int p) { return p << 1; }        // go to left child
     int r(int p) { return (p << 1) + 1; }  // go to right child
+
+    T conquer(const T a, const T b){
+        if(a == RANGE_ERROR) return b;
+        if(b == RANGE_ERROR) return a;
+        return conquerer(a, b);
+    }
 
     void build(int p, int L, int R){  // O(n)
         if (L == R)
@@ -37,31 +33,31 @@ private:
             int m = (L + R) / 2;
             build(l(p), L, m);
             build(r(p), m + 1, R);
-            st[p] = Conquerer{}(st[l(p)], st[r(p)]);
+            st[p] = conquer(st[l(p)], st[r(p)]);
         }
     }
 
     void propagate(int p, int L, int R){
-        if (lazy[p] != UpdatorIdentity){           // has a lazy flag
-            st[p] = Updator{}(st[p], lazy[p]);     // update [L..R] value
-            if (L != R){                           // not a leaf
-                lazy[l(p)] = Updator{}(lazy[l(p)], lazy[p]);
-                lazy[r(p)] = Updator{}(lazy[r(p)], lazy[p]);
+        if (lazy[p] != LAZY_OFF){                // has a lazy flag
+            st[p] = updator(st[p], lazy[p]);     // update [L..R] value
+            if (L != R){                         // not a leaf
+                lazy[l(p)] = (lazy[l(p)] != LAZY_OFF) ? updator(lazy[l(p)], lazy[p]) : lazy[p];
+                lazy[r(p)] = (lazy[r(p)] != LAZY_OFF) ? updator(lazy[r(p)], lazy[p]) : lazy[p];
             }
-            else                                   // L == R, a single index
-                A[L] = Updator{}(A[L], lazy[p]);   // time to update this
-            lazy[p] = UpdatorIdentity;             // erase lazy flag
+            else                                 // L == R, a single index
+                A[L] = updator(A[L], lazy[p]);   // time to update this
+            lazy[p] = LAZY_OFF;                  // erase lazy flag
         }
     }
 
     T RQ(int p, int L, int R, int i, int j){  // O(log n)
         propagate(p, L, R);  // lazy propagation
         if (i > j)
-            return ConquererIdentity;  // infeasible
+            return RANGE_ERROR;  // infeasible
         if ((i <= L) && (R <= j))
             return st[p];  // found the segment
         int m = (L + R) / 2;
-        return Conquerer{}(RQ(l(p), L, m, i, min(m, j)),
+        return conquer(RQ(l(p), L, m, i, min(m, j)),
                        RQ(r(p), m + 1, R, max(i, m + 1), j));
     }
 
@@ -77,23 +73,24 @@ private:
             int m = (L + R) / 2;
             update(l(p), L, m, i, min(m, j), val);
             update(r(p), m + 1, R, max(i, m + 1), j, val);
-            T lsubtree = Updator{}(st[l(p)], lazy[l(p)]);
-            T rsubtree = Updator{}(st[r(p)], lazy[r(p)]);
-            st[p] = Conquerer{}(lsubtree, rsubtree);
+            T lsubtree = (lazy[l(p)] != LAZY_OFF) ? updator(st[l(p)], lazy[l(p)]) : st[l(p)];
+            T rsubtree = (lazy[r(p)] != LAZY_OFF) ? updator(st[r(p)], lazy[r(p)]) : st[r(p)];
+            st[p] = conquer(lsubtree, rsubtree);
         }
     }
 
 public:
     LazySegTree() {}
 
-    LazySegTree(int sz, T _ConquererIdentity, T _UpdatorIdentity) : n(sz), st(4 * n) {
-        ConquererIdentity = _ConquererIdentity;
-        UpdatorIdentity = _UpdatorIdentity;
-        lazy = vT(4*n, UpdatorIdentity);
+    LazySegTree(int sz, opT _conquerer, opT _updator, T _RANGE_ERROR, T _LAZY_OFF) : 
+    conquerer(_conquerer), updator(_updator), RANGE_ERROR(_RANGE_ERROR), LAZY_OFF(_LAZY_OFF){
+        n = sz;
+        st = vT(4*n);
+        lazy = vT(4*n, LAZY_OFF);
     }
 
-    LazySegTree(const vT &initialA, T _ConquererIdentity, T _UpdatorIdentity) :
-    LazySegTree((int)initialA.size(), _ConquererIdentity, _UpdatorIdentity){
+    LazySegTree(const vT &initialA, opT _conquerer, opT _updator, T _RANGE_ERROR, T _LAZY_OFF) :
+    LazySegTree(initialA.size(), _conquerer, _updator, _RANGE_ERROR, _LAZY_OFF){
         A = initialA;
         build(1, 0, n - 1);
     }

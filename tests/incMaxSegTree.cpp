@@ -8,12 +8,12 @@ int main(){
 
     struct getMax { i64 operator()(i64 a, i64 b){ return max(a,b); } };
 
-    LazySegTree<i64, getMax, plus<i64>> segTree(A, LONG_LONG_MIN, (i64)0);
+    LazySegTree<i64> segTree(A, getMax(), plus<i64>(), LONG_LONG_MIN, 0);
 
-    cout << segTree.RQ(0, 10) << endl;
-    cout << segTree.RQ(5, 15) << endl;
+    cout << segTree.RQ(0, 10) << endl; // 18
+    cout << segTree.RQ(5, 15) << endl; //19
     segTree.update(11, 19, -5);
-    cout << segTree.RQ(5, 15) << endl;
+    cout << segTree.RQ(5, 15) << endl; // 17
 
     return 0;
 }

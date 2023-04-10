@@ -1,27 +1,27 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-/**
- * T is the type of the data stored in the segTree.
- * 
- * Conquerer must be a functor with an associative operator over two T.
- * It does not need to be commutative.
- * 
- * ConquererIdentity is a value such that
- * Conquerer(val, ConquererIdentity) = Conquerer(ConquererIdentity, val) = val
-*/
-template<typename T, typename Conquerer>
+template<typename T>
 class FrozenSegTree{
 
     using vT = vector<T>;
+    using opT = function<T(T,T)>;
 
 private:
-    int n;               // n = (int)A.size()
-    vT A, st;            // the arrays
-    T ConquererIdentity; // special values
+    opT conquerer;
+    T RANGE_ERROR;
+
+    int n;             // n = (int)A.size()
+    vT A, st, lazy;    // the arrays
 
     int l(int p) { return p << 1; }        // go to left child
     int r(int p) { return (p << 1) + 1; }  // go to right child
+
+    T conquer(const T a, const T b){
+        if(a == RANGE_ERROR) return b;
+        if(b == RANGE_ERROR) return a;
+        return conquerer(a, b);
+    }
 
     void build(int p, int L, int R){  // O(n)
         if (L == R)
@@ -30,30 +30,27 @@ private:
             int m = (L + R) / 2;
             build(l(p), L, m);
             build(r(p), m + 1, R);
-            st[p] = Conquerer{}(st[l(p)], st[r(p)]);
+            st[p] = conquer(st[l(p)], st[r(p)]);
         }
     }
 
     T RQ(int p, int L, int R, int i, int j){  // O(log n)
         if (i > j)
-            return ConquererIdentity;  // infeasible
+            return RANGE_ERROR;  // infeasible
         if ((i <= L) && (R <= j))
             return st[p];  // found the segment
         int m = (L + R) / 2;
-        return Conquerer{}(RQ(l(p), L, m, i, min(m, j)),
+        return conquer(RQ(l(p), L, m, i, min(m, j)),
                        RQ(r(p), m + 1, R, max(i, m + 1), j));
     }
 
 public:
     FrozenSegTree() {}
 
-    FrozenSegTree(int sz, T _ConquererIdentity) : n(sz), st(4 * n) {
-        ConquererIdentity = _ConquererIdentity;
-    }
-
-    FrozenSegTree(const vT &initialA, T _ConquererIdentity) :
-    FrozenSegTree((int)initialA.size(), _ConquererIdentity){
+    FrozenSegTree(const vT &initialA, opT _conquerer, T _RANGE_ERROR) :
+    n(initialA.size()), conquerer(_conquerer), RANGE_ERROR(_RANGE_ERROR){
         A = initialA;
+        st = vT(4*n);
         build(1, 0, n - 1);
     }
 
