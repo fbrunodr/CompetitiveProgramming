@@ -1,4 +1,5 @@
 // see https://open.kattis.com/problems/stringmatching
+
 #include "../algorithms/prefixFunction.cpp"
 
 int main(){
