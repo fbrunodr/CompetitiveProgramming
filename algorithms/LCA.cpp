@@ -13,16 +13,16 @@ class LCA{
     int idx;
     vector<bool> vis;
     void dfs(int u, int depth){
-        if(vis[u]) return;
         vis[u] = true;
         H[u] = idx;
         E[idx] = u;
         L[idx++] = depth;
-        for (auto &v : AL[u]) {
-            dfs(v, depth+1);
-            E[idx] = u; // backtrack to current node
-            L[idx++] = depth;
-        }
+        for (auto &v : AL[u])
+            if(!vis[v]){
+                dfs(v, depth+1);
+                E[idx] = u; // backtrack to current node
+                L[idx++] = depth;
+            }
     }
 
     public:
