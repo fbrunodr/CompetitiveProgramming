@@ -9,12 +9,12 @@ private:
     vi RA; // rank array
 
     void countingSort(int k){		        // O(n)
-	    int maxi = max(300, n);				// up to 255 ASCII chars
-	    vi c(maxi, 0);						// clear frequency table
-	    for (int i = 0; i < n; ++i)			// count the frequency
-		    ++c[i + k < n ? RA[i + k] : 0]; // of each integer rank
+        int maxi = max(300, n);				// up to 255 ASCII chars
+        vi c(maxi, 0);						// clear frequency table
+        for (int i = 0; i < n; ++i)			// count the frequency
+            ++c[i + k < n ? RA[i + k] : 0]; // of each integer rank
 
-	    for (int i = 0, sum = 0; i < maxi; ++i){
+        for (int i = 0, sum = 0; i < maxi; ++i){
             int t = c[i];
             c[i] = sum;
             sum += t;
