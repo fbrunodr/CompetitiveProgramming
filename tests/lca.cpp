@@ -10,7 +10,7 @@ int main(){
     children[3] = {4, 5};
     children[7] = {8, 9};
 
-    LCA tree(children, 0);
+    SegLCA tree(children, 0);
 
     cout << tree.lca(6, 4) << endl;
     cout << tree.lca(8, 9) << endl;
