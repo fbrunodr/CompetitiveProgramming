@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-using ii = pair<int, int>;
-using vi = vector<int>;
-
 class SuffixArray{
+
+    using ii = pair<int, int>;
+    using vi = vector<int>;
+
 private:
     vi RA; // rank array
 
