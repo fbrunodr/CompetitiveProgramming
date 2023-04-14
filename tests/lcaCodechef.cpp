@@ -18,7 +18,8 @@ int main(){
     }
 
     // SegLCA solve(AL, 1);
-    SpTLCA solver(AL, 1);
+    // SpTLCA solver(AL, 1);
+    BinaryLiftLCA solver(AL, 1);
 
     int queries; cin >> queries;
     while(queries--){
