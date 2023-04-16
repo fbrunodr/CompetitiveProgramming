@@ -12,7 +12,7 @@ private:
     T RANGE_ERROR;
 
     int n;             // n = (int)A.size()
-    vT A, st, lazy;    // the arrays
+    vT A, st;          // the arrays
 
     int l(int p) { return p << 1; }        // go to left child
     int r(int p) { return (p << 1) + 1; }  // go to right child
