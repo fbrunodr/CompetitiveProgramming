@@ -82,6 +82,8 @@ public:
     vi SA;		   // Suffix Array
     vi LCP;		   // of adj sorted suffixes
 
+    SuffixArray() {}
+
     SuffixArray(string initialT) : T(initialT) {
         T.push_back((char)5); // small character. Usually '$' (not the case here obviously)
         n = T.size();

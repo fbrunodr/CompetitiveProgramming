@@ -10,6 +10,8 @@ private:
     int numSets;
     
 public:
+    UnionFind() {}
+
     UnionFind(int N) {
         p.assign(N, 0); for (int i = 0; i < N; ++i) p[i] = i;
         rank.assign(N, 0);                           // optional speedup
