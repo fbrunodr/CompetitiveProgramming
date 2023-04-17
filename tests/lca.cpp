@@ -1,5 +1,3 @@
-// see https://www.codechef.com/problems/TALCA
-
 #include "../algorithms/LCA.cpp"
 
 int main(){
