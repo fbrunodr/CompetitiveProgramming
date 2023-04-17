@@ -12,14 +12,23 @@ class FenwickTree{
     private:
     int n;
     vT BIT;
-    opT op;
+    vT A;
+    opT op, inv;
+
+    private:
+    T cumulative(int i){
+        T ans = BIT[i];
+        for(int j = i-LSOne(i); j; j -= LSOne(j))
+            ans = op(ans, BIT[j]);
+        return ans;
+    }
 
     public:
     FenwickTree() {}
 
-    FenwickTree(vT& A, opT _op) : op(_op) {
-        BIT = A;
+    FenwickTree(vT& _A, opT _op, opT _inv) : A(_A), op(_op), inv(_inv) {
         n = A.size();
+        BIT = A;
         for(int i = 1; i < n; i++){
             int parent = i + LSOne(i);
             if(parent < n)
@@ -27,15 +36,16 @@ class FenwickTree{
         }
     }
 
-    T update(int i, T val){
-        for(; i < n; i += LSOne(i))
-            BIT[i] = op(BIT[i], val);
+    T update(int i, T newVal){
+        for(int j = i; j < n; j += LSOne(j)){
+            BIT[j] = inv(BIT[j], A[i]);
+            BIT[j] = op(BIT[j], newVal);
+        }
+        A[i] = newVal;
     }
 
-    T cumulative(int i){
-        T ans = BIT[i];
-        for(int j = i-LSOne(i); j; j -= LSOne(j))
-            ans = op(ans, BIT[j]);
-        return ans;
+    T Query(int i, int j){
+        if(i == 1) return cumulative(j);
+        return inv(cumulative(j), cumulative(i));
     }
 };
