@@ -59,4 +59,8 @@ class FenwickTree{
         if(i == 1) return cumulative(j);
         return inv(cumulative(j), cumulative(i-1));
     }
+
+    T pick(int i){
+        return A[i];
+    }
 };
