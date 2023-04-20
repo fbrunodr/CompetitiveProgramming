@@ -73,24 +73,18 @@ private:
             int m = (L + R) / 2;
             update(l(p), L, m, i, min(j, m), val);
             update(r(p), m + 1, R, max(m + 1, i), j, val);
-            T lsubtree = st[l(p)];
-            T rsubtree = st[r(p)];
-            st[p] = conquer(lsubtree, rsubtree);
+            st[p] = conquer(st[l(p)], st[r(p)]);
         }
     }
 
 public:
     LazySegTree() {}
 
-    LazySegTree(int sz, opT _conquerer, opT _updator, T _RANGE_ERROR, T _LAZY_OFF) : 
-    conquerer(_conquerer), updator(_updator), RANGE_ERROR(_RANGE_ERROR), LAZY_OFF(_LAZY_OFF){
-        n = sz;
+    LazySegTree(const vT &initialA, opT _conquerer, opT _updator, T _RANGE_ERROR, T _LAZY_OFF) :
+    conquerer(_conquerer), updator(_updator), RANGE_ERROR(_RANGE_ERROR), LAZY_OFF(_LAZY_OFF) {
+        n = initialA.size();
         st = vT(4*n);
         lazy = vT(4*n, LAZY_OFF);
-    }
-
-    LazySegTree(const vT &initialA, opT _conquerer, opT _updator, T _RANGE_ERROR, T _LAZY_OFF) :
-    LazySegTree(initialA.size(), _conquerer, _updator, _RANGE_ERROR, _LAZY_OFF){
         A = initialA;
         build(1, 0, n - 1);
     }

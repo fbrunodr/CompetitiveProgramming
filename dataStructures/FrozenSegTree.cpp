@@ -40,8 +40,8 @@ private:
         if ((i <= L) && (R <= j))
             return st[p];  // found the segment
         int m = (L + R) / 2;
-        return conquer(RQ(l(p), L, m, i, min(m, j)),
-                       RQ(r(p), m + 1, R, max(i, m + 1), j));
+        return conquer(RQ(l(p), L, m, i, min(j, m)),
+                       RQ(r(p), m + 1, R, max(m + 1, i), j));
     }
 
 public:
