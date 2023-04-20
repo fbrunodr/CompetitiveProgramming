@@ -57,8 +57,8 @@ private:
         if ((i <= L) && (R <= j))
             return st[p];  // found the segment
         int m = (L + R) / 2;
-        return conquer(RQ(l(p), L, m, i, min(m, j)),
-                       RQ(r(p), m + 1, R, max(i, m + 1), j));
+        return conquer(RQ(l(p), L, m, i, min(j, m)),
+                       RQ(r(p), m + 1, R, max(m + 1, i), j));
     }
 
     void update(int p, int L, int R, int i, int j, T val){ // O(log n)
@@ -71,10 +71,10 @@ private:
         }
         else{
             int m = (L + R) / 2;
-            update(l(p), L, m, i, min(m, j), val);
-            update(r(p), m + 1, R, max(i, m + 1), j, val);
-            T lsubtree = (lazy[l(p)] != LAZY_OFF) ? updator(st[l(p)], lazy[l(p)]) : st[l(p)];
-            T rsubtree = (lazy[r(p)] != LAZY_OFF) ? updator(st[r(p)], lazy[r(p)]) : st[r(p)];
+            update(l(p), L, m, i, min(j, m), val);
+            update(r(p), m + 1, R, max(m + 1, i), j, val);
+            T lsubtree = st[l(p)];
+            T rsubtree = st[r(p)];
             st[p] = conquer(lsubtree, rsubtree);
         }
     }
