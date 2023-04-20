@@ -15,7 +15,7 @@ private:
     T LAZY_OFF;
 
     int n;             // n = (int)A.size()
-    vT A, st, lazy;    // the arrays
+    vT st, lazy;       // the arrays
 
     int l(int p) { return p << 1; }        // go to left child
     int r(int p) { return (p << 1) + 1; }  // go to right child
@@ -26,13 +26,13 @@ private:
         return conquerer(a, b);
     }
 
-    void build(int p, int L, int R){  // O(n)
+    void build(const vT& A, int p, int L, int R){  // O(n)
         if (L == R)
             st[p] = A[L];  // base case
         else{
             int m = (L + R) / 2;
-            build(l(p), L, m);
-            build(r(p), m + 1, R);
+            build(A, l(p), L, m);
+            build(A, r(p), m + 1, R);
             st[p] = conquer(st[l(p)], st[r(p)]);
         }
     }
@@ -44,8 +44,6 @@ private:
                 lazy[l(p)] = (lazy[l(p)] != LAZY_OFF) ? updator(lazy[l(p)], lazy[p]) : lazy[p];
                 lazy[r(p)] = (lazy[r(p)] != LAZY_OFF) ? updator(lazy[r(p)], lazy[p]) : lazy[p];
             }
-            else                                 // L == R, a single index
-                A[L] = updator(A[L], lazy[p]);   // time to update this
             lazy[p] = LAZY_OFF;                  // erase lazy flag
         }
     }
@@ -85,8 +83,7 @@ public:
         n = initialA.size();
         st = vT(4*n);
         lazy = vT(4*n, LAZY_OFF);
-        A = initialA;
-        build(1, 0, n - 1);
+        build(initialA, 1, 0, n - 1);
     }
 
     void update(int i, int j, T val) { update(1, 0, n - 1, i, j, val); }

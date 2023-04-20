@@ -3,7 +3,8 @@
 #include "../dataStructures/FrozenSegTree.cpp"
 
 int main(){
-    string s = "())(())(())(";
+    ios_base::sync_with_stdio(false);
+    string s; cin >> s;
 
     using iii = tuple<int, int, int>;
     using viii = vector<iii>;
@@ -33,13 +34,14 @@ int main(){
     using ii = pair<int, int>;
     using vii = vector<ii>;
 
-    vii queries{ {1, 1}, {2, 3}, {1, 2}, {1, 12}, {8, 12}, {5, 11}, {2, 10} };
-    for(auto [i, j] : queries){
+    int nQueries; cin >> nQueries;
+
+    while(nQueries--){
+        int i, j; cin >> i >> j;
         i--; j--;
         auto [matches, open, closed] = segTree.RQ(i, j);
         cout << 2*matches << endl;
     }
-    
 
     return 0;
 }

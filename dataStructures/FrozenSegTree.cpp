@@ -12,7 +12,7 @@ private:
     T RANGE_ERROR;
 
     int n;             // n = (int)A.size()
-    vT A, st;          // the arrays
+    vT st;             // the array
 
     int l(int p) { return p << 1; }        // go to left child
     int r(int p) { return (p << 1) + 1; }  // go to right child
@@ -23,13 +23,13 @@ private:
         return conquerer(a, b);
     }
 
-    void build(int p, int L, int R){  // O(n)
+    void build(const vT& A, int p, int L, int R){  // O(n)
         if (L == R)
             st[p] = A[L];  // base case
         else{
             int m = (L + R) / 2;
-            build(l(p), L, m);
-            build(r(p), m + 1, R);
+            build(A, l(p), L, m);
+            build(A, r(p), m + 1, R);
             st[p] = conquer(st[l(p)], st[r(p)]);
         }
     }
@@ -49,9 +49,8 @@ public:
 
     FrozenSegTree(const vT &initialA, opT _conquerer, T _RANGE_ERROR) :
     n(initialA.size()), conquerer(_conquerer), RANGE_ERROR(_RANGE_ERROR){
-        A = initialA;
         st = vT(4*n);
-        build(1, 0, n - 1);
+        build(initialA, 1, 0, n - 1);
     }
 
     T RQ(int i, int j) { return RQ(1, 0, n - 1, i, j); }
