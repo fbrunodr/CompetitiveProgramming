@@ -55,7 +55,7 @@ class FenwickTree{
         return ans;
     }
 
-    T query(int i, int j){
+    T RQ(int i, int j){
         if(i == 1) return cumulative(j);
         return inv(cumulative(j), cumulative(i-1));
     }

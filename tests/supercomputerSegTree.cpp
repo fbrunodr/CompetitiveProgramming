@@ -1,6 +1,6 @@
 // see https://open.kattis.com/problems/supercomputer
 
-#include "../dataStructures/FenwickTree.cpp"
+#include "../dataStructures/PointUpdateSegTree.cpp"
 
 int main(){
     ios_base::sync_with_stdio(false);
@@ -10,8 +10,8 @@ int main(){
     vi A(N+1, 0);
 
     auto sum = [](int a, int b){ return a + b; };
-    auto sub = [](int a, int b){ return a - b; };
-    FenwickTree<int> cumulative(A, sum, sub);
+    auto assign = [](int currVal, int newVal){ return newVal; };
+    PointUpdateSegTree<int> cumulative(A, sum, assign, INT_MAX );
 
     while(K--){
         char type; cin >> type;
