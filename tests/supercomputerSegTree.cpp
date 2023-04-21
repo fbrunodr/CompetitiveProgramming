@@ -10,8 +10,7 @@ int main(){
     vi A(N+1, 0);
 
     auto sum = [](int a, int b){ return a + b; };
-    auto assign = [](int currVal, int newVal){ return newVal; };
-    PointUpdateSegTree<int> cumulative(A, sum, assign, INT_MAX );
+    PointUpdateSegTree<int> cumulative(A, sum, INT_MAX);
 
     while(K--){
         char type; cin >> type;

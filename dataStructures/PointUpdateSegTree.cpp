@@ -9,12 +9,10 @@ class PointUpdateSegTree{
 
 private:
     opT conquerer;
-    opT updator;
-
     T RANGE_ERROR;
 
     int n;             // n = (int)A.size()
-    vT st;             // the array
+    vT st, A;          // the arrays
 
     int l(int p) { return p << 1; }        // go to left child
     int r(int p) { return (p << 1) + 1; }  // go to right child
@@ -25,7 +23,7 @@ private:
         return conquerer(a, b);
     }
 
-    void build(const vT& A, int p, int L, int R){  // O(n)
+    void build(int p, int L, int R){  // O(n)
         if (L == R)
             st[p] = A[L];  // base case
         else{
@@ -46,15 +44,15 @@ private:
                        RQ(r(p), m + 1, R, max(m + 1, i), j));
     }
 
-    void update(int p, int L, int R, int i, T val){ // O(log n)
+    void update(int p, int L, int R, int i, T newVal){ // O(log n)
         if ((L == R) && (L == i))  // found the segment
-            st[p] = updator(st[p], val);
+            A[i] = st[p] = newVal;
         else{
             int m = (L + R) / 2;
             if(i <= m)
-                update(l(p), L, m, i, val);
+                update(l(p), L, m, i, newVal);
             else
-                update(r(p), m + 1, R, i, val);
+                update(r(p), m + 1, R, i, newVal);
             st[p] = conquer(st[l(p)], st[r(p)]);
         }
     }
@@ -62,14 +60,22 @@ private:
 public:
     PointUpdateSegTree() {}
 
-    PointUpdateSegTree(const vT &initialA, opT _conquerer, opT _updator, T _RANGE_ERROR) :
-    conquerer(_conquerer), updator(_updator), RANGE_ERROR(_RANGE_ERROR) {
-        n = initialA.size();
+    PointUpdateSegTree(const vT& _A, opT _conquerer, T _RANGE_ERROR) :
+    A(_A), conquerer(_conquerer), RANGE_ERROR(_RANGE_ERROR) {
+        n = A.size();
         st = vT(4*n);
-        build(initialA, 1, 0, n - 1);
+        build(1, 0, n - 1);
     }
 
-    void update(int i, T val) { update(1, 0, n - 1, i, val); }
+    void update(int i, T newVal) {
+        update(1, 0, n - 1, i, newVal);
+    }
 
-    T RQ(int i, int j) { return RQ(1, 0, n - 1, i, j); }
+    T RQ(int i, int j) {
+        return RQ(1, 0, n - 1, i, j);
+    }
+
+    T pick(int i){
+        return A[i];
+    }
 };

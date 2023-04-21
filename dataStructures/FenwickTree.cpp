@@ -18,7 +18,7 @@ class FenwickTree{
     public:
     FenwickTree() {}
 
-    FenwickTree(vT& _A, opT _op, opT _inv) : A(_A), op(_op), inv(_inv) {
+    FenwickTree(const vT& _A, opT _op, opT _inv) : A(_A), op(_op), inv(_inv) {
         n = A.size();
         BIT = A;
         for(int i = 1; i < n; i++){

@@ -28,10 +28,10 @@ int main(){
         lineStream >> a >> b;
         if(lineStream >> inc){
             if(a <= b)
-                segTree.update(a, b, inc);
+                segTree.rangeUpdate(a, b, inc);
             else{
-                segTree.update(a, n-1, inc);
-                segTree.update(0, b, inc);
+                segTree.rangeUpdate(a, n-1, inc);
+                segTree.rangeUpdate(0, b, inc);
             }
         }
         else{

@@ -12,7 +12,7 @@ int main(){
 
     cout << segTree.RQ(0, 10) << endl; // 18
     cout << segTree.RQ(5, 15) << endl; //19
-    segTree.update(11, 19, -5);
+    segTree.rangeUpdate(11, 19, -5);
     cout << segTree.RQ(5, 15) << endl; // 17
 
     return 0;

@@ -59,18 +59,18 @@ private:
                        RQ(r(p), m + 1, R, max(m + 1, i), j));
     }
 
-    void update(int p, int L, int R, int i, int j, T val){ // O(log n)
+    void rangeUpdate(int p, int L, int R, int i, int j, T val){ // O(log n)
         propagate(p, L, R);
         if (i > j)
             return;
         if ((i <= L) && (R <= j)){  // found the segment
-            lazy[p] = val;      // update this
+            lazy[p] = val;          // update this
             propagate(p, L, R);
         }
         else{
             int m = (L + R) / 2;
-            update(l(p), L, m, i, min(j, m), val);
-            update(r(p), m + 1, R, max(m + 1, i), j, val);
+            rangeUpdate(l(p), L, m, i, min(j, m), val);
+            rangeUpdate(r(p), m + 1, R, max(m + 1, i), j, val);
             st[p] = conquer(st[l(p)], st[r(p)]);
         }
     }
@@ -78,15 +78,19 @@ private:
 public:
     LazySegTree() {}
 
-    LazySegTree(const vT &initialA, opT _conquerer, opT _updator, T _RANGE_ERROR, T _LAZY_OFF) :
+    LazySegTree(const vT& _A, opT _conquerer, opT _updator, T _RANGE_ERROR, T _LAZY_OFF) :
     conquerer(_conquerer), updator(_updator), RANGE_ERROR(_RANGE_ERROR), LAZY_OFF(_LAZY_OFF) {
-        n = initialA.size();
+        n = _A.size();
         st = vT(4*n);
         lazy = vT(4*n, LAZY_OFF);
-        build(initialA, 1, 0, n - 1);
+        build(_A, 1, 0, n - 1);
     }
 
-    void update(int i, int j, T val) { update(1, 0, n - 1, i, j, val); }
+    void rangeUpdate(int i, int j, T val) {
+        rangeUpdate(1, 0, n - 1, i, j, val);
+    }
 
-    T RQ(int i, int j) { return RQ(1, 0, n - 1, i, j); }
+    T RQ(int i, int j) {
+        return RQ(1, 0, n - 1, i, j);
+    }
 };
