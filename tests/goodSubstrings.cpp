@@ -25,8 +25,15 @@ int main(){
 
     HashString hasher1(s, 131, 1e9 + 7);
     HashString hasher2(s, 167, 1e9 + 7);
-    using i64 = long long;
-    unordered_set<i64> hashes;
+
+    using ii = pair<int, int>;
+
+    struct hash_pair{
+        size_t operator ()(const ii x) const {
+            return ((size_t)x.first << 32) + x.second;
+        }
+    };
+    unordered_set<ii, hash_pair> hashes;
  
     int ans = 0;
     for(int i = 0; i < n; i++)
@@ -34,7 +41,7 @@ int main(){
             int nBad = a[j];
             if(i != 0) nBad -= a[i-1];
             if(nBad > k) continue;
-            i64 hash_ij = (((i64)hasher1.getHash(i, j))<<30) + (i64)hasher2.getHash(i, j);
+            ii hash_ij = {hasher1.getHash(i, j), hasher2.getHash(i, j)};
             if(hashes.count(hash_ij)) continue;
             hashes.insert(hash_ij);
             ans++;
