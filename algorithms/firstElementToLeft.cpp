@@ -3,7 +3,7 @@ using namespace std;
 using vi = vector<int>;
 
 template<typename T>
-vi firstElementToLeft(vector<T>& arr, function<T(T,T)> op){
+vi firstElementToLeft(vector<T>& arr, function<bool(T,T)> op){
     stack<int> st;
     vi left(arr.size());
     for(int i = 0; i < arr.size(); i++){
@@ -19,7 +19,7 @@ vi firstElementToLeft(vector<T>& arr, function<T(T,T)> op){
 }
 
 template<typename T>
-vi firstElementToRight(vector<T>& arr, function<T(T,T)> op){
+vi firstElementToRight(vector<T>& arr, function<bool(T,T)> op){
     reverse(arr.begin(), arr.end());
     vi ans = firstElementToLeft(arr, op);
     reverse(arr.begin(), arr.end());
