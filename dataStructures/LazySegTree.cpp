@@ -38,14 +38,14 @@ private:
     }
 
     void propagate(int p, int L, int R){
-        if (lazy[p] != LAZY_OFF){                // has a lazy flag
-            st[p] = updator(st[p], lazy[p]);     // update [L..R] value
-            if (L != R){                         // not a leaf
-                lazy[l(p)] = (lazy[l(p)] != LAZY_OFF) ? updator(lazy[l(p)], lazy[p]) : lazy[p];
-                lazy[r(p)] = (lazy[r(p)] != LAZY_OFF) ? updator(lazy[r(p)], lazy[p]) : lazy[p];
-            }
-            lazy[p] = LAZY_OFF;                  // erase lazy flag
+        if (lazy[p] == LAZY_OFF) // lazy flag off
+            return;
+        st[p] = updator(st[p], lazy[p]);     // update [L..R] value
+        if (L != R){                         // not a leaf
+            lazy[l(p)] = (lazy[l(p)] == LAZY_OFF) ? lazy[p] : updator(lazy[l(p)], lazy[p]);
+            lazy[r(p)] = (lazy[r(p)] == LAZY_OFF) ? lazy[p] : updator(lazy[r(p)], lazy[p]);
         }
+        lazy[p] = LAZY_OFF;                 // erase lazy flag
     }
 
     T RQ(int p, int L, int R, int i, int j){  // O(log n)
