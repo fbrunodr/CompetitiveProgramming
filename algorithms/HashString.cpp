@@ -27,23 +27,23 @@ class HashString{
         return a; // returns gcd(a, b)
     }
 
-    int modInverse(int b, int m){ // returns b^(-1) (mod m)
+    int modInverse(int b){               // returns b^(-1) (mod MOD)
         int x, y;
-        int d = extEuclid(b, m, x, y); // to get b*x + m*y == d
+        int d = extEuclid(b, MOD, x, y); // to get b*x + MOD*y == d
         if (d != 1)
-            return -1; // to indicate failure
-        return (x + m) % m; // this is the answer
+            exit(1);            // to indicate failure
+        return (x + MOD) % MOD; // this is the answer
     }
 
     void computeRollingHash(){
         pPowInv[0] = pPow[0] = 1;
         for(int i = 1; i < n; i++){
             pPow[i] = ((i64)pPow[i-1] * p) % MOD;
-            pPowInv[i] = modInverse(pPow[i], MOD);
+            pPowInv[i] = modInverse(pPow[i]);
         }
         h[0] = 0;
         for (int i = 0; i < n; ++i) {                  // O(n)
-            if (i != 0) h[i] = h[i-1];                   // rolling hash
+            if (i != 0) h[i] = h[i-1];                 // rolling hash
             h[i] += ((i64)T[i] * pPow[i]) % MOD;
             h[i] %= MOD;
         }
@@ -63,8 +63,8 @@ class HashString{
     int getHash(int L, int R){
         if(L == 0) return h[R];
         int ans = 0;
-        ans = ((h[R] - h[L-1]) % MOD + MOD) % MOD;           // compute differences
-        ans = ((i64)ans * pPowInv[L]) % MOD; // remove P[L]^-1 (mod M)
+        ans = (h[R] - h[L-1] + MOD) % MOD;    // compute differences
+        ans = ((i64)ans * pPowInv[L]) % MOD;  // remove P[L]^-1 (mod M)
         return ans;
     }
 };
