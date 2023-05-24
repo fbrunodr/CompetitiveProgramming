@@ -25,7 +25,7 @@ int main(){
             AL[card].push_back(n+numBack);
         }
 
-        MCBM solve(AL, V, VLeft);
+        MCBM solve(AL, VLeft);
         auto [nMacthes, matches] = solve.get();
 
         nMacthes == n ? cout << "possible" << endl : cout << "impossible" << endl;

@@ -28,7 +28,7 @@ private:
 
 public:
 
-    MCBM(vector<vi>& _AL, int _V, int _VLeft) : AL(_AL), V(_V), VLeft(_VLeft) {}
+    MCBM(vector<vi>& _AL, int _VLeft) : AL(_AL), VLeft(_VLeft) {}
 
     /**
      * Returns MCBM and the matches
@@ -37,6 +37,7 @@ public:
         unordered_set<int> freeV;
         for (int L = 0; L < VLeft; ++L)
             freeV.insert(L);                             // initial assumption
+        V = AL.size();
         match = vi(V, -1);
         int MCBM = 0;
         // Greedy pre-processing for trivial Augmenting Paths
