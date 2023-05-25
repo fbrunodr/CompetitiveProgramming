@@ -36,11 +36,12 @@ class HashString{
     }
 
     void computeRollingHash(){
-        pPowInv[0] = pPow[0] = 1;
-        for(int i = 1; i < n; i++){
+        pPow[0] = 1;
+        for(int i = 1; i < n; i++)
             pPow[i] = ((i64)pPow[i-1] * p) % MOD;
-            pPowInv[i] = modInverse(pPow[i]);
-        }
+        pPowInv[n-1] = modInverse(pPow[n-1]);
+        for(int i = n-2; i >= 0; i--)   // taking advantage of Fermat's Little Theorem
+            pPowInv[i] = ((i64)pPowInv[i+1] * p) % MOD;
         h[0] = 0;
         for (int i = 0; i < n; ++i) {                  // O(n)
             if (i != 0) h[i] = h[i-1];                 // rolling hash
