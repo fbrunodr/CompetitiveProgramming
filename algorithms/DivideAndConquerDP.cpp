@@ -16,38 +16,48 @@ private:
  
     vector<unordered_map<int, T>> memo;
  
-    T solveLeft(int L, int mid){
+    void solveLeft(int mid, int L){
         if(memo[mid].count(L))
-            return memo[mid][L];
-        if(L == mid)
-            return singleElement(L);
-        auto subProblem = solveLeft(L+1, mid);
-        return memo[mid][L] = elementMerge(subProblem, L);
+            return;
+        if(L == mid){
+            memo[mid][L] = singleElement(L);
+            return;
+        }
+        solveLeft(mid, L+1);
+        memo[mid][L] = elementMerge(memo[mid][L+1], L);
     }
  
-    T solveRight(int mid, int R){
+    void solveRight(int mid, int R){
         if(memo[mid].count(R))
-            return memo[mid][R];
-        if(mid == R)
-            return singleElement(R);
-        auto subProblem = solveRight(mid, R-1);
-        return memo[mid][R] = elementMerge(subProblem, R);
+            return;
+        if(mid == R){
+            memo[mid][R] = singleElement(R);
+            return;
+        }
+        solveRight(mid, R-1);
+        memo[mid][R] = elementMerge(memo[mid][R-1], R);
     }
  
     TT solve(int i, int j, int L, int R){
-        int mid = (L + R) / 2;
-        if(i == mid)
-            return {solveRight(mid, j), EMPTY};
-        if(mid == j)
-            return {solveLeft(i, mid), EMPTY};
-        if(mid < i)
-            return solve(i, j, mid+1, R);
-        if(mid > j)
-            return solve(i, j, L, mid-1);
-        if(i < mid && mid < j){
-            auto left = solveLeft(i, mid);
-            auto right = solveRight(mid+1, j);
-            return {left, right};
+        int mid1 = (L + R) / 2;
+        int mid2 = mid1 + 1;
+
+        if(j < mid1)
+            return solve(i, j, L, mid1-1);
+        else if(i > mid2)
+            return solve(i, j, mid2+1, R);
+        else if(j == mid1){
+            solveLeft(mid1, i);
+            return {memo[mid1][i], EMPTY};
+        }
+        else if(i == mid2){
+            solveRight(mid2, j);
+            return {memo[mid2][j], EMPTY};
+        }
+        else{
+            solveLeft(mid1, i);
+            solveRight(mid2, j);
+            return {memo[mid1][i], memo[mid2][j]};
         }
  
         return {EMPTY, EMPTY};
