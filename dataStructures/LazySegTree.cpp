@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template<typename DataType, typename UpdateType>
+template<typename DataType, typename LazyType>
 class LazySegTree{
 
     using T = DataType;
-    using Q = UpdateType;
+    using Q = LazyType;
 
     using vT = vector<T>;
     using vQ = vector<Q>;
