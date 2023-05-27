@@ -1,26 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template<typename T>
+template<typename DataType, typename UpdateType>
 class LazySegTree{
 
+    using T = DataType;
+    using Q = UpdateType;
+
     using vT = vector<T>;
-    using opT = function<T(T,T)>;
+    using vQ = vector<Q>;
 
 private:
-    opT conquerer;
-    opT updator;
+    function<T(T,T)> conquerer;
+    function<void(T&,Q,int,int)> nodeUpdator;
+    function<void(Q&,Q)> lazyUpdator;
 
     T RANGE_ERROR;
-    T LAZY_OFF;
+    Q LAZY_OFF;
 
-    int n;             // n = (int)A.size()
-    vT st, lazy;       // the arrays
+    int n;
+    vT st;
+    vQ lazy;
 
     int l(int p) { return p << 1; }        // go to left child
     int r(int p) { return (p << 1) + 1; }  // go to right child
 
-    T conquer(const T a, const T b){
+    T conquer(T a, T b){
         if(a == RANGE_ERROR) return b;
         if(b == RANGE_ERROR) return a;
         return conquerer(a, b);
@@ -28,7 +33,7 @@ private:
 
     void build(const vT& A, int p, int L, int R){  // O(n)
         if (L == R)
-            st[p] = A[L];  // base case
+            st[p] = A[L];
         else{
             int m = (L + R) / 2;
             build(A, l(p), L, m);
@@ -38,14 +43,20 @@ private:
     }
 
     void propagate(int p, int L, int R){
-        if (lazy[p] == LAZY_OFF) // lazy flag off
+        if (lazy[p] == LAZY_OFF)
             return;
-        st[p] = updator(st[p], lazy[p]);     // update [L..R] value
-        if (L != R){                         // not a leaf
-            lazy[l(p)] = (lazy[l(p)] == LAZY_OFF) ? lazy[p] : updator(lazy[l(p)], lazy[p]);
-            lazy[r(p)] = (lazy[r(p)] == LAZY_OFF) ? lazy[p] : updator(lazy[r(p)], lazy[p]);
+        nodeUpdator(st[p], lazy[p], L, R);
+        if (L != R){
+            if(lazy[l(p)] == LAZY_OFF)
+                lazy[l(p)] = lazy[p];
+            else
+                lazyUpdator(lazy[l(p)], lazy[p]);
+            if(lazy[r(p)] == LAZY_OFF)
+                lazy[r(p)] = lazy[p];
+            else
+                lazyUpdator(lazy[r(p)], lazy[p]);
         }
-        lazy[p] = LAZY_OFF;                 // erase lazy flag
+        lazy[p] = LAZY_OFF;
     }
 
     T RQ(int p, int L, int R, int i, int j){  // O(log n)
@@ -59,7 +70,7 @@ private:
                        RQ(r(p), m + 1, R, max(m + 1, i), j));
     }
 
-    void rangeUpdate(int p, int L, int R, int i, int j, T val){ // O(log n)
+    void rangeUpdate(int p, int L, int R, int i, int j, Q val){ // O(log n)
         propagate(p, L, R);
         if (i > j)
             return;
@@ -78,15 +89,27 @@ private:
 public:
     LazySegTree() {}
 
-    LazySegTree(const vT& _A, opT _conquerer, opT _updator, T _RANGE_ERROR, T _LAZY_OFF) :
-    conquerer(_conquerer), updator(_updator), RANGE_ERROR(_RANGE_ERROR), LAZY_OFF(_LAZY_OFF) {
+    LazySegTree(
+        const vT& _A,
+        function<T(T,T)> _conquerer,
+        function<void(T&,Q,int,int)> _nodeUpdator,
+        function<void(Q&,Q)> _lazyUpdator,
+        T _RANGE_ERROR,
+        Q _LAZY_OFF
+    ){
         n = _A.size();
+        conquerer = _conquerer;
+        nodeUpdator = _nodeUpdator;
+        lazyUpdator = _lazyUpdator;
+        RANGE_ERROR = _RANGE_ERROR;
+        LAZY_OFF = _LAZY_OFF;
+
         st = vT(4*n);
-        lazy = vT(4*n, LAZY_OFF);
+        lazy = vQ(4*n, LAZY_OFF);
         build(_A, 1, 0, n - 1);
     }
 
-    void rangeUpdate(int i, int j, T val) {
+    void rangeUpdate(int i, int j, Q val) {
         rangeUpdate(1, 0, n - 1, i, j, val);
     }
 

@@ -11,10 +11,13 @@ int main(){
     auto conquerer = [](int a, int b){
         return a & b;
     };
-    auto updator = [](int a, int update){
-        return a | update;
+    auto nodeUpdator = [](int& a, int update, int L, int R){
+        a |= update;
     };
-    LazySegTree<int> lazySegTree(vector<int>(n + 1, 0), conquerer, updator, INT_MAX, INT_MAX);
+    auto updateUpdator = [](int& update1, int update2){
+        update1 |= update2;
+    };
+    LazySegTree<int, int> lazySegTree(vector<int>(n + 1, 0), conquerer, nodeUpdator, updateUpdator, INT_MAX, INT_MAX);
 
     using iii = tuple<int, int, int>;
     using viii = vector<iii>;

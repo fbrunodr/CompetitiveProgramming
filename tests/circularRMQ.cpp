@@ -4,6 +4,7 @@
 
 int main(){
     ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
 
     using i64 = long long;
     using vi64 = vector<i64>;
@@ -13,10 +14,11 @@ int main(){
     for(auto& a_i : a)
         cin >> a_i;
  
-    auto minOp = [](i64 a, i64 b){ return min(a, b); };
-    auto incOp = [](i64 oldVal, i64 update){ return oldVal + update; };
+    auto mergeNode = [](i64 a, i64 b){ return min(a, b); };
+    auto updateNode = [](i64& node, i64 update, int L, int R){ return node += update; };
+    auto updateUpdate = [](i64& update1, i64 update2){ return update1 += update2; };
  
-    LazySegTree<i64> segTree(a, minOp, incOp, LONG_LONG_MAX, LONG_LONG_MAX);
+    LazySegTree<i64, i64> segTree(a, mergeNode, updateNode, updateUpdate, LONG_LONG_MAX, LONG_MAX);
 
     int m; cin >> m;
     string garbage; getline(cin, garbage);
@@ -36,11 +38,11 @@ int main(){
         }
         else{
             if(a <= b)
-                cout << segTree.RQ(a, b) << endl;
+                cout << segTree.RQ(a, b) << '\n';
             else
                 cout << min(
                     segTree.RQ(a, n-1), segTree.RQ(0, b)
-                ) << endl;
+                ) << '\n';
         }
     }
  
