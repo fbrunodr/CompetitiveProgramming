@@ -14,59 +14,65 @@ private:
     function<T(T&,int)> elementMerge;
     T EMPTY;
  
-    vector<unordered_map<int, T>> memo;
+    vector<vector<T*>> memo;
  
-    void solveLeft(int mid, int L){
-        if(memo[mid].count(L))
+    void solveMoving(int mid, int d, bool toRight){
+        if(memo[mid][d] != nullptr)
             return;
-        if(L == mid){
-            memo[mid][L] = singleElement(L);
+        int idx = toRight ? mid + d : mid - d;
+        if(d == 0){
+            memo[mid][d] = new T(singleElement(idx));
             return;
         }
-        solveLeft(mid, L+1);
-        memo[mid][L] = elementMerge(memo[mid][L+1], L);
-    }
- 
-    void solveRight(int mid, int R){
-        if(memo[mid].count(R))
-            return;
-        if(mid == R){
-            memo[mid][R] = singleElement(R);
-            return;
-        }
-        solveRight(mid, R-1);
-        memo[mid][R] = elementMerge(memo[mid][R-1], R);
+        solveMoving(mid, d-1, toRight);
+        memo[mid][d] = new T(elementMerge(*memo[mid][d-1], idx));
     }
  
     TT solve(int i, int j, int L, int R){
         int mid1 = (L + R) / 2;
         int mid2 = mid1 + 1;
-
+ 
         if(j < mid1)
             return solve(i, j, L, mid1-1);
         else if(i > mid2)
             return solve(i, j, mid2+1, R);
         else if(j == mid1){
-            solveLeft(mid1, i);
-            return {memo[mid1][i], EMPTY};
+            solveMoving(mid1, mid1-i, false);
+            return {*memo[mid1][mid1-i], EMPTY};
         }
         else if(i == mid2){
-            solveRight(mid2, j);
-            return {memo[mid2][j], EMPTY};
+            solveMoving(mid2, j-mid2, true);
+            return {*memo[mid2][j-mid2], EMPTY};
         }
         else{
-            solveLeft(mid1, i);
-            solveRight(mid2, j);
-            return {memo[mid1][i], memo[mid2][j]};
+            solveMoving(mid1, mid1-i, false);
+            solveMoving(mid2, j-mid2, true);
+            return {*memo[mid1][mid1-i], *memo[mid2][j-mid2]};
         }
  
         return {EMPTY, EMPTY};
     }
  
+    void init(int L, int R){
+        if(L > R)
+            return;
+ 
+        int mid1 = (L + R) / 2;
+        int mid2 = mid1 + 1;
+ 
+        memo[mid1] = vector<T*>(mid1 - L + 1, nullptr);
+        if(mid2 <= R)
+            memo[mid2] = vector<T*>(R - mid2 + 1, nullptr);
+ 
+        init(L, mid1-1);
+        init(mid2+1, R);
+    }
+ 
     public:
     DivideAndConquerDP(int _n, function<T(int)> _ele, function<T(T&,int)> _eleMerge, T empty){
         N = _n;
-        memo = vector<unordered_map<int, T>>(N);
+        memo = vector<vector<T*>>(N);
+        init(0, N-1);
         singleElement = _ele;
         elementMerge = _eleMerge;
         EMPTY = empty;
