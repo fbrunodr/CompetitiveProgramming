@@ -14,12 +14,8 @@ int main(){
     
     auto aux = a;
     sort(aux.begin(), aux.end());
-    unordered_map<int, int> pos;
-    for(int i = 0; i < n; i++)
-        pos[aux[i]] = i;
- 
     for(auto& a_i : a)
-        a_i = pos[a_i];
+        a_i = lower_bound(aux.begin(), aux.end(), a_i) - aux.begin();
  
     auto mergeNode = [](int a, int b){ return a; };
     auto updateNode = [](int& a, int up, int L, int R) { a += up; };
