@@ -4,13 +4,15 @@
 
 int main(){
     ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int N, K; cin >> N >> K;
 
     using vi = vector<int>;
     vi A(N+1, 0);
 
     auto sum = [](int a, int b){ return a + b; };
-    PointUpdateSegTree<int> cumulative(A, sum, INT_MAX);
+    PointUpdateSegTree<int> cumulative(A, sum);
 
     while(K--){
         char type; cin >> type;
@@ -21,7 +23,7 @@ int main(){
         }
         else{
             int i, j; cin >> i >> j;
-            cout << cumulative.RQ(i, j) << endl;
+            cout << cumulative.RQ(i, j) << '\n';
         }
     }
 

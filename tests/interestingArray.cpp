@@ -4,6 +4,8 @@
 
 int main(){
     ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int n, m; cin >> n >> m;
 
     // note that (a&b)|c = (a|c) & (b|c), that is, bitwise 'or' is
@@ -17,7 +19,7 @@ int main(){
     auto updateUpdator = [](int& update1, int update2){
         update1 |= update2;
     };
-    LazySegTree<int, int> lazySegTree(vector<int>(n + 1, 0), conquerer, nodeUpdator, updateUpdator, INT_MAX, INT_MAX);
+    LazySegTree<int, int> lazySegTree(vector<int>(n + 1, 0), conquerer, nodeUpdator, updateUpdator);
 
     using iii = tuple<int, int, int>;
     using viii = vector<iii>;
@@ -32,14 +34,14 @@ int main(){
 
     for(auto& [l, r, x] : queries)
         if(lazySegTree.RQ(l, r) != x){
-            cout << "NO" << endl;
+            cout << "NO" << '\n';
             return 0;
         }
 
-    cout << "YES" << endl;
+    cout << "YES" << '\n';
     for(int i = 1; i <= n; i++)
         cout << lazySegTree.RQ(i, i) << ' ';
-    cout << endl;
+    cout << '\n';
 
     return 0;
 }

@@ -14,11 +14,11 @@ int main(){
     for(auto& a_i : a)
         cin >> a_i;
  
-    auto mergeNode = [](i64 a, i64 b){ return min(a, b); };
+    auto conquerer = [](i64 a, i64 b){ return min(a, b); };
     auto updateNode = [](i64& node, i64 update, int L, int R){ return node += update; };
     auto updateUpdate = [](i64& update1, i64 update2){ return update1 += update2; };
  
-    LazySegTree<i64, i64> segTree(a, mergeNode, updateNode, updateUpdate, LONG_LONG_MAX, LONG_MAX);
+    LazySegTree<i64, i64> segTree(a, conquerer, updateNode, updateUpdate);
 
     int m; cin >> m;
     string garbage; getline(cin, garbage);

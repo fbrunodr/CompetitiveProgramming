@@ -4,6 +4,8 @@
 
 int main(){
     ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     string s; cin >> s;
 
     using iii = tuple<int, int, int>;
@@ -28,8 +30,7 @@ int main(){
         );
     };
 
-    const iii ERROR{0, 0, 0};
-    FrozenSegTree<iii> segTree(A, mergeIntervals, ERROR);
+    FrozenSegTree<iii> segTree(A, mergeIntervals);
 
     using ii = pair<int, int>;
     using vii = vector<ii>;
@@ -40,7 +41,7 @@ int main(){
         int i, j; cin >> i >> j;
         i--; j--;
         auto [matches, open, closed] = segTree.RQ(i, j);
-        cout << 2*matches << endl;
+        cout << 2*matches << '\n';
     }
 
     return 0;

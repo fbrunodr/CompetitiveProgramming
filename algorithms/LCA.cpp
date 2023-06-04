@@ -45,7 +45,7 @@ class SegLCA{
         vi aux(2*n);
         for(int i = 0; i < 2*n; i++)
             aux[i] = i;
-        segTree = FrozenSegTree<int>(aux, conquerer, -1);
+        segTree = FrozenSegTree<int>(aux, conquerer);
     }
 
     int lca(int u, int v){
