@@ -192,9 +192,20 @@ class Segment{
 };
 
 class Polygon{
-    vector<Point> points;
+    private:
+    vector<Point> closeLoop(bool leaveRepeated = false) const {
+        auto polygon = points;
+        polygon.push_back(polygon.front());
+        if(leaveRepeated)
+            return polygon;
+        int n = unique(polygon.begin(), polygon.end()) - polygon.begin();
+        polygon.resize(n);
+        return polygon;
+    }
 
     public:
+    vector<Point> points;
+
     Polygon() {}
 
     Polygon(const vector<Point>& _points) : points(_points) {}
@@ -207,11 +218,9 @@ class Polygon{
         for(auto& point : points)
             if(P == point)
                 return true;
-        auto aux = points;
-        aux.push_back(aux.front());
-        for(int i = 1; i < aux.size(); i++){
-            if(aux[i-1] == aux[i]) continue;
-            auto side = Segment(aux[i-1], aux[i]);
+        auto polygon = closeLoop();
+        for(int i = 1; i < polygon.size(); i++){
+            auto side = Segment(polygon[i-1], polygon[i]);
             if(side.isBetween(P))
                 return true;
         }
@@ -220,8 +229,9 @@ class Polygon{
     }
 
     bool isInside(const Point& P) const {
-        if(points.size() < 3)
-            false;
+        auto polygon = closeLoop();
+        if(polygon.size() <= 3) // first is repeated
+            return false;
         if(isOnPolygon(P))
             return false;
         Point surelyOutside = P;
@@ -229,15 +239,62 @@ class Polygon{
         surelyOutside.x += delta;
         surelyOutside.y += delta + 1;
         Segment rayToOutside(P, surelyOutside);
-        auto aux = points;
-        aux.push_back(aux.front());
         int crosses = 0;
-        for(int i = 1; i < aux.size(); i++){
-            if(aux[i-1] == aux[i])
-                continue;
-            if(rayToOutside.makeCross(Segment(aux[i-1], aux[i])))
+        for(int i = 1; i < polygon.size(); i++)
+            if(rayToOutside.makeCross(Segment(polygon[i-1], polygon[i])))
                 crosses++;
-        }
         return crosses & 1;
+    }
+
+    bool isConvex(){
+        auto polygon = closeLoop();
+        int n = (int)polygon.size();
+        // a point/sz=2 or a line/sz=3 is not convex  
+        if (n <= 3) return false;
+
+        auto ccw = [](const Point& A, const Point& O, const Point& B) {
+            Vec AO = Vec(A, O);
+            Vec AB = Vec(A, B);
+            i64 cross = AO.cross(AB);
+            return cross >= 0;
+        };
+
+        auto& P = polygon;
+        bool firstTurn = ccw(P[0], P[1], P[2]);        // remember one result,
+        for (int i = 1; i < n-1; ++i)                  // compare with the others
+            if (ccw(P[i], P[i+1], P[(i+2) == n ? 1 : i+2]) != firstTurn)
+                return false;                          // different -> concave
+        return true;                                   // otherwise -> convex
+    }
+
+    // Convex Hull Andrew
+    Polygon convexHull(bool leaveNonNecessary = false) const {
+        auto polygon = closeLoop(leaveNonNecessary);
+        int n = polygon.size(), k = 0;
+        vector<Point> H(2*n);
+        sort(polygon.begin(), polygon.end());
+
+        auto ccw = [leaveNonNecessary](const Point& A, const Point& O, const Point& B) {
+            Vec AO = Vec(A, O);
+            Vec AB = Vec(A, B);
+            i64 cross = AO.cross(AB);
+            if(leaveNonNecessary)
+                return cross >= 0;
+            return cross > 0;
+        };
+
+        for (int i = 0; i < n; ++i) {
+            while ((k >= 2) && !ccw(H[k-2], H[k-1], polygon[i])) --k;
+            H[k++] = polygon[i];
+        }
+        for (int i = n-2, t = k+1; i >= 0; --i) {       // build upper hull
+            while ((k >= t) && !ccw(H[k-2], H[k-1], polygon[i])) --k;
+            H[k++] = polygon[i];
+        }
+
+        H.resize(k);
+        if(H.size() > 1)
+            H.pop_back();
+        return Polygon(H);
     }
 };
