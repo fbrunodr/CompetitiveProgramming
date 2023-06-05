@@ -108,3 +108,24 @@ map<int, int> getFactors(int x){
     
     return ans;
 }
+
+vi getDivisors(int x){
+    auto factors = getFactors(x);
+    vi ans{1};
+
+    // the number with most divisors up to 1e7
+    // is 8648640 with only 448 divisors, so this
+    // here should run just fine.
+    for(auto& [p, alpha] : factors){
+        int k = ans.size();
+        int curr = p;
+        for(int i = 0; i < alpha; i++){
+            for(int i = 0; i < k; i++)
+                ans.push_back(ans[i]*curr);
+            curr *= p;
+        }
+    }
+
+    sort(ans.begin(), ans.end());
+    return ans;
+}
