@@ -82,3 +82,29 @@ bool isPrime(int x){
 
     return true;
 }
+
+map<int, int> getFactors(int x){
+    if(x < 0)
+        exit(1765);
+    if(x > maxTestable)
+        exit(8011);
+
+    // btw this is faster than unordered, as all INT have at most
+    // 9 different prime factors (2 * 3 * 7 * ... * 29 > INT_MAX)
+    map<int, int> ans;
+
+    // O(sqrt(n/log(n)))
+    for(auto& prime : primes){
+        if((i64)prime*prime > x)
+            break;
+        while(x % prime == 0){
+            x /= prime;
+            ans[prime]++;
+        }
+    }
+
+    if(x != 1)
+        ans[x]++;
+    
+    return ans;
+}
