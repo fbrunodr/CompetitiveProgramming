@@ -75,7 +75,8 @@ public:
 
     // O(log(n))
     T RQ(int i, int j) {
-        assert(i <= j);
+        if(i > j)
+            exit(8742);
         return *RQ(1, 0, n - 1, i, j);
     }
 

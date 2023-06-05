@@ -79,7 +79,8 @@ private:
  
     // The merge of intervals is left for the user
     _T_T RQ(int i, int j){
-        assert(i <= j);
+        if(i > j)
+            exit(8742);
         return solve(i, j, 0, N-1);
     }
 };

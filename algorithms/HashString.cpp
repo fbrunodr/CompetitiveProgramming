@@ -31,7 +31,7 @@ class HashString{
         int x, y;
         int d = extEuclid(b, MOD, x, y); // to get b*x + MOD*y == d
         if (d != 1)
-            exit(1);            // to indicate failure
+            exit(1809);            // to indicate failure
         return (x + MOD) % MOD; // this is the answer
     }
 
