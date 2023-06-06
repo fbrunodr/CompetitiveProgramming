@@ -1,5 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
+template<typename T>
+using vec = vector<T>;
+using vi = vec<int>;
 using i64 = long long;
 int MOD = 1e9 + 7;
 
@@ -38,14 +41,13 @@ int modPow(int base, int power, int m = MOD){
     return ans;
 }
 
-using vi = vector<int>;
 
 vi primes;
-vector<bool> _isPrime;
+vec<bool> _isPrime;
 int maxTestable;
 
 void setPrimes(int maxNum){
-    _isPrime = vector<bool>(maxNum + 1, true);
+    _isPrime = vec<bool>(maxNum + 1, true);
     _isPrime[0] = _isPrime[1] = false;
     for(int i = 2; i <= maxNum; i++){
         if(!_isPrime[i]) continue;
@@ -128,4 +130,21 @@ vi getDivisors(int x){
 
     sort(ans.begin(), ans.end());
     return ans;
+}
+
+vi fact;
+
+void setFacts(int maxNum){
+    fact = vi(maxNum + 1);
+    fact[0] = 1;
+    for(int i = 1; i <= maxNum; i++){
+        fact[i] = (i64) fact[i-1] * i;
+        fact[i] %= MOD;
+    }
+}
+
+int C(int n, int k){
+    if (n < k) return 0;
+    if (n >= MOD) return ((i64) C(n%MOD, k%MOD) * C(n/MOD, k/MOD)) % MOD;
+    return ((i64)fact[n]*modInverse(fact[k])%MOD * modInverse(fact[n-k])) % MOD;
 }
