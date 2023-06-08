@@ -111,6 +111,14 @@ map<int, int> getFactors(int x){
     return ans;
 }
 
+vi getPrimeDivisors(int x){
+    auto factors = getFactors(x);
+    vi ans;
+    for(auto& [p, alpha] : factors)
+        ans.push_back(p);
+    return ans;
+}
+
 vi getDivisors(int x){
     auto factors = getFactors(x);
     vi ans{1};
@@ -120,11 +128,11 @@ vi getDivisors(int x){
     // here should run just fine.
     for(auto& [p, alpha] : factors){
         int k = ans.size();
-        int curr = p;
+        int curr = 1;
         for(int i = 0; i < alpha; i++){
+            curr *= p;
             for(int i = 0; i < k; i++)
                 ans.push_back(ans[i]*curr);
-            curr *= p;
         }
     }
 
