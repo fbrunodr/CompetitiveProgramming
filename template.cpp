@@ -35,6 +35,8 @@ istream& operator >> (istream& _is, vec<T>& _v){
 
 // Code below
 
+
+
 void solve(){
     int n; cin >> n;
 }
