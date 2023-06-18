@@ -20,6 +20,8 @@ using max_heap = priority_queue<T>;
 
 template<typename T>
 ostream& operator << (ostream& _os, const vec<T>& _v){
+    if(_v.empty())
+        return _os;
     for(int i = 0; i < _v.size() - 1; i++)
         _os << _v[i] << ' ';
     _os << _v.back();
