@@ -18,29 +18,13 @@ using min_heap = priority_queue<T, vec<T>, greater<T>>;
 template<typename T>
 using max_heap = priority_queue<T>;
 
-template<typename T>
-ostream& operator << (ostream& _os, const vec<T>& _v){
-    if(_v.empty())
-        return _os;
-    for(int i = 0; i < _v.size() - 1; i++)
-        _os << _v[i] << ' ';
-    _os << _v.back();
-    return _os;
-}
-
-template<typename T>
-istream& operator >> (istream& _is, vec<T>& _v){
-    for(auto& _v_i : _v)
-        cin >> _v_i;
-    return _is;
-}
-
 // Code below
 
 
 
 void solve(){
     int n; cin >> n;
+    cout << "Hello " << n << '\n';
 }
 
 int main(){
