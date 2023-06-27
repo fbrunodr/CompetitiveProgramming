@@ -1,6 +1,6 @@
 // see https://codeforces.com/problemset/problem/126/B
 
-#include "../algorithms/zFunction.cpp"
+#include "../algorithms/stringUtils.cpp"
 
 int main(){
     string s; cin >> s;

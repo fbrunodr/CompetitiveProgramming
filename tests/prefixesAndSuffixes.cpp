@@ -1,7 +1,6 @@
 // see https://codeforces.com/problemset/problem/432/D
 
-#include "../algorithms/prefixFunction.cpp"
-#include "../algorithms/zFunction.cpp"
+#include "../algorithms/stringUtils.cpp"
 
 int main(){
     using ii = pair<int, int>;

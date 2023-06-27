@@ -1,6 +1,6 @@
 // see https://open.kattis.com/problems/stringmatching
 
-#include "../algorithms/prefixFunction.cpp"
+#include "../algorithms/stringUtils.cpp"
 
 int main(){
     string pattern, text;
