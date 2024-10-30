@@ -5,7 +5,7 @@ using namespace std;
 // IDX 0 IS NOT USED
 template<typename T>
 class FenwickTree{
-    
+
     using vT = vector<T>;
     using opT = function<T(T,T)>;
 
