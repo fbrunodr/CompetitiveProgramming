@@ -107,7 +107,7 @@ map<int, int> getFactors(int x){
 
     if(x != 1)
         ans[x]++;
-    
+
     return ans;
 }
 
