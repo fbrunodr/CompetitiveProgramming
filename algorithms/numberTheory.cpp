@@ -172,6 +172,11 @@ struct Frac{
     public:
     Frac(){}
 
+    Frac(int num){
+        up = num;
+        down = 1;
+    }
+
     Frac(int _up, int _down){
         if(_down == 0)
             exit(1010);
@@ -186,46 +191,49 @@ struct Frac{
     }
 
     Frac operator+(Frac other){
-        i64 temp_up = (i64)up * other.down + (i64)other.up * down;
-        i64 temp_down = (i64)down * other.down;
-        int new_up = modlong(temp_up);
-        int new_down = modlong(temp_down);
-        return Frac(new_up, new_down);
+        return Frac(
+            modlong((i64)up * other.down + (i64)other.up * down),
+            modlong((i64)down * other.down)
+        );
     }
 
     Frac operator-(Frac other){
-        i64 temp_up = (i64)up * other.down - (i64)other.up * down;
-        i64 temp_down = (i64)down * other.down;
-        int new_up = modlong(temp_up);
-        int new_down = modlong(temp_down);
-        return Frac(new_up, new_down);
+        return Frac(
+            modlong((i64)up * other.down - (i64)other.up * down),
+            modlong((i64)down * other.down)
+        );
     }
 
     Frac operator*(Frac other){
-        i64 temp_up = (i64)up * other.up;
-        i64 temp_down = (i64)down * other.down;
-        int new_up = modlong(temp_up);
-        int new_down = modlong(temp_down);
-        return Frac(new_up, new_down);
+        return Frac(
+            modlong((i64)up * other.up),
+            modlong((i64)down * other.down)
+        );
     }
 
     Frac operator/(Frac other){
         if(other.up == 0)
             exit(1011);
-        i64 temp_up = (i64)up * other.down;
-        i64 temp_down = (i64)down * other.up;
-        int new_up = modlong(temp_up);
-        int new_down = modlong(temp_down);
-        return Frac(new_up, new_down);
+        return Frac(
+            modlong((i64)up * other.down),
+            modlong((i64)down * other.up)
+        );
     }
 
     Frac operator+(int num) const {
         return Frac(modlong( (i64)num * down + up ), down);
     }
 
-    // Friend function to handle int + MyClass
     friend Frac operator+(int num, const Frac& obj) {
         return Frac(modlong( (i64)num * obj.down + obj.up ), obj.down);
+    }
+
+    Frac operator-(int num) const {
+        return Frac(modlong( (i64)-num * down + up ), down);
+    }
+
+    friend Frac operator-(int num, const Frac& obj) {
+        return Frac(modlong( (i64)num * obj.down - obj.up ), obj.down);
     }
 
     Frac operator*(int num) const {
@@ -244,13 +252,18 @@ struct Frac{
         return Frac(obj.up, modlong((i64)num*obj.down));
     }
 
+    Frac& operator=(int num) {
+        up = num;
+        down = 1;
+        return *this;
+    }
+
     ii get_up_down(){
         return make_pair(up, down);
     }
 
     int get(){
-        i64 temp = (i64)up * modInverse(down);
-        return ((temp%MOD) + MOD) % MOD;
+        return modlong((i64)up * modInverse(down));
     }
 };
 
