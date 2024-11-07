@@ -3,10 +3,15 @@ using namespace std;
 template<typename T>
 using vec = vector<T>;
 using vi = vec<int>;
+using ii = pair<int, int>;
 using i64 = long long;
 int MOD = 1e9 + 7;
 
 int mod(int x, int m = MOD){
+    return ((x%m) + m) % m;
+}
+
+int modlong(i64 x, int m = MOD){
     return ((x%m) + m) % m;
 }
 
@@ -155,4 +160,103 @@ int C(int n, int k){
     if (n < k) return 0;
     if (n >= MOD) return ((i64) C(n%MOD, k%MOD) * C(n/MOD, k/MOD)) % MOD;
     return ((i64)fact[n]*modInverse(fact[k])%MOD * modInverse(fact[n-k])) % MOD;
+}
+
+
+struct Frac{
+// Use this only if up and down are needed at the output
+// otherwise use only get_frac below this class
+    private:
+    int up, down;
+
+    public:
+    Frac(){}
+
+    Frac(int _up, int _down){
+        if(_down == 0)
+            exit(1010);
+        if(_up == 0){
+            up = 0; down = 1;
+        }
+        else{
+            int common = gcd(_up, _down);
+            up = _up / common;
+            down = _down / common;
+        }
+    }
+
+    Frac operator+(Frac other){
+        i64 temp_up = (i64)up * other.down + (i64)other.up * down;
+        i64 temp_down = (i64)down * other.down;
+        int new_up = modlong(temp_up);
+        int new_down = modlong(temp_down);
+        return Frac(new_up, new_down);
+    }
+
+    Frac operator-(Frac other){
+        i64 temp_up = (i64)up * other.down - (i64)other.up * down;
+        i64 temp_down = (i64)down * other.down;
+        int new_up = modlong(temp_up);
+        int new_down = modlong(temp_down);
+        return Frac(new_up, new_down);
+    }
+
+    Frac operator*(Frac other){
+        i64 temp_up = (i64)up * other.up;
+        i64 temp_down = (i64)down * other.down;
+        int new_up = modlong(temp_up);
+        int new_down = modlong(temp_down);
+        return Frac(new_up, new_down);
+    }
+
+    Frac operator/(Frac other){
+        if(other.up == 0)
+            exit(1011);
+        i64 temp_up = (i64)up * other.down;
+        i64 temp_down = (i64)down * other.up;
+        int new_up = modlong(temp_up);
+        int new_down = modlong(temp_down);
+        return Frac(new_up, new_down);
+    }
+
+    Frac operator+(int num) const {
+        return Frac(modlong( (i64)num * down + up ), down);
+    }
+
+    // Friend function to handle int + MyClass
+    friend Frac operator+(int num, const Frac& obj) {
+        return Frac(modlong( (i64)num * obj.down + obj.up ), obj.down);
+    }
+
+    Frac operator*(int num) const {
+        return Frac(modlong((i64)num*up), down);
+    }
+
+    friend Frac operator*(int num, const Frac& obj) {
+        return Frac(modlong((i64)num*obj.up), obj.down);
+    }
+
+    Frac operator/(int num) const {
+        return Frac(up, modlong((i64)num*down));
+    }
+
+    friend Frac operator/(int num, const Frac& obj) {
+        return Frac(obj.up, modlong((i64)num*obj.down));
+    }
+
+    ii get_up_down(){
+        return make_pair(up, down);
+    }
+
+    int get(){
+        i64 temp = (i64)up * modInverse(down);
+        return ((temp%MOD) + MOD) % MOD;
+    }
+};
+
+
+int get_frac(int up, int down){
+    if(down == 0)
+        exit(1012);
+    return modlong( (i64) up * modInverse(down) );
 }
