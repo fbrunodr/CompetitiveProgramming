@@ -2,13 +2,13 @@
 using namespace std;
 
 class UnionFind {
-    
+
     using vi = vector<int>;
 
 private:
     vi p, rank, setSize;                           // vi p is the key part
     int numSets;
-    
+
 public:
     UnionFind() {}
 
