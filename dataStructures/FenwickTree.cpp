@@ -45,7 +45,7 @@ class FenwickTree{
     void increment(int i, T inc){
         for(int j = i; j < n; j += LSOne(j))
             BIT[j] = op(BIT[j], inc);
-        A[i] = op(BIT[i], inc);
+        A[i] = op(A[i], inc);
     }
 
     T cumulative(int i){
