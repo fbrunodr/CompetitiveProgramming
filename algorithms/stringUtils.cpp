@@ -2,8 +2,10 @@
 using namespace std;
 using vi = vector<int>;
 
-vi prefixFunction(const string& s) {
-    int n = (int)s.length();
+// Doing this way so it works for both string and vi
+template<typename T>
+vi prefixFunction(const T& s) {
+    int n = (int)s.size();
     vi pi(n);
     pi[0] = 0;
     for (int i = 1; i < n; i++) {
@@ -17,7 +19,8 @@ vi prefixFunction(const string& s) {
     return pi;
 }
 
-vi zFunction(const string& s) {
+template<typename T>
+vi zFunction(const T& s) {
     int n = (int) s.length();
     vi z(n);
     for (int i = 1, l = 0, r = 0; i < n; ++i) {
@@ -29,6 +32,18 @@ vi zFunction(const string& s) {
             l = i, r = i + z[i] - 1;
     }
     return z;
+}
+
+template<typename T>
+vi matching_positions(const T& text, const T& pattern){
+    T helper = pattern;
+    helper.insert(helper.end(), text.begin(), text.end());
+    vi pi = prefixFunction(helper);
+    vi ans;
+    for(int i = pattern.size(); i < helper.size(); i++)
+        if(pi[i] >= pattern.size())
+            ans.push_back(i - 2 * pattern.size() + 1);
+    return ans;
 }
 
 vi getSuffixArray(string s) {
