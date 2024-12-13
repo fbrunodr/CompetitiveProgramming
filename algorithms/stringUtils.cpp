@@ -34,15 +34,16 @@ vi zFunction(const T& s) {
     return z;
 }
 
-template<typename T>
-vi matching_positions(const T& text, const T& pattern){
-    T helper = pattern;
-    helper.insert(helper.end(), text.begin(), text.end());
-    vi pi = prefixFunction(helper);
+template<typename T, typename U>
+vi matching_positions(const T& text, const T& pattern, U separator){
+    T aux = pattern;
+    aux.push_back(separator);
+    aux.insert(aux.end(), text.begin(), text.end());
+    vi pi = prefixFunction(aux);
     vi ans;
-    for(int i = pattern.size(); i < helper.size(); i++)
-        if(pi[i] >= pattern.size())
-            ans.push_back(i - 2 * pattern.size() + 1);
+    for(int i = pattern.size(); i < aux.size(); i++)
+        if(pi[i] == pattern.size())
+            ans.push_back(i - 2 * pattern.size());
     return ans;
 }
 
