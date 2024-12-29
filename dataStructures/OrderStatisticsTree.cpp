@@ -19,7 +19,7 @@ private:
 
 public:
     FenwickTreeOST(int _maxVal, bool _repeatedKeys = false) : maxVal(_maxVal), repeatedKeys(_repeatedKeys) {
-        vi freq(maxVal+1, 0);
+        vi freq(maxVal+2, 0);
         auto sum = [](int a, int b){ return a + b; };
         auto sub = [](int a, int b){ return a - b; };
         ft = FenwickTree<int>(freq, sum, sub);
@@ -72,5 +72,9 @@ public:
         }
 
         return low;
+    }
+
+    int size(){
+        return findByOrder(maxVal+1);
     }
 };
