@@ -150,16 +150,23 @@ vi fact;
 void setFacts(int maxNum){
     fact = vi(maxNum + 1);
     fact[0] = 1;
-    for(int i = 1; i <= maxNum; i++){
-        fact[i] = (i64) fact[i-1] * i;
-        fact[i] %= MOD;
-    }
+    for(int i = 1; i <= maxNum; i++)
+        fact[i] = ( (i64) fact[i-1] * i ) % MOD;
 }
 
 int C(int n, int k){
     if (n < k) return 0;
     if (n >= MOD) return ((i64) C(n%MOD, k%MOD) * C(n/MOD, k/MOD)) % MOD;
     return ((i64)fact[n]*modInverse(fact[k])%MOD * modInverse(fact[n-k])) % MOD;
+}
+
+
+vec<vi> chooses_memo;
+int C_dp(int n, int k){
+    if(n < k) return 0;
+    int& ans = chooses_memo[n][k];
+    if(ans != -1) return ans;
+    return (C_dp(n-1, k-1) + C_dp(n-1, k)) % MOD;
 }
 
 
