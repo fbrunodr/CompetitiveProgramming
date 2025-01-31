@@ -9,32 +9,23 @@ struct _Tree_Vertex {
     Key key;
     Metadata metadata;
     int height;
+    int size;
 
     _Tree_Vertex(const Key& k, _Tree_Vertex* p = nullptr)
-        : parent(p), left(nullptr), right(nullptr), key(k), height(1) {}
+        : parent(p), left(nullptr), right(nullptr), key(k), height(1), size(1) {}
 };
 
+
+/*
+    Assert all nodes have distinct priorities otherwise this won't work !!!
+    If you have multiple values with same key / priority just make a counter
+    key -> {key, counter}, so all values have distinct priorities
+*/
 template<typename Key, typename Metadata>
 struct AVL {
     using _node = _Tree_Vertex<Key, Metadata>;
 
-    _node *head;
-
-    // Used to compare two keys; returns true if lhs < rhs
-    function<bool(const Key&, const Key&)> comparator;
-
-    // Used to update node->metadata given node, children, etc.
-    // Called in bottom-up fashion after we update node->height.
-    function<void(_node*)> updator;
-
-    // Constructor
-    AVL(function<bool(const Key&,const Key&)> _comparator,
-        function<void(_node*)> _updator)
-    {
-        comparator = _comparator;
-        updator = _updator;
-        head = nullptr;
-    }
+    private:
 
     // Helper: get the height of a node
     int getHeight(_node* node) {
@@ -47,10 +38,16 @@ struct AVL {
         return getHeight(node->left) - getHeight(node->right);
     }
 
+    // Helper: get the size of a node
+    int getSize(_node* node) {
+        return (node ? node->size : 0);
+    }
+
     // Recompute node->height, then call updator(node).
     void updateNode(_node* node) {
         if (!node) return;
         node->height = max(getHeight(node->left), getHeight(node->right)) + 1;
+        node->size = getSize(node->left) + getSize(node->right) + 1;
         // Call the user’s updator so the metadata can be updated
         updator(node);
     }
@@ -199,19 +196,6 @@ struct AVL {
         return node;
     }
 
-    // Insert public method
-    void insert(const Key &key) {
-        head = insertNode(head, key, nullptr);
-    }
-
-    // Find the node with min key in subtree
-    _node* getMinNode(_node* node) {
-        while (node && node->left) {
-            node = node->left;
-        }
-        return node;
-    }
-
     // Recursive helper to erase 'key' from subtree
     _node* eraseNode(_node* node, const Key &key) {
         if (!node) return nullptr;
@@ -266,6 +250,88 @@ struct AVL {
         return node;
     }
 
+    pair<_node*, _node*> _split(_node* root, const Key &k) {
+        if (!root) {
+            return {nullptr, nullptr};
+        }
+        // If root->key < k, root goes to the LEFT part
+        if (comparator(root->key, k)) {
+            // Split the right subtree
+            auto [leftSub, rightSub] = _split(root->right, k);
+            root->right = leftSub;
+            if (leftSub) leftSub->parent = root;
+            // Update & balance
+            updateNode(root);
+            root = balanceErase(root);  // or a suitable balance(...) call
+            // Return the pair ( everything < k, everything >= k )
+            return {root, rightSub};
+        } else {
+            // root->key >= k, root goes to the RIGHT part
+            auto [leftSub, rightSub] = _split(root->left, k);
+            root->left = rightSub;
+            if (rightSub) rightSub->parent = root;
+            // Update & balance
+            updateNode(root);
+            root = balanceErase(root);  // or a suitable balance(...) call
+            return {leftSub, root};
+        }
+    }
+
+    _node* _join(_node* L, _node* R) {
+        if (!L) return R;
+        if (!R) return L;
+
+        // If left tree is "taller" (or equally tall - your choice),
+        // attach R somewhere in L->right
+        if (getHeight(L) >= getHeight(R)) {
+            L->right = _join(L->right, R);
+            if (L->right) L->right->parent = L;
+            updateNode(L);
+            L = balanceErase(L); // or some suitable balancing method
+            return L;
+        } else {
+            // R is taller
+            R->left = _join(L, R->left);
+            if (R->left) R->left->parent = R;
+            updateNode(R);
+            R = balanceErase(R);
+            return R;
+        }
+    }
+
+    public:
+
+    _node *head;
+
+    // Used to compare two keys; returns true if lhs < rhs
+    function<bool(const Key&, const Key&)> comparator;
+
+    // Used to update node->metadata given node, children, etc.
+    // Called in bottom-up fashion after we update node->height.
+    function<void(_node*)> updator;
+
+    // Constructor
+    AVL(function<bool(const Key&,const Key&)> _comparator,
+        function<void(_node*)> _updator)
+    {
+        comparator = _comparator;
+        updator = _updator;
+        head = nullptr;
+    }
+
+    // Insert public method
+    void insert(const Key &key) {
+        head = insertNode(head, key, nullptr);
+    }
+
+    // Find the node with min key in subtree
+    _node* getMinNode(_node* node) {
+        while (node && node->left) {
+            node = node->left;
+        }
+        return node;
+    }
+
     // Erase public method
     void erase(const Key &key) {
         head = eraseNode(head, key);
@@ -289,5 +355,27 @@ struct AVL {
             }
         }
         return ans;
+    }
+
+    pair<AVL, AVL> split(const Key &k) {
+        auto splitted = _split(head, k);
+        AVL leftAVL(comparator, updator);
+        AVL rightAVL(comparator, updator);
+        leftAVL.head = splitted.first;
+        rightAVL.head = splitted.second;
+        return {leftAVL, rightAVL};
+    }
+
+    // you are supposed to call this after a split
+    static AVL join(AVL &leftAVL, AVL &rightAVL) {
+        // Ensure that all keys in leftAVL < all keys in rightAVL
+        // (The user is responsible for guaranteeing this!)
+        AVL newAVL(leftAVL.comparator, leftAVL.updator);
+        newAVL.head = newAVL._join(leftAVL.head, rightAVL.head);
+        return newAVL;
+    }
+
+    int size(){
+        return getSize(head);
     }
 };
