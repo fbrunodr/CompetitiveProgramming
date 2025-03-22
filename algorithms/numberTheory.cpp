@@ -5,6 +5,7 @@ using vec = vector<T>;
 using vi = vec<int>;
 using ii = pair<int, int>;
 using i64 = long long;
+using vi64 = vec<i64>;
 int MOD = 1e9 + 7;
 
 int mod(int x, int m = MOD){
@@ -68,7 +69,7 @@ void setPrimes(int maxNum){
     maxTestable = (i64)maxNum*maxNum;
 }
 
-bool isPrime(int x){
+bool isPrime(i64 x){
     if(x < 0)
         exit(1765);
     if(x > maxTestable)
@@ -90,7 +91,7 @@ bool isPrime(int x){
     return true;
 }
 
-map<int, int> getFactors(int x){
+map<i64, int> getFactors(i64 x){
     if(x < 0)
         exit(1765);
     if(x > maxTestable)
@@ -98,7 +99,7 @@ map<int, int> getFactors(int x){
 
     // btw this is faster than unordered, as all INT have at most
     // 9 different prime factors (2 * 3 * 7 * ... * 29 > INT_MAX)
-    map<int, int> ans;
+    map<i64, int> ans;
 
     // O(sqrt(n/log(n)))
     for(auto& prime : primes){
@@ -116,24 +117,24 @@ map<int, int> getFactors(int x){
     return ans;
 }
 
-vi getPrimeDivisors(int x){
+vi64 getPrimeDivisors(i64 x){
     auto factors = getFactors(x);
-    vi ans;
+    vi64 ans;
     for(auto& [p, alpha] : factors)
         ans.push_back(p);
     return ans;
 }
 
-vi getDivisors(int x){
+vi64 getDivisors(i64 x){
     auto factors = getFactors(x);
-    vi ans{1};
+    vi64 ans{1};
 
     // the number with most divisors up to 1e7
     // is 8648640 with only 448 divisors, so this
     // here should run just fine.
     for(auto& [p, alpha] : factors){
         int k = ans.size();
-        int curr = 1;
+        i64 curr = 1;
         for(int i = 0; i < alpha; i++){
             curr *= p;
             for(int i = 0; i < k; i++)
