@@ -49,7 +49,7 @@ int modPow(int base, int power, int m = MOD){
 
 vi primes;
 vec<bool> _isPrime;
-int maxTestable;
+i64 maxTestable;
 
 void setPrimes(int maxNum){
     _isPrime = vec<bool>(maxNum + 1, true);
@@ -65,7 +65,7 @@ void setPrimes(int maxNum){
         if(_isPrime[i])
             primes.push_back(i);
 
-    maxTestable = min((i64)INT_MAX, (i64)maxNum*maxNum);
+    maxTestable = (i64)maxNum*maxNum;
 }
 
 bool isPrime(int x){
