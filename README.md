@@ -1,7 +1,75 @@
 # Competitive Programming Algorithms and Data Structures
 
-To compile any test, simply run the following code on terminal:
+To generate the full source code for a test (without the includes,
+so you can upload it to an online judge as a single file), run
 
-`g++ -O2 -o file file.cpp`
+```sh
+python3 expand_local_includes.py [FileName]
+```
 
-Notice the test files include ".cpp" files. This is considered bad practice, but it doesn't matter for our purposes (in competitive programming you can only upload a single file as answer, so it doesn't make sense to split our data structures in ".h" and ".cpp" files).
+Test Coverage Report
+
+🔴 AVLtree
+
+🟢 ArticulationPointsAndBridges
+
+🔴 BinarySearch
+
+🟡 CentroidDecomposition
+
+🟡 DivideAndConquerDP
+
+🔴 EulerianTrail
+
+🔴 FastOfflineQueries
+
+🟢 FenwickTree
+
+🟡 GaussianElimination
+
+🟢 GraphCompression
+
+🟢 LCA
+
+🟢 MCBM
+
+🔴 Maxflow
+
+🔴 MergeSortTree
+
+🟡 OrderStatisticsTree
+
+🟡 RURQ
+
+🟡 RollingHash
+
+🟢 SegTree
+
+🔴 SparseTable
+
+🔴 Trie
+
+🔴 UnionFind
+
+🔴 centerOfSubtree
+
+🔴 countInversions
+
+🟡 fastPolynomialMultiplication
+
+🟢 firstElementToLeft
+
+🟢 integerGeometry
+
+🟢 numberTheory
+
+🟢 stringUtils
+
+---
+
+🟢 -> at least two tests
+
+🟡 -> only one test
+
+🔴 -> no tests
+
