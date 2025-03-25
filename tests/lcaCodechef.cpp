@@ -2,7 +2,7 @@
 
 #include "../algorithms/LCA.cpp"
 
-int main(){
+int32_t main(){
     ios_base::sync_with_stdio(false);
 
     int N; cin >> N;

@@ -23,10 +23,10 @@ vi normalUsualConvolution(vi a, vi b){
     return c;
 }
 
-int main(){
+int32_t main(){
     // x^6 + x^2 + 2x + 1
     vi a{1, 2, 1, 0, 0, 0, 1};
-    
+
     // 2x^5 - x^3 + x^2 + 3
     vi b{3, 0, 1, -1, 0, 2};
 

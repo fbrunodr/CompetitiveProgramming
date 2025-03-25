@@ -1,18 +1,18 @@
-#include "../dataStructures/FrozenSegTree.cpp"
+#ifndef FBRUNODR_LCA
+#define FBRUNODR_LCA
+
+#include "../dataStructures/SegTree.cpp"
 #include "../dataStructures/SparseTable.cpp"
 
 class SegLCA{
-
-    using vi = vector<int>;
-
     private:
     int n;
-    vector<vi> AL;
+    vec<vi> AL;
     vi L, E, H;
-    FrozenSegTree<int> segTree;
+    PointUpdateSegTree<int> segTree;
 
     int idx;
-    vector<bool> vis;
+    vec<bool> vis;
     void dfs(int u, int depth){
         vis[u] = true;
         H[u] = idx;
@@ -27,7 +27,7 @@ class SegLCA{
     }
 
     public:
-    SegLCA(const vector<vi>& AL_, int root){
+    SegLCA(const vec<vi>& AL_, int root){
         AL = AL_;
         n = AL.size();
 
@@ -35,7 +35,7 @@ class SegLCA{
         E = vi(2*n);
         H = vi(n, -1);
         idx = 0;
-        vis = vector<bool>(n, false);
+        vis = vec<bool>(n, false);
         dfs(root,0);
 
         auto conquerer = [this](int i, int j){
@@ -45,7 +45,7 @@ class SegLCA{
         vi aux(2*n);
         for(int i = 0; i < 2*n; i++)
             aux[i] = i;
-        segTree = FrozenSegTree<int>(aux, conquerer);
+        segTree = PointUpdateSegTree<int>(aux, conquerer);
     }
 
     int lca(int u, int v){
@@ -61,17 +61,14 @@ class SegLCA{
 
 
 class SpTLCA{
-
-    using vi = vector<int>;
-
     private:
     int n;
-    vector<vi> AL;
+    vec<vi> AL;
     vi L, E, H;
     SparseTable<int> sparseTable;
 
     int idx;
-    vector<bool> vis;
+    vec<bool> vis;
     void dfs(int u, int depth){
         vis[u] = true;
         H[u] = idx;
@@ -86,7 +83,7 @@ class SpTLCA{
     }
 
     public:
-    SpTLCA(const vector<vi>& AL_, int root){
+    SpTLCA(const vec<vi>& AL_, int root){
         AL = AL_;
         n = AL.size();
 
@@ -94,7 +91,7 @@ class SpTLCA{
         E = vi(2*n);
         H = vi(n, -1);
         idx = 0;
-        vis = vector<bool>(n, false);
+        vis = vec<bool>(n, false);
         dfs(root,0);
 
         auto conquerer = [this](int i, int j){
@@ -120,14 +117,12 @@ class SpTLCA{
 
 
 class BinaryLiftLCA {
-    using vi = vector<int>;
-
     private:
     int n;
     int L2_n;
-    vector<vi> AL;
+    vec<vi> AL;
     vi _depth;
-    vector<vi> ancestor;
+    vec<vi> ancestor;
 
     void dfs(int u, int d){
         _depth[u] = d;
@@ -147,13 +142,13 @@ class BinaryLiftLCA {
     }
 
     public:
-    BinaryLiftLCA(const vector<vi>& _AL, int root){
+    BinaryLiftLCA(const vec<vi>& _AL, int root){
         AL = _AL;
         n = AL.size();
         _depth = vi(n, -1);
 
         L2_n = (int)log2(n) + 1;
-        ancestor = vector<vi>(L2_n, vi(n, -1));
+        ancestor = vec<vi>(L2_n, vi(n, -1));
 
         dfs(root, 0);
         for(int h = 1; h < L2_n; h++)
@@ -188,3 +183,6 @@ class BinaryLiftLCA {
         return _depth[u];
     }
 };
+
+
+#endif

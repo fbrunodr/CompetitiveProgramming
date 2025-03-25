@@ -1,16 +1,9 @@
+#ifndef FBRUNODR_ORDER_STATISTICS_TREE
+#define FBRUNODR_ORDER_STATISTICS_TREE
+
 #include "FenwickTree.cpp"
 
-#include <bits/extc++.h>                         // pbds
-using namespace __gnu_pbds;
-using OST = tree<int, null_type, less<int>, rb_tree_tag, 
-    tree_order_statistics_node_update>;
-
-/**
- * Because it is implemented using Fenwick Tree, can't insert x <= 0!!!!
-*/
 class FenwickTreeOST {
-
-    using vi = vector<int>;
 
 private:
     int maxVal;
@@ -78,3 +71,6 @@ public:
         return findByOrder(maxVal+1);
     }
 };
+
+
+#endif

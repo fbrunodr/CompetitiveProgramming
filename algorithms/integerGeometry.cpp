@@ -1,6 +1,7 @@
-#include<bits/stdc++.h>
-using namespace std;
-using i64 = long long;
+#ifndef FBRUNODR_INTEGER_GEOMETRY
+#define FBRUNODR_INTEGER_GEOMETRY
+
+#include "../header.hpp"
 
 struct Point{
     int x, y;
@@ -8,7 +9,7 @@ struct Point{
     Point() {}
     Point(int _x, int _y) : x(_x), y(_y) {}
 
-    i64 sqrMod() const { return (i64)x*x + (i64)y*y; }
+    int sqrMod() const { return x*x + y*y; }
 
     bool operator == (const Point& other) const {
         return x == other.x && y == other.y;
@@ -45,14 +46,14 @@ struct Vec{
         y = B.y - A.y;
     }
 
-    i64 sqrMod() const { return (i64)x*x + (i64)y*y; }
+    int sqrMod() const { return x*x + y*y; }
 
-    i64 cross(Vec other) const {
-        return (i64)x * other.y - (i64)y * other.x;
+    int cross(Vec other) const {
+        return x * other.y - y * other.x;
     }
 
-    i64 dot(Vec other) const {
-        return (i64)x * other.x + (i64)y * other.y;
+    int dot(Vec other) const {
+        return x * other.x + y * other.y;
     }
 
     bool operator == (Vec other) const {
@@ -100,9 +101,9 @@ class Angle{
         if(OB.x == 0 && OB.y == 0)
             exit(4278);
         
-        i64 dot = OA.dot(OB);
-        i64 cross = OA.cross(OB);
-        i64 d = gcd(dot, cross);
+        int dot = OA.dot(OB);
+        int cross = OA.cross(OB);
+        int d = gcd(dot, cross);
         dot /= d;
         cross /= d;
 
@@ -177,13 +178,13 @@ class Segment{
     }
 
     bool diffSideNotOnLine(const Point& P, const Point& Q) const {
-        i64 crossP = AB.cross(Vec(A, P));
+        int crossP = AB.cross(Vec(A, P));
         if(crossP == 0)
             return false;
-        i64 crossQ = AB.cross(Vec(A, Q));
+        int crossQ = AB.cross(Vec(A, Q));
         if(crossQ == 0)
             return false;
-        return signbit(crossP) != signbit(crossQ);
+        return std::signbit(crossP) != std::signbit(crossQ);
     }
 
     bool makeCross(const Segment& other) const {
@@ -193,7 +194,7 @@ class Segment{
 
 class Polygon{
     private:
-    vector<Point> closeLoop(bool leaveRepeated = false) const {
+    vec<Point> closeLoop(bool leaveRepeated = false) const {
         auto polygon = points;
         polygon.push_back(polygon.front());
         if(leaveRepeated)
@@ -204,11 +205,11 @@ class Polygon{
     }
 
     public:
-    vector<Point> points;
+    vec<Point> points;
 
     Polygon() {}
 
-    Polygon(const vector<Point>& _points) : points(_points) {}
+    Polygon(const vec<Point>& _points) : points(_points) {}
 
     void push_back(const Point& P){
         points.push_back(P);
@@ -255,7 +256,7 @@ class Polygon{
         auto ccw = [](const Point& A, const Point& O, const Point& B) {
             Vec AO = Vec(A, O);
             Vec AB = Vec(A, B);
-            i64 cross = AO.cross(AB);
+            int cross = AO.cross(AB);
             return cross >= 0;
         };
 
@@ -271,13 +272,13 @@ class Polygon{
     Polygon convexHull(bool leaveNonNecessary = false) const {
         auto polygon = closeLoop(leaveNonNecessary);
         int n = polygon.size(), k = 0;
-        vector<Point> H(2*n);
+        vec<Point> H(2*n);
         sort(polygon.begin(), polygon.end());
 
         auto ccw = [leaveNonNecessary](const Point& A, const Point& O, const Point& B) {
             Vec AO = Vec(A, O);
             Vec AB = Vec(A, B);
-            i64 cross = AO.cross(AB);
+            int cross = AO.cross(AB);
             if(leaveNonNecessary)
                 return cross >= 0;
             return cross > 0;
@@ -298,3 +299,6 @@ class Polygon{
         return Polygon(H);
     }
 };
+
+
+#endif

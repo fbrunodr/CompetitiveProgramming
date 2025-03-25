@@ -1,10 +1,10 @@
 // See https://codeforces.com/problemset/problem/380/C
+// latest submission: https://codeforces.com/contest/380/submission/312268104
 
-#include "../dataStructures/FrozenSegTree.cpp"
+#include "../dataStructures/SegTree.cpp"
 
-int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+int32_t main(){
+    fastIO();
 
     string s; cin >> s;
 
@@ -30,7 +30,7 @@ int main(){
         );
     };
 
-    FrozenSegTree<iii> segTree(A, mergeIntervals);
+    PointUpdateSegTree<iii> segTree(A, mergeIntervals);
 
     using ii = pair<int, int>;
     using vii = vector<ii>;

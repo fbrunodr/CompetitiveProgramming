@@ -1,17 +1,14 @@
-#include<bits/stdc++.h>
-using namespace std;
+#ifndef FBRUNODR_ARTICULATION_POINTS_AND_BRIDGES
+#define FBRUNODR_ARTICULATION_POINTS_AND_BRIDGES
+
+#include "../header.hpp"
 
 class ArticulationPointsAndBridges{
-
-    using vi = vector<int>;
-    using ii = pair<int, int>;
-    using vii = vector<ii>;
-
 private:
 
     const int UNVISITED = -1;
     int n;
-    vector<vi>& AL;
+    vec<vi>& AL;
     vi dfs_num, dfs_low, dfs_parent, articulationVertexes;
     vii bridges;
     int dfsNumberCounter, dfsRoot, rootChildren;
@@ -39,7 +36,7 @@ private:
 
 public:
 
-    ArticulationPointsAndBridges(vector<vi>& _AL) : AL(_AL) {}
+    ArticulationPointsAndBridges(vec<vi>& _AL) : AL(_AL) {}
 
     pair<vi, vii> get(){
         n = AL.size();
@@ -61,3 +58,6 @@ public:
         return {articulationVertexes, bridges};
     }
 };
+
+
+#endif

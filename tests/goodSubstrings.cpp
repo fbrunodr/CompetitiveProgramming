@@ -2,7 +2,7 @@
 
 #include "../algorithms/RollingHash.cpp"
 
-int main(){
+int32_t main(){
     ios_base::sync_with_stdio(false);
 
     setRollingHashPowers(2000);

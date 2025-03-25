@@ -1,9 +1,10 @@
-#include<bits/stdc++.h>
-using namespace std;
-using vi = vector<int>;
+#ifndef FBRUNODR_FIRST_ELEMENT_TO_LEFT
+#define FBRUNODR_FIRST_ELEMENT_TO_LEFT
+
+#include "../header.hpp"
 
 template<typename T>
-vi firstElementToLeft(vector<T>& arr, function<bool(T,T)> op){
+vi firstElementToLeft(vec<T>& arr, function<bool(T,T)> op){
     stack<int> st;
     vi left(arr.size());
     for(int i = 0; i < arr.size(); i++){
@@ -19,7 +20,7 @@ vi firstElementToLeft(vector<T>& arr, function<bool(T,T)> op){
 }
 
 template<typename T>
-vi firstElementToRight(vector<T>& arr, function<bool(T,T)> op){
+vi firstElementToRight(vec<T>& arr, function<bool(T,T)> op){
     reverse(arr.begin(), arr.end());
     vi ans = firstElementToLeft(arr, op);
     reverse(arr.begin(), arr.end());
@@ -28,3 +29,6 @@ vi firstElementToRight(vector<T>& arr, function<bool(T,T)> op){
         val = arr.size() - val - 1;
     return ans;
 }
+
+
+#endif

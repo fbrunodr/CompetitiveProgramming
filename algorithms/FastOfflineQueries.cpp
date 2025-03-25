@@ -1,12 +1,7 @@
-#include<bits/stdc++.h>
-using namespace std;
-template<typename T>
-using vec = vector<T>;
-using vi = vec<int>;
-using ii = pair<int, int>;
-using vii = vec<ii>;
-using i64 = long long;
-using iii = tuple<int, int, int>;
+#ifndef FBRUNODR_FAST_OFFLINE_QUERIES
+#define FBRUNODR_FAST_OFFLINE_QUERIES
+
+#include "../header.hpp"
 
 const int block_size = 512;
 
@@ -68,3 +63,5 @@ vec<T> MoSolveQueries(
 
     return ans;
 }
+
+#endif

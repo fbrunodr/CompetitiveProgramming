@@ -1,10 +1,10 @@
 // see https://open.kattis.com/problems/flippingcards
+// latest submission: https://open.kattis.com/submissions/16966379
 
 #include "../algorithms/MCBM.cpp"
 
-int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+int32_t main(){
+    fastIO();
 
     int T; cin >> T;
 

@@ -1,17 +1,19 @@
-#include <bits/stdc++.h>
-using namespace std;
+#ifndef FBRUNODR_GAUSSIAN_ELIMINATION
+#define FBRUNODR_GAUSSIAN_ELIMINATION
+
+#include "../header.hpp"
 
 struct AugmentedMatrix {
-    vector<vector<double>> mat;
+    vec<vec<double>> mat;
     AugmentedMatrix(int N){
-        mat = vector<vector<double>>(N, vector<double>(N+1, 0.0));
+        mat = vec<vec<double>>(N, vec<double>(N+1, 0.0));
     }
 };
 
 struct ColumnVector {
-    vector<double> vec;
+    vec<double> Vec;
     ColumnVector(int N){
-        vec =  vector<double>(N);
+        Vec = vec<double>(N);
     }
 };
 
@@ -36,9 +38,12 @@ ColumnVector GaussianElimination(AugmentedMatrix Aug) {
     for(int j = N - 1; j >= 0; --j){ // start from back
         double t = 0.0;
         for(int k = j + 1; k < N; ++k)
-            t += Aug.mat[j][k] * Ans.vec[k];
-        Ans.vec[j] = (Aug.mat[j][N] - t) / Aug.mat[j][j]; // the answer is here
+            t += Aug.mat[j][k] * Ans.Vec[k];
+        Ans.Vec[j] = (Aug.mat[j][N] - t) / Aug.mat[j][j]; // the answer is here
     }
 
     return Ans;
 }
+
+
+#endif

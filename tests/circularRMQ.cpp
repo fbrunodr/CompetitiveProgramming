@@ -1,32 +1,29 @@
 // see https://codeforces.com/contest/52/problem/C
+// latest submission: https://codeforces.com/contest/52/submission/312269164
 
-#include "../dataStructures/LazySegTree.cpp"
+#include "../dataStructures/SegTree.cpp"
 
-int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    using i64 = long long;
-    using vi64 = vector<i64>;
+int32_t main(){
+    fastIO();
 
     int n; cin >> n;
-    vi64 a(n);
+    vi a(n);
     for(auto& a_i : a)
         cin >> a_i;
  
-    auto conquerer = [](i64 a, i64 b){ return min(a, b); };
-    auto updateNode = [](i64& node, i64 update, int L, int R){ return node += update; };
-    auto updateUpdate = [](i64& update1, i64 update2){ return update1 += update2; };
+    auto conquerer = [](int a, int b){ return min(a, b); };
+    auto updateNode = [](int& node, int update, int L, int R){ return node += update; };
+    auto updateUpdate = [](int& update1, int update2){ return update1 += update2; };
  
-    LazySegTree<i64, i64> segTree(a, conquerer, updateNode, updateUpdate);
+    LazySegTree<int, int> segTree(a, conquerer, updateNode, updateUpdate);
 
     int m; cin >> m;
     string garbage; getline(cin, garbage);
     while(m--){
         string line;
         getline(cin, line);
-        stringstream lineStream(line);
-        i64 a, b, inc;
+        std::stringstream lineStream(line);
+        int a, b, inc;
         lineStream >> a >> b;
         if(lineStream >> inc){
             if(a <= b)

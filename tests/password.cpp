@@ -2,7 +2,7 @@
 
 #include "../algorithms/stringUtils.cpp"
 
-int main(){
+int32_t main(){
     string s; cin >> s;
 
     vi z = zFunction(s);

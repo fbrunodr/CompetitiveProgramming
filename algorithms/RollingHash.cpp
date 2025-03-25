@@ -1,9 +1,7 @@
-#include<bits/stdc++.h>
-using namespace std;
-template<typename T>
-using vec = vector<T>;
-using vi = vec<int>;
-using i64 = long long;
+#ifndef FBRUNODR_ROLLING_HASH
+#define FBRUNODR_ROLLING_HASH
+
+#include "../header.hpp"
 
 const int MOD = 1e9 + 7;
 const vi p{131, 167, 173, 199};
@@ -37,10 +35,10 @@ void setRollingHashPowers(int maxN){
     for(int idx = 0; idx < 4; idx++){
         pPow[idx][0] = 1;
         for(int i = 1; i < maxN; i++)
-            pPow[idx][i] = ((i64)pPow[idx][i-1] * p[idx]) % MOD;
+            pPow[idx][i] = (pPow[idx][i-1] * p[idx]) % MOD;
         pPowInv[idx][maxN-1] = modInverse(pPow[idx][maxN-1]);
         for(int i = maxN-2; i >= 0; i--)
-            pPowInv[idx][i] = ((i64)pPowInv[idx][i+1] * p[idx]) % MOD;
+            pPowInv[idx][i] = (pPowInv[idx][i+1] * p[idx]) % MOD;
     }
 }
 
@@ -49,7 +47,7 @@ bitset<128> moveRight(bitset<128> str_hashed, int move_size){
     bitset<128> ans;
     constexpr bitset<128> lowest_32(0xFFFFFFFF);
     for(int idx = 0; idx < 4; idx++){
-        i64 curr = ((str_hashed >> (idx*32)) & lowest_32).to_ullong();
+        int curr = ((str_hashed >> (idx*32)) & lowest_32).to_ullong();
         curr = (curr * pPow[idx][move_size]) % MOD;
         bitset<128> piece(curr);
         piece <<= 32 * idx;
@@ -63,7 +61,7 @@ bitset<128> moveLeft(bitset<128> str_hashed, int move_size){
     bitset<128> ans;
     constexpr bitset<128> lowest_32(0xFFFFFFFF);
     for(int idx = 0; idx < 4; idx++){
-        i64 curr = ((str_hashed >> (idx*32)) & lowest_32).to_ullong();
+        int curr = ((str_hashed >> (idx*32)) & lowest_32).to_ullong();
         curr = (curr * pPowInv[idx][move_size]) % MOD;
         bitset<128> piece(curr);
         piece <<= 32 * idx;
@@ -77,9 +75,9 @@ bitset<128> sum(bitset<128> str_hashed_1, bitset<128> str_hashed_2){
     bitset<128> ans;
     constexpr bitset<128> lowest_32(0xFFFFFFFF);
     for(int idx = 0; idx < 4; idx++){
-        i64 curr_1 = ((str_hashed_1 >> (idx*32)) & lowest_32).to_ullong();
-        i64 curr_2 = ((str_hashed_2 >> (idx*32)) & lowest_32).to_ullong();
-        i64 curr = (curr_1 + curr_2) % MOD;
+        int curr_1 = ((str_hashed_1 >> (idx*32)) & lowest_32).to_ullong();
+        int curr_2 = ((str_hashed_2 >> (idx*32)) & lowest_32).to_ullong();
+        int curr = (curr_1 + curr_2) % MOD;
         bitset<128> piece(curr);
         piece <<= 32 * idx;
         ans |= piece;
@@ -98,7 +96,7 @@ class RollingHash{
             h[idx][0] = 0;
             for (int i = 0; i < n; ++i) {
                 if (i != 0) h[idx][i] = h[idx][i-1];
-                h[idx][i] += ((i64)T[i] * pPow[idx][i]) % MOD;
+                h[idx][i] += (T[i] * pPow[idx][i]) % MOD;
                 h[idx][i] %= MOD;
             }
         }
@@ -120,7 +118,7 @@ class RollingHash{
             }
             else{
                 current = (h[idx][R] - h[idx][L-1] + MOD) % MOD;
-                current = ((i64)current * pPowInv[idx][L]) % MOD;
+                current = (current * pPowInv[idx][L]) % MOD;
             }
             bitset<128> piece(current);
             piece <<= 32 * idx;
@@ -135,3 +133,6 @@ class RollingHash{
 bitset<128> get_bitset(string& s){
     return RollingHash(s).getHash(0, s.size() - 1);
 }
+
+
+#endif

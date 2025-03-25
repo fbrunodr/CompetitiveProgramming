@@ -1,19 +1,19 @@
 // see https://open.kattis.com/problems/cantinaofbabel
+// latest submission: https://open.kattis.com/submissions/16966205
 
 #include "../algorithms/GraphCompression.cpp"
 
-int main(){
-    using vi = vector<int>;
+int32_t main(){
     int N; cin >> N;
 
     vector<string> spokenLanguage(N);
-    vector<unordered_set<string>> addLanguages(N);
+    vector<hash_set<string>> addLanguages(N);
 
     string garbage; getline(cin, garbage);
     for(int u = 0; u < N; u++){
         string input;
         getline(cin, input);
-        stringstream inputStream(input);
+        std::stringstream inputStream(input);
 
         string name; inputStream >> name;
         inputStream >> spokenLanguage[u];

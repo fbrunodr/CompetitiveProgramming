@@ -1,11 +1,11 @@
 // see https://leetcode.com/problems/critical-connections-in-a-network/
+// latest submission: https://leetcode.com/problems/critical-connections-in-a-network/submissions/1585118261/
 
 #include "../algorithms/ArticulationPointsAndBridges.cpp"
 
 class Solution {
 public:
-    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
-        using vi = vector<int>;
+    vector<vi> criticalConnections(int n, vector<vi>& connections) {
         vector<vi> AL(n);
         for(auto& connection : connections){
             int u = connection[0];

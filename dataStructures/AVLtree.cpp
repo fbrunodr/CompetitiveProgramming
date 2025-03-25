@@ -1,5 +1,7 @@
-#include<bits/stdc++.h>
-using namespace std;
+#ifndef FBRUNODR_AVL_TREE
+#define FBRUNODR_AVL_TREE
+
+#include "../header.hpp"
 
 template<typename Key, typename Metadata>
 struct _Tree_Vertex {
@@ -379,3 +381,5 @@ struct AVL {
         return getSize(head);
     }
 };
+
+#endif
