@@ -1,10 +1,10 @@
 // see https://codeforces.com/contest/598/problem/C
+// latest submission: https://codeforces.com/contest/598/submission/312370062
 
-#include "../algorithms/integerGeometry.cpp"
+#include "../algorithms/integerGeometry.hpp"
 
 int32_t main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+    fastIO();
 
     int n; cin >> n;
 

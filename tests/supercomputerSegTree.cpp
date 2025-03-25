@@ -1,14 +1,13 @@
 // see https://open.kattis.com/problems/supercomputer
+// latest submission: https://open.kattis.com/submissions/16970556
 
-#include "../dataStructures/PointUpdateSegTree.cpp"
+#include "../dataStructures/SegTree.hpp"
 
 int32_t main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+    fastIO();
 
     int N, K; cin >> N >> K;
 
-    using vi = vector<int>;
     vi A(N+1, 0);
 
     auto sum = [](int a, int b){ return a + b; };

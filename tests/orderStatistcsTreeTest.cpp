@@ -1,4 +1,4 @@
-#include "../dataStructures/OrderStatisticsTree.cpp"
+#include "../dataStructures/OrderStatisticsTree.hpp"
 
 int32_t main(){
     using vi = vector<int>;
@@ -6,7 +6,7 @@ int32_t main(){
     vi A{3, 5, 5, 5, 6, 9, 10, 11, 12, 13, 17, 17, 19, 19, 19, 19, 20};
 
     FenwickTreeOST ost1(20);
-    OST ost2;
+    gnu_OST<int> ost2;
 
     for(auto& a_i : A){
         ost1.insert(a_i);
@@ -43,7 +43,7 @@ int32_t main(){
             exit(1);
         }
 
-    unordered_map<int, int> freq;
+    hash_map<int, int> freq;
     for(auto& a_i : A)
         freq[a_i]++;
 

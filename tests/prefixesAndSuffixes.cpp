@@ -1,15 +1,12 @@
 // see https://codeforces.com/problemset/problem/432/D
+// latest submission: https://codeforces.com/contest/432/submission/312389716
 
-#include "../algorithms/stringUtils.cpp"
+#include "../algorithms/stringUtils.hpp"
 
 int32_t main(){
-    using ii = pair<int, int>;
-    using vii = vector<ii>;
+    fastIO();
 
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    string s; cin >> s;
+    str s; cin >> s;
     int n = s.size();
 
     auto pi = prefixFunction(s);

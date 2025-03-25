@@ -1,7 +1,7 @@
 #ifndef FBRUNODR_RURQ
 #define FBRUNODR_RURQ
 
-#include "../dataStructures/FenwickTree.cpp"
+#include "../dataStructures/FenwickTree.hpp"
 
 /**
  * Range increment update

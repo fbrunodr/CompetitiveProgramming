@@ -1,7 +1,7 @@
 // see https://open.kattis.com/problems/flippingcards
 // latest submission: https://open.kattis.com/submissions/16966379
 
-#include "../algorithms/MCBM.cpp"
+#include "../algorithms/MCBM.hpp"
 
 int32_t main(){
     fastIO();

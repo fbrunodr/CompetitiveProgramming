@@ -1,7 +1,7 @@
 // see https://codeforces.com/problemset/problem/61/E
 // latest submission: https://codeforces.com/contest/61/submission/312269879
 
-#include "../dataStructures/FenwickTree.cpp"
+#include "../dataStructures/FenwickTree.hpp"
 
 int32_t main(){
     fastIO();

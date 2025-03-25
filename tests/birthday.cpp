@@ -1,7 +1,7 @@
 // see https://open.kattis.com/problems/birthday
 // latest submission: https://open.kattis.com/submissions/16966168
 
-#include "../algorithms/ArticulationPointsAndBridges.cpp"
+#include "../algorithms/ArticulationPointsAndBridges.hpp"
 
 int32_t main(){
     int p, c; cin >> p >> c;

@@ -1,7 +1,7 @@
 // see https://open.kattis.com/problems/fortunefromfolly
 // latest submission: https://open.kattis.com/submissions/16966390
 
-#include "../algorithms/GaussianElimination.cpp"
+#include "../algorithms/GaussianElimination.hpp"
 
 int countOnBits(int mask){
     int ans = 0;

@@ -1,9 +1,10 @@
 // see https://codeforces.com/problemset/problem/547/B
+// latest submission: https://codeforces.com/contest/547/submission/312366718
 
-#include "../algorithms/firstElementToLeft.cpp"
+#include "../algorithms/firstElementToLeft.hpp"
 
 int32_t main(){
-    ios_base::sync_with_stdio(false);
+    fastIO();
     int n; cin >> n;
 
     using vi = vector<int>;
@@ -11,8 +12,8 @@ int32_t main(){
     for(auto& a_i : a)
         cin >> a_i;
 
-    vi l = firstElementToLeft<int>(a, less<int>());
-    vi r = firstElementToRight<int>(a, less<int>());
+    vi l = firstElementToLeft<int>(a, std::less<int>());
+    vi r = firstElementToRight<int>(a, std::less<int>());
 
     vi ans(n+1, 0);
 

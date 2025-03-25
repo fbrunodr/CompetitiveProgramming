@@ -1,15 +1,17 @@
 // see https://codeforces.com/gym/101741/problem/J
+// latest submission: https://codeforces.com/gym/101741/submission/312404808
+// The geniuses from codeforces reduced memory requirements and bumped time by 5x
+// Not it is a completly distinct problem :smh:
 
-#include "../algorithms/DivideAndConquerDP.cpp"
+#include "../algorithms/DivideAndConquerDP.hpp"
 #define MOD (int)(1e9 + 7)
 
 int32_t main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
- 
+    fastIO();
+
     int n, m;
     cin >> n >> m;
- 
+
     using vi = vector<int>;
     vi a(n);
     for(auto& a_i : a){
@@ -28,7 +30,7 @@ int32_t main(){
     auto mergeElement = [&](vi& range, int i){
         vi dontTake = range;
         vi take = dontTake;
-        rotate(take.begin(), take.begin() + (m - a[i]), take.end());
+        std::rotate(take.begin(), take.begin() + (m - a[i]), take.end());
         for(int i = 0; i < m; i++)
             take[i] = (dontTake[i] + take[i]) % MOD;
         return take;

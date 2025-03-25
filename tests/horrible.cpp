@@ -1,10 +1,10 @@
 // see https://www.spoj.com/problems/HORRIBLE/
+// The above site doesn't have modern C++ :(
 
-#include "../algorithms/RURQ.cpp"
+#include "../algorithms/RURQ.hpp"
 
 int32_t main(){
-    ios_base::sync_with_stdio(false);
-    using i64 = long long;
+    fastIO();
 
     int testCases; cin >> testCases;
 
@@ -15,7 +15,7 @@ int32_t main(){
         while(C--){
             int type; cin >> type;
             if(type == 0){
-                int p, q; i64 v;
+                int p, q, v;
                 cin >> p >> q >> v;
                 cumulative.rangeUpdate(p, q, v);
             }

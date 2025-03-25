@@ -1,7 +1,7 @@
 // see https://open.kattis.com/problems/convexhull
 // latest submission: https://open.kattis.com/submissions/16966319
 
-#include "../algorithms/integerGeometry.cpp"
+#include "../algorithms/integerGeometry.hpp"
 
 int32_t main(){
     fastIO();

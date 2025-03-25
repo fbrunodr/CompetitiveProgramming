@@ -1,4 +1,4 @@
-#include "../algorithms/fastPolynomialMultiplication.cpp"
+#include "../algorithms/fastPolynomialMultiplication.hpp"
 
 vi normalMultiply(vi a, vi b){
     int n = a.size();

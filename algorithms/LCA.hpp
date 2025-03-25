@@ -1,8 +1,8 @@
 #ifndef FBRUNODR_LCA
 #define FBRUNODR_LCA
 
-#include "../dataStructures/SegTree.cpp"
-#include "../dataStructures/SparseTable.cpp"
+#include "../dataStructures/SegTree.hpp"
+#include "../dataStructures/SparseTable.hpp"
 
 class SegLCA{
     private:

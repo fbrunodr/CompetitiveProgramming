@@ -1,7 +1,7 @@
 // see https://open.kattis.com/problems/cantinaofbabel
 // latest submission: https://open.kattis.com/submissions/16966205
 
-#include "../algorithms/GraphCompression.cpp"
+#include "../algorithms/GraphCompression.hpp"
 
 int32_t main(){
     int N; cin >> N;

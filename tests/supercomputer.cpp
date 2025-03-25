@@ -1,12 +1,12 @@
 // see https://open.kattis.com/problems/supercomputer
+// latest submission: https://open.kattis.com/submissions/16971554
 
-#include "../dataStructures/FenwickTree.cpp"
+#include "../dataStructures/FenwickTree.hpp"
 
 int32_t main(){
-    ios_base::sync_with_stdio(false);
+    fastIO();
     int N, K; cin >> N >> K;
 
-    using vi = vector<int>;
     vi A(N+1, 0);
 
     auto sum = [](int a, int b){ return a + b; };
