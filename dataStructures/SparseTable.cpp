@@ -1,17 +1,18 @@
-#include <bits/stdc++.h>
-using namespace std;
+#ifndef FBRUNODR_SPARSE_TABLE
+#define FBRUNODR_SPARSE_TABLE
+
+#include "../header.hpp"
 
 template<typename T>
 class SparseTable{
 
-    using vi = vector<int>;
-    using vT = vector<T>;
+    using vT = vec<T>;
     using opT = function<T(T,T)>;
 
 private:
     vT A;
     vi P2, L2;
-    vector<vT> SpT; // the Sparse Table
+    vec<vT> SpT; // the Sparse Table
 
     opT conquerer;
 
@@ -33,7 +34,7 @@ public:
                 L2[i] = L2[i - 1]; // to fill in the blanks
 
         // the initialization phase
-        SpT = vector<vT>(L2[n]+1, vT(n));
+        SpT = vec<vT>(L2[n]+1, vT(n));
         for (int j = 0; j < n; ++j)
             SpT[0][j] = A[j]; // RQ of sub array [j..j]
 
@@ -53,3 +54,6 @@ public:
         return conquerer(x, y);
     }
 };
+
+
+#endif

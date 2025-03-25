@@ -1,10 +1,9 @@
-#include<bits/stdc++.h>
-using namespace std;
+#ifndef FBRUNODR_UNION_FIND
+#define FBRUNODR_UNION_FIND
+
+#include "../header.hpp"
 
 class UnionFind {
-
-    using vi = vector<int>;
-
 private:
     vi p, rank, setSize;                           // vi p is the key part
     int numSets;
@@ -35,3 +34,6 @@ public:
         --numSets;                                   // a union reduces numSets
     }
 };
+
+
+#endif

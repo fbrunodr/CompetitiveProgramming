@@ -1,14 +1,12 @@
-#include<bits/stdc++.h>
-using namespace std;
-using vi = vector<int>;
+#ifndef FBRUNODR_CENTER_OF_SUBTREE
+#define FBRUNODR_CENTER_OF_SUBTREE
 
-int n;
-vector<vi> AL;
+#include "../header.hpp"
 
-pair<int, vi> getFurthestAndPath(int root){
+pair<int, vi> getFurthestAndPath(int root, const vec<vi>& AL){
     int furthest;
 
-    unordered_map<int, int> parent;
+    hash_map<int, int> parent;
     parent[root] = -1;
     queue<int> q;
     q.push(root);
@@ -37,9 +35,9 @@ pair<int, vi> getFurthestAndPath(int root){
     return {furthest, path};
 }
 
-vi getCenter(int root){
-    auto [u, _] = getFurthestAndPath(root);
-    auto [v, path] = getFurthestAndPath(u);
+vi getCenter(int root, const vec<vi>& AL){
+    auto [u, _] = getFurthestAndPath(root, AL);
+    auto [v, path] = getFurthestAndPath(u, AL);
     // single center
     if(path.size() % 2 == 1){
         int k = path.size() / 2;
@@ -51,3 +49,6 @@ vi getCenter(int root){
         return vi{path[k-1], path[k]};
     }
 }
+
+
+#endif

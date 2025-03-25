@@ -1,6 +1,6 @@
 #include "../algorithms/stringUtils.cpp"
 
-int main(){
+int32_t main(){
     string pattern = "hello";
     string text = "hello world! hello is a word with four letters. Say hello too, please!";
     for(int position : matching_positions(text, pattern, (char)5))

@@ -1,12 +1,13 @@
-#include<bits/stdc++.h>
-using namespace std;
-#define LSOne(S) ((S) & -(S))
+#ifndef FBRUNODR_FENWICK_TREE
+#define FBRUNODR_FENWICK_TREE
+
+#include "../header.hpp"
 
 // IDX 0 IS NOT USED
 template<typename T>
 class FenwickTree{
 
-    using vT = vector<T>;
+    using vT = vec<T>;
     using opT = function<T(T,T)>;
 
     private:
@@ -64,3 +65,6 @@ class FenwickTree{
         return A[i];
     }
 };
+
+
+#endif

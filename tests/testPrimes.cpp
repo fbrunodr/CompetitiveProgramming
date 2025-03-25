@@ -1,6 +1,6 @@
 #include "../algorithms/numberTheory.cpp"
 
-int main(){
+int32_t main(){
     int max = 2e6;
     setPrimes(max);
 

@@ -1,6 +1,6 @@
 #include "../algorithms/LCA.cpp"
 
-int main(){
+int32_t main(){
     using vi = vector<int>;
     vector<vi> children(10);
     children[0] = {1, 7};

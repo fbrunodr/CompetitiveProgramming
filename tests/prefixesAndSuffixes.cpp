@@ -2,7 +2,7 @@
 
 #include "../algorithms/stringUtils.cpp"
 
-int main(){
+int32_t main(){
     using ii = pair<int, int>;
     using vii = vector<ii>;
 

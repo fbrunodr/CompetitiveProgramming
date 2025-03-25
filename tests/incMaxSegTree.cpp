@@ -1,6 +1,6 @@
 #include "../dataStructures/LazySegTree.cpp"
 
-int main(){
+int32_t main(){
     using i64 = long long;
     using vi64 = vector<i64>;
 

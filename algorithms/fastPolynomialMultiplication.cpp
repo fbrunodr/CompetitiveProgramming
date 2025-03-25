@@ -1,12 +1,11 @@
-#include<bits/stdc++.h>
-using namespace std;
-using vi = vector<int>;
-using cd = complex<double>;
-const double PI = M_PI;
+#ifndef FBRUNODR_FAST_POLYNOMIAL_MULTIPLICATION
+#define FBRUNODR_FAST_POLYNOMIAL_MULTIPLICATION
+
+#include "../header.hpp"
 
 // YOU SURE IT IS FFT?
 
-void fft(vector<cd> & a, bool invert){
+void fft(vec<cd> & a, bool invert){
     int n = a.size();
 
     for (int i = 1, j = 0; i < n; i++){
@@ -45,15 +44,15 @@ vi multiply(vi p1, vi p2){
     while (n < p1.size() + p2.size() - 1)
         n <<= 1;
         
-    vector<cd> A(p1.begin(), p1.end());
-    vector<cd> B(p2.begin(), p2.end());
+    vec<cd> A(p1.begin(), p1.end());
+    vec<cd> B(p2.begin(), p2.end());
     A.resize(n);
     B.resize(n); // prepare A and B for FFT calls
 
     fft(A, false);
     fft(B, false);
 
-    vector<cd> C(n);
+    vec<cd> C(n);
     for (int k = 0; k < n; ++k)
         C[k] = A[k] * B[k]; // perform the multiplication
 
@@ -79,3 +78,6 @@ vi usualConvolution(vi a, vi b){
         ans.push_back(c[i]);
     return ans;
 }
+
+
+#endif

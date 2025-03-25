@@ -1,6 +1,6 @@
 #include "../dataStructures/OrderStatisticsTree.cpp"
 
-int main(){
+int32_t main(){
     using vi = vector<int>;
 
     vi A{3, 5, 5, 5, 6, 9, 10, 11, 12, 13, 17, 17, 19, 19, 19, 19, 20};

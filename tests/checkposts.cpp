@@ -1,11 +1,12 @@
 // see https://codeforces.com/problemset/problem/427/C
+// latest submission: https://codeforces.com/contest/427/submission/312268428
 
 #include "../algorithms/GraphCompression.cpp"
 
-int main(){
-    ios_base::sync_with_stdio(false);
+int32_t main(){
+    fastIO();
+
     int n; cin >> n;
-    using vi = vector<int>;
 
     vi cost(n);
     for(auto& cost_i : cost)
@@ -37,15 +38,14 @@ int main(){
         sort(component.begin(), component.end());
     }
 
-    using i64 = long long;
-    i64 totalCost = 0;
+    int totalCost = 0;
     for(auto& component : components)
         totalCost += component.front();
 
     cout << totalCost << ' ';
 
-    i64 count = 1;
-    i64 MOD = 1e9 + 7;
+    int count = 1;
+    int MOD = 1e9 + 7;
     for(auto& component : components){
         int cheaper = component.front();
         int repeats = 1;

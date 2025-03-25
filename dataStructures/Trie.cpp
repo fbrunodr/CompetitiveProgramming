@@ -1,5 +1,7 @@
-#include<bits/stdc++.h>
-using namespace std;
+#ifndef FBRUNODR_TRIE
+#define FBRUNODR_TRIE
+
+#include "../header.hpp"
 
 struct TrieNode{
     // add info here
@@ -28,3 +30,6 @@ TrieNode* addString(TrieNode* u, string& s){
 
 
 TrieNode* root;
+
+
+#endif

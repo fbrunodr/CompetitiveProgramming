@@ -1,5 +1,7 @@
-#include<bits/stdc++.h>
-using namespace std;
+#ifndef FBRUNODR_BINARY_SEARCH
+#define FBRUNODR_BINARY_SEARCH
+
+#include "../header.hpp"
 
 int firstTrue(int low, int high, function<bool(int)> op){
     while(low < high){
@@ -22,3 +24,5 @@ int lastTrue(int low, int high, function<bool(int)> op){
     }
     return low;
 }
+
+#endif

@@ -2,7 +2,7 @@
 
 #include "../algorithms/RURQ.cpp"
 
-int main(){
+int32_t main(){
     ios_base::sync_with_stdio(false);
     using i64 = long long;
 

@@ -1,8 +1,7 @@
 // see https://open.kattis.com/problems/fortunefromfolly
+// latest submission: https://open.kattis.com/submissions/16966390
 
 #include "../algorithms/GaussianElimination.cpp"
-
-#define LSOne(S) ((S) & -(S))
 
 int countOnBits(int mask){
     int ans = 0;
@@ -13,7 +12,7 @@ int countOnBits(int mask){
     return ans;
 }
 
-int main(){
+int32_t main(){
     int n, k; cin >> n >> k;
     double p; cin >> p;
 
@@ -36,7 +35,7 @@ int main(){
     }
 
     auto ans = GaussianElimination(M);
-    cout << fixed << setprecision(10) << ans.vec[0] << endl;
+    cout << std::fixed << std::setprecision(10) << ans.Vec[0] << endl;
 
     return 0;
 }

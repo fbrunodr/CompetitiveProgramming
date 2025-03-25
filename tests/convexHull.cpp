@@ -1,10 +1,10 @@
 // see https://open.kattis.com/problems/convexhull
+// latest submission: https://open.kattis.com/submissions/16966319
 
 #include "../algorithms/integerGeometry.cpp"
 
-int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+int32_t main(){
+    fastIO();
 
     int n; cin >> n;
 

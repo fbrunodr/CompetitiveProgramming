@@ -1,15 +1,12 @@
-#include<bits/stdc++.h>
-using namespace std;
+#ifndef FBRUNODR_MCBM
+#define FBRUNODR_MCBM
+
+#include "../header.hpp"
 
 class MCBM{
-
-    using vi = vector<int>;
-    using ii = pair<int, int>;
-    using vii = vector<ii>;
-
 private:
     int V, VLeft;
-    vector<vi>& AL;
+    vec<vi>& AL;
 
     vi match, vis;
 
@@ -28,13 +25,13 @@ private:
 
 public:
 
-    MCBM(vector<vi>& _AL, int _VLeft) : AL(_AL), VLeft(_VLeft) {}
+    MCBM(vec<vi>& _AL, int _VLeft) : AL(_AL), VLeft(_VLeft) {}
 
     /**
      * Returns MCBM and the matches
     */
     pair<int, vi> get(){
-        unordered_set<int> freeV;
+        hash_set<int> freeV;
         for (int L = 0; L < VLeft; ++L)
             freeV.insert(L);                             // initial assumption
         V = AL.size();
@@ -65,3 +62,6 @@ public:
     }
 
 };
+
+
+#endif

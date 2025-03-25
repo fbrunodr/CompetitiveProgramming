@@ -1,8 +1,7 @@
-#include<bits/stdc++.h>
-using namespace std;
-template<typename T>
-using vec = vector<T>;
+#ifndef FBRUNODR_MERGE_SORT_TREE
+#define FBRUNODR_MERGE_SORT_TREE
 
+#include "../header.hpp"
 
 template<typename T>
 class MergeSortTree{
@@ -80,3 +79,6 @@ class MergeSortTree{
         return RQ(1, 0, n-1, i, j);
     }
 };
+
+
+#endif

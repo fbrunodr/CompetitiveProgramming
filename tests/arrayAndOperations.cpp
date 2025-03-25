@@ -1,40 +1,13 @@
 // see https://codeforces.com/contest/498/problem/C
+// latest submission: https://codeforces.com/contest/498/submission/312267640
 
 #include "../algorithms/MCBM.cpp"
+#include "../algorithms/numberTheory.cpp"
 
-using vi = vector<int>;
 
-vi primes;
-
-vi getFactors(int x){
-    vi ans;
-    for(auto& prime : primes)
-        while(x%prime == 0){
-            ans.push_back(prime);
-            x /= prime;
-        }
-
-    if(x != 1)
-        ans.push_back(x);
-
-    return ans;
-}
-
-int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int MAX_VAL = (1<<15);
-    vector<bool> isPrime(MAX_VAL+1, true);
-    isPrime[0] = isPrime[1] = false;
-    for(int i = 2; i <= MAX_VAL; i++)
-        if(isPrime[i])
-            for(int k = i*i; k <= MAX_VAL; k += i)
-                isPrime[k] = false;
-
-    for(int i = 2; i <= MAX_VAL; i++)
-        if(isPrime[i])
-            primes.push_back(i);
+int32_t main(){
+    fastIO();
+    setPrimes(1e5);
 
     int n, m; cin >> n >> m;
 
@@ -47,13 +20,15 @@ int main(){
     int Vleft = 0;
     int Vright = 0;
     for(int i = 0; i < n; i++){
-        factors[i] = getFactors(a[i]);
+        for(auto [p, alpha] : getFactors(a[i]))
+            while(alpha--)
+                factors[i].push_back(p);
         if(i%2 == 0)
             Vleft += factors[i].size();
         else
             Vright += factors[i].size();
     }
-    
+
     vi initialPos(n, 0);
     for(int i = 2; i < n; i += 2){
         initialPos[i] = initialPos[i-2];

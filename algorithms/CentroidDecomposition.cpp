@@ -1,8 +1,7 @@
-#include<bits/stdc++.h>
-using namespace std;
-template<typename T>
-using vec = vector<T>;
-using vi = vec<int>;
+#ifndef FBRUNODR_CENTROID_DECOMPOSITION
+#define FBRUNODR_CENTROID_DECOMPOSITION
+
+#include "../header.hpp"
 
 class CentroidDecomposition{
     vec<vi> adj;
@@ -71,3 +70,5 @@ class CentroidDecomposition{
         return ancestors[u];
     }
 };
+
+#endif

@@ -2,7 +2,7 @@
 
 #include "../algorithms/stringUtils.cpp"
 
-int main(){
+int32_t main(){
     string pattern, text;
 
     while(getline(cin, pattern)){

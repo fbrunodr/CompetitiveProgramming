@@ -1,7 +1,7 @@
-#include<bits/stdc++.h>
-using namespace std;
-template<typename T>
-using vec = vector<T>;
+#ifndef FBRUNODR_EULERIAN_TRAIL
+#define FBRUNODR_EULERIAN_TRAIL
+
+#include "../header.hpp"
 
 // Hierholzer algorithm
 template<typename MapLike, typename T>
@@ -40,3 +40,5 @@ vec<T> getEulerianTrail(MapLike adj, T start_vertex, bool undirected=false){
     reverse(circuit.begin(), circuit.end());
     return circuit;
 }
+
+#endif

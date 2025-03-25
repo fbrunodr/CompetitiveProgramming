@@ -1,9 +1,9 @@
-#include<bits/stdc++.h>
-using namespace std;
+#ifndef FBRUNODR_GRAPH_COMPRESSION
+#define FBRUNODR_GRAPH_COMPRESSION
+
+#include "../header.hpp"
 
 class GraphCompressor{
-
-    using vi = vector<int>;
 
 private:
 
@@ -15,9 +15,9 @@ private:
     stack<int> St;
 
     vi compressedNode;
-    vector<vi> compressedGraph;
+    vec<vi> compressedGraph;
 
-    vector<vi>& AL;
+    vec<vi>& AL;
 
     void tarjanSCC(int u){
         dfs_low[u] = dfs_num[u] = dfsNumberCounter;
@@ -43,9 +43,9 @@ private:
     }
 
 public:
-    GraphCompressor(vector<vi>& _AL) :  AL(_AL) {}
+    GraphCompressor(vec<vi>& _AL) :  AL(_AL) {}
 
-    pair<vi, vector<vi>> compress(){
+    pair<vi, vec<vi>> compress(){
         n = AL.size();
         dfs_num = vi(n, UNVISITED);
         dfs_low = vi(n, 0);
@@ -59,7 +59,7 @@ public:
             if(dfs_num[u] == UNVISITED)
                 tarjanSCC(u);
 
-        compressedGraph = vector<vi>(numSCC);
+        compressedGraph = vec<vi>(numSCC);
         for(int u = 0; u < n; u++)
             for(int& v : AL[u]){
                 int u_ = compressedNode[u];
@@ -71,3 +71,6 @@ public:
         return {compressedNode, compressedGraph};
     }
 };
+
+
+#endif

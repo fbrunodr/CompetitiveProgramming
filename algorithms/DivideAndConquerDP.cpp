@@ -1,5 +1,7 @@
-#include<bits/stdc++.h>
-using namespace std;
+#ifndef FBRUNODR_DIVIDE_AND_CONQUER_DP
+#define FBRUNODR_DIVIDE_AND_CONQUER_DP
+
+#include "../header.hpp"
 
 template<typename T>
 class DivideAndConquerDP{
@@ -14,7 +16,7 @@ private:
     function<T(int)> singleElement;
     function<T(T&,int)> elementMerge;
 
-    vector<vector<_T>> memo;
+    vec<vec<_T>> memo;
 
     void solveMoving(int mid, int d, bool toRight){
         if(memo[mid][d] != nullopt)
@@ -60,9 +62,9 @@ private:
         int mid1 = (L + R) / 2;
         int mid2 = mid1 + 1;
 
-        memo[mid1] = vector<_T>(mid1 - L + 1, nullopt);
+        memo[mid1] = vec<_T>(mid1 - L + 1, nullopt);
         if(mid2 <= R)
-            memo[mid2] = vector<_T>(R - mid2 + 1, nullopt);
+            memo[mid2] = vec<_T>(R - mid2 + 1, nullopt);
 
         init(L, mid1-1);
         init(mid2+1, R);
@@ -71,7 +73,7 @@ private:
     public:
     DivideAndConquerDP(int _n, function<T(int)> _ele, function<T(T&,int)> _eleMerge){
         N = _n;
-        memo = vector<vector<_T>>(N);
+        memo = vec<vec<_T>>(N);
         init(0, N-1);
         singleElement = _ele;
         elementMerge = _eleMerge;
@@ -84,3 +86,6 @@ private:
         return solve(i, j, 0, N-1);
     }
 };
+
+
+#endif

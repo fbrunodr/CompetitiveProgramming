@@ -1,18 +1,15 @@
-#include<bits/stdc++.h>
-using namespace std;
-template<typename T>
-using vec = vector<T>;
-using vi = vec<int>;
-using ii = pair<int, int>;
-using i64 = long long;
-using vi64 = vec<i64>;
+#ifndef FBRUNODR_NUMBER_THEORY
+#define FBRUNODR_NUMBER_THEORY
+
+#include "../header.hpp"
+
 int MOD = 1e9 + 7;
 
 int mod(int x, int m = MOD){
     return ((x%m) + m) % m;
 }
 
-int modlong(i64 x, int m = MOD){
+int modlong(int x, int m = MOD){
     return ((x%m) + m) % m;
 }
 
@@ -40,9 +37,9 @@ int modPow(int base, int power, int m = MOD){
     int ans = 1;
     while(power > 0){
         if(power&1)
-            ans = (i64) ans * base % m;
+            ans =  ans * base % m;
         power >>= 1;
-        base = (i64) base * base % m;
+        base =  base * base % m;
     }
     return ans;
 }
@@ -50,14 +47,14 @@ int modPow(int base, int power, int m = MOD){
 
 vi primes;
 vec<bool> _isPrime;
-i64 maxTestable;
+int maxTestable;
 
 void setPrimes(int maxNum){
     _isPrime = vec<bool>(maxNum + 1, true);
     _isPrime[0] = _isPrime[1] = false;
     for(int i = 2; i <= maxNum; i++){
         if(!_isPrime[i]) continue;
-        if((i64)i*i > maxNum) continue;
+        if(i*i > maxNum) continue;
         for(int k = i*i; k <= maxNum; k += i)
             _isPrime[k] = false;
     }
@@ -66,10 +63,10 @@ void setPrimes(int maxNum){
         if(_isPrime[i])
             primes.push_back(i);
 
-    maxTestable = (i64)maxNum*maxNum;
+    maxTestable = maxNum*maxNum;
 }
 
-bool isPrime(i64 x){
+bool isPrime(int x){
     if(x < 0)
         exit(1765);
     if(x > maxTestable)
@@ -81,7 +78,7 @@ bool isPrime(i64 x){
     // O(sqrt(n/log(n)))
     else{
         for(auto& prime : primes){
-            if((i64)prime*prime > x)
+            if(prime*prime > x)
                 return true;
             if(x%prime == 0)
                 return false;
@@ -91,7 +88,7 @@ bool isPrime(i64 x){
     return true;
 }
 
-map<i64, int> getFactors(i64 x){
+map<int, int> getFactors(int x){
     if(x < 0)
         exit(1765);
     if(x > maxTestable)
@@ -99,11 +96,11 @@ map<i64, int> getFactors(i64 x){
 
     // btw this is faster than unordered, as all INT have at most
     // 9 different prime factors (2 * 3 * 7 * ... * 29 > INT_MAX)
-    map<i64, int> ans;
+    map<int, int> ans;
 
     // O(sqrt(n/log(n)))
     for(auto& prime : primes){
-        if((i64)prime*prime > x)
+        if(prime*prime > x)
             break;
         while(x % prime == 0){
             x /= prime;
@@ -117,24 +114,24 @@ map<i64, int> getFactors(i64 x){
     return ans;
 }
 
-vi64 getPrimeDivisors(i64 x){
+vi getPrimeDivisors(int x){
     auto factors = getFactors(x);
-    vi64 ans;
+    vi ans;
     for(auto& [p, alpha] : factors)
         ans.push_back(p);
     return ans;
 }
 
-vi64 getDivisors(i64 x){
+vi getDivisors(int x){
     auto factors = getFactors(x);
-    vi64 ans{1};
+    vi ans{1};
 
     // the number with most divisors up to 1e7
     // is 8648640 with only 448 divisors, so this
     // here should run just fine.
     for(auto& [p, alpha] : factors){
         int k = ans.size();
-        i64 curr = 1;
+        int curr = 1;
         for(int i = 0; i < alpha; i++){
             curr *= p;
             for(int i = 0; i < k; i++)
@@ -152,13 +149,13 @@ void setFacts(int maxNum){
     fact = vi(maxNum + 1);
     fact[0] = 1;
     for(int i = 1; i <= maxNum; i++)
-        fact[i] = ( (i64) fact[i-1] * i ) % MOD;
+        fact[i] = (  fact[i-1] * i ) % MOD;
 }
 
 int C(int n, int k){
     if (n < k) return 0;
-    if (n >= MOD) return ((i64) C(n%MOD, k%MOD) * C(n/MOD, k/MOD)) % MOD;
-    return ((i64)fact[n]*modInverse(fact[k])%MOD * modInverse(fact[n-k])) % MOD;
+    if (n >= MOD) return ( C(n%MOD, k%MOD) * C(n/MOD, k/MOD)) % MOD;
+    return (fact[n]*modInverse(fact[k])%MOD * modInverse(fact[n-k])) % MOD;
 }
 
 
@@ -200,22 +197,22 @@ struct Frac{
 
     Frac operator+(Frac other){
         return Frac(
-            modlong((i64)up * other.down + (i64)other.up * down),
-            modlong((i64)down * other.down)
+            modlong(up * other.down + other.up * down),
+            modlong(down * other.down)
         );
     }
 
     Frac operator-(Frac other){
         return Frac(
-            modlong((i64)up * other.down - (i64)other.up * down),
-            modlong((i64)down * other.down)
+            modlong(up * other.down - other.up * down),
+            modlong(down * other.down)
         );
     }
 
     Frac operator*(Frac other){
         return Frac(
-            modlong((i64)up * other.up),
-            modlong((i64)down * other.down)
+            modlong(up * other.up),
+            modlong(down * other.down)
         );
     }
 
@@ -223,41 +220,41 @@ struct Frac{
         if(other.up == 0)
             exit(1011);
         return Frac(
-            modlong((i64)up * other.down),
-            modlong((i64)down * other.up)
+            modlong(up * other.down),
+            modlong(down * other.up)
         );
     }
 
     Frac operator+(int num) const {
-        return Frac(modlong( (i64)num * down + up ), down);
+        return Frac(modlong( num * down + up ), down);
     }
 
     friend Frac operator+(int num, const Frac& obj) {
-        return Frac(modlong( (i64)num * obj.down + obj.up ), obj.down);
+        return Frac(modlong( num * obj.down + obj.up ), obj.down);
     }
 
     Frac operator-(int num) const {
-        return Frac(modlong( (i64)-num * down + up ), down);
+        return Frac(modlong( -num * down + up ), down);
     }
 
     friend Frac operator-(int num, const Frac& obj) {
-        return Frac(modlong( (i64)num * obj.down - obj.up ), obj.down);
+        return Frac(modlong( num * obj.down - obj.up ), obj.down);
     }
 
     Frac operator*(int num) const {
-        return Frac(modlong((i64)num*up), down);
+        return Frac(modlong(num*up), down);
     }
 
     friend Frac operator*(int num, const Frac& obj) {
-        return Frac(modlong((i64)num*obj.up), obj.down);
+        return Frac(modlong(num*obj.up), obj.down);
     }
 
     Frac operator/(int num) const {
-        return Frac(up, modlong((i64)num*down));
+        return Frac(up, modlong(num*down));
     }
 
     friend Frac operator/(int num, const Frac& obj) {
-        return Frac(obj.up, modlong((i64)num*obj.down));
+        return Frac(obj.up, modlong(num*obj.down));
     }
 
     Frac& operator=(int num) {
@@ -271,13 +268,13 @@ struct Frac{
     }
 
     int get(){
-        return modlong((i64)up * modInverse(down));
+        return modlong(up * modInverse(down));
     }
 };
 
 
 int get_frac(int up, int down){
-    if(down == 0)
-        exit(1012);
-    return modlong( (i64) up * modInverse(down) );
+    return modlong(  up * modInverse(down) );
 }
+
+#endif

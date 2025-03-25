@@ -1,8 +1,9 @@
 // see https://open.kattis.com/problems/birthday
+// latest submission: https://open.kattis.com/submissions/16966168
 
 #include "../algorithms/ArticulationPointsAndBridges.cpp"
 
-int main(){
+int32_t main(){
     int p, c; cin >> p >> c;
 
     while(!(p == 0 && c == 0)){

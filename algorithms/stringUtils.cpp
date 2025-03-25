@@ -1,6 +1,7 @@
-#include<bits/stdc++.h>
-using namespace std;
-using vi = vector<int>;
+#ifndef FBRUNODR_STRING_UTILS
+#define FBRUNODR_STRING_UTILS
+
+#include "../header.hpp"
 
 // Doing this way so it works for both string and vi
 template<typename T>
@@ -49,7 +50,7 @@ vi matching_positions(const T& text, const T& pattern, U separator){
 
 vi getSuffixArray(string s) {
     s.push_back(5);
-    int n = s.size(), N = max(n, 260);
+    int n = s.size(), N = max(n, 260ll);
     vi sa(n), ra(n);
     for(int i = 0; i < n; i++) sa[i] = i, ra[i] = s[i];
 
@@ -81,3 +82,6 @@ vi kasai(const string& s, const vi& sa) {
     }
     return lcp;
 }
+
+
+#endif
