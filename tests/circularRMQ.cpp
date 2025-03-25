@@ -1,7 +1,7 @@
 // see https://codeforces.com/contest/52/problem/C
 // latest submission: https://codeforces.com/contest/52/submission/312269164
 
-#include "../dataStructures/SegTree.cpp"
+#include "../dataStructures/SegTree.hpp"
 
 int32_t main(){
     fastIO();

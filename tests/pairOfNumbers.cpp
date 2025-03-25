@@ -1,9 +1,10 @@
 // see https://codeforces.com/problemset/problem/359/D
+// latest submission: https://codeforces.com/contest/359/submission/312375887
 
-#include "../algorithms/firstElementToLeft.cpp"
+#include "../algorithms/firstElementToLeft.hpp"
 
 int32_t main(){
-    ios_base::sync_with_stdio(false);
+    fastIO();
     int n; cin >> n;
 
     vi a(n);

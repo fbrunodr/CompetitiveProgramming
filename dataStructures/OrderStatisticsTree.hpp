@@ -1,7 +1,7 @@
 #ifndef FBRUNODR_ORDER_STATISTICS_TREE
 #define FBRUNODR_ORDER_STATISTICS_TREE
 
-#include "FenwickTree.cpp"
+#include "FenwickTree.hpp"
 
 class FenwickTreeOST {
 

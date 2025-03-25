@@ -1,9 +1,10 @@
 // see https://codeforces.com/contest/271/problem/D
+// latest submission: https://codeforces.com/contest/271/submission/312334092
 
-#include "../algorithms/RollingHash.cpp"
+#include "../algorithms/RollingHash.hpp"
 
 int32_t main(){
-    ios_base::sync_with_stdio(false);
+    fastIO();
 
     setRollingHashPowers(2000);
 
@@ -27,7 +28,7 @@ int32_t main(){
     int k; cin >> k;
 
     RollingHash hasher(s);
-    unordered_set<bitset<128>> hashes;
+    hash_set<bitset<128>> hashes;
 
     int ans = 0;
     for(int i = 0; i < n; i++)

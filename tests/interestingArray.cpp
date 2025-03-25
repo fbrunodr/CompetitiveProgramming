@@ -1,10 +1,10 @@
 // see https://codeforces.com/problemset/problem/482/B
+// latest submission: https://codeforces.com/contest/482/submission/312356792
 
-#include "../dataStructures/LazySegTree.cpp"
+#include "../dataStructures/SegTree.hpp"
 
 int32_t main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+    fastIO();
 
     int n, m; cin >> n >> m;
 
@@ -20,9 +20,6 @@ int32_t main(){
         update1 |= update2;
     };
     LazySegTree<int, int> lazySegTree(vector<int>(n + 1, 0), conquerer, nodeUpdator, updateUpdator);
-
-    using iii = tuple<int, int, int>;
-    using viii = vector<iii>;
 
     viii queries(m);
     for(auto& query : queries){

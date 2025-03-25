@@ -50,7 +50,7 @@ vi matching_positions(const T& text, const T& pattern, U separator){
 
 vi getSuffixArray(string s) {
     s.push_back(5);
-    int n = s.size(), N = max(n, 260ll);
+    int n = s.size(), N = max(n, (int)260);
     vi sa(n), ra(n);
     for(int i = 0; i < n; i++) sa[i] = i, ra[i] = s[i];
 

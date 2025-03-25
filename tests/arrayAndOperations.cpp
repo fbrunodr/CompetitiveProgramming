@@ -1,8 +1,8 @@
 // see https://codeforces.com/contest/498/problem/C
 // latest submission: https://codeforces.com/contest/498/submission/312267640
 
-#include "../algorithms/MCBM.cpp"
-#include "../algorithms/numberTheory.cpp"
+#include "../algorithms/MCBM.hpp"
+#include "../algorithms/numberTheory.hpp"
 
 
 int32_t main(){

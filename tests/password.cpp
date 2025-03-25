@@ -1,6 +1,7 @@
 // see https://codeforces.com/problemset/problem/126/B
+// latest submission: https://codeforces.com/contest/126/submission/312382631
 
-#include "../algorithms/stringUtils.cpp"
+#include "../algorithms/stringUtils.hpp"
 
 int32_t main(){
     string s; cin >> s;

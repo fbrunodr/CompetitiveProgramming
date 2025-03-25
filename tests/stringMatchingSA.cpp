@@ -1,14 +1,15 @@
 // see https://open.kattis.com/problems/stringmatching
+// latest submission: https://open.kattis.com/submissions/16969617
+// Had to commend tha define int long long int line and the check below it to pass in 1s
 
 // The point here is testing the Suffix Array implementation, rather than
 // solving the question optimally. You can solve the question in O(n+m)
 // using prefix function (or KMP match)
 
-#include "../algorithms/stringUtils.cpp"
+#include "../algorithms/stringUtils.hpp"
 
 int32_t main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+    fastIO();
 
     string text, pattern;
 

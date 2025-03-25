@@ -1,9 +1,10 @@
 // see https://www.codechef.com/problems/TALCA?tab=statement
+// latest submission: https://www.codechef.com/viewsolution/94425849
 
-#include "../algorithms/LCA.cpp"
+#include "../algorithms/LCA.hpp"
 
 int32_t main(){
-    ios_base::sync_with_stdio(false);
+    fastIO();
 
     int N; cin >> N;
 

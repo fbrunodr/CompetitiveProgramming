@@ -1,7 +1,7 @@
 // see https://codeforces.com/problemset/problem/427/C
 // latest submission: https://codeforces.com/contest/427/submission/312268428
 
-#include "../algorithms/GraphCompression.cpp"
+#include "../algorithms/GraphCompression.hpp"
 
 int32_t main(){
     fastIO();

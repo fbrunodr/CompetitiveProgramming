@@ -42,6 +42,7 @@ using vi = vec<int>;
 using ii = pair<int, int>;
 using vii = vec<ii>;
 using iii = tuple<int, int, int>;
+using viii = vec<iii>;
 using str = string;
 template<typename T>
 using min_heap = std::priority_queue<T, vec<T>, std::greater<T>>;

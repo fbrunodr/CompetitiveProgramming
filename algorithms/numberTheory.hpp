@@ -9,10 +9,6 @@ int mod(int x, int m = MOD){
     return ((x%m) + m) % m;
 }
 
-int modlong(int x, int m = MOD){
-    return ((x%m) + m) % m;
-}
-
 int extEuclid(int a, int b, int &x, int &y){ // pass x and y by ref
     int xx = y = 0;
     int yy = x = 1;
@@ -168,9 +164,9 @@ int C_dp(int n, int k){
 }
 
 
-struct Frac{
 // Use this only if up and down are needed at the output
 // otherwise use only get_frac below this class
+struct Frac{
     private:
     int up, down;
 
@@ -197,22 +193,22 @@ struct Frac{
 
     Frac operator+(Frac other){
         return Frac(
-            modlong(up * other.down + other.up * down),
-            modlong(down * other.down)
+            mod(up * other.down + other.up * down),
+            mod(down * other.down)
         );
     }
 
     Frac operator-(Frac other){
         return Frac(
-            modlong(up * other.down - other.up * down),
-            modlong(down * other.down)
+            mod(up * other.down - other.up * down),
+            mod(down * other.down)
         );
     }
 
     Frac operator*(Frac other){
         return Frac(
-            modlong(up * other.up),
-            modlong(down * other.down)
+            mod(up * other.up),
+            mod(down * other.down)
         );
     }
 
@@ -220,41 +216,41 @@ struct Frac{
         if(other.up == 0)
             exit(1011);
         return Frac(
-            modlong(up * other.down),
-            modlong(down * other.up)
+            mod(up * other.down),
+            mod(down * other.up)
         );
     }
 
     Frac operator+(int num) const {
-        return Frac(modlong( num * down + up ), down);
+        return Frac(mod( num * down + up ), down);
     }
 
     friend Frac operator+(int num, const Frac& obj) {
-        return Frac(modlong( num * obj.down + obj.up ), obj.down);
+        return Frac(mod( num * obj.down + obj.up ), obj.down);
     }
 
     Frac operator-(int num) const {
-        return Frac(modlong( -num * down + up ), down);
+        return Frac(mod( -num * down + up ), down);
     }
 
     friend Frac operator-(int num, const Frac& obj) {
-        return Frac(modlong( num * obj.down - obj.up ), obj.down);
+        return Frac(mod( num * obj.down - obj.up ), obj.down);
     }
 
     Frac operator*(int num) const {
-        return Frac(modlong(num*up), down);
+        return Frac(mod(num*up), down);
     }
 
     friend Frac operator*(int num, const Frac& obj) {
-        return Frac(modlong(num*obj.up), obj.down);
+        return Frac(mod(num*obj.up), obj.down);
     }
 
     Frac operator/(int num) const {
-        return Frac(up, modlong(num*down));
+        return Frac(up, mod(num*down));
     }
 
     friend Frac operator/(int num, const Frac& obj) {
-        return Frac(obj.up, modlong(num*obj.down));
+        return Frac(obj.up, mod(num*obj.down));
     }
 
     Frac& operator=(int num) {
@@ -268,13 +264,13 @@ struct Frac{
     }
 
     int get(){
-        return modlong(up * modInverse(down));
+        return mod(up * modInverse(down));
     }
 };
 
 
 int get_frac(int up, int down){
-    return modlong(  up * modInverse(down) );
+    return mod(  up * modInverse(down) );
 }
 
 #endif

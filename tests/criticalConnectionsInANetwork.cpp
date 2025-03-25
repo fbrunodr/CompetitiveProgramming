@@ -1,7 +1,7 @@
 // see https://leetcode.com/problems/critical-connections-in-a-network/
 // latest submission: https://leetcode.com/problems/critical-connections-in-a-network/submissions/1585118261/
 
-#include "../algorithms/ArticulationPointsAndBridges.cpp"
+#include "../algorithms/ArticulationPointsAndBridges.hpp"
 
 class Solution {
 public:

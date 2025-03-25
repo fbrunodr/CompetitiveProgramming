@@ -1,6 +1,7 @@
 // see https://open.kattis.com/problems/stringmatching
+// latest submission: https://open.kattis.com/submissions/16969533
 
-#include "../algorithms/stringUtils.cpp"
+#include "../algorithms/stringUtils.hpp"
 
 int32_t main(){
     string pattern, text;

@@ -1,10 +1,10 @@
 // see https://open.kattis.com/problems/pointinpolygon
+// latest submission: https://open.kattis.com/submissions/16969473
 
-#include "../algorithms/integerGeometry.cpp"
+#include "../algorithms/integerGeometry.hpp"
 
 int32_t main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+    fastIO();
 
     int n; cin >> n;
 

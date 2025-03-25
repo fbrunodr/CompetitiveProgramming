@@ -1,4 +1,4 @@
-#include "../algorithms/numberTheory.cpp"
+#include "../algorithms/numberTheory.hpp"
 
 int32_t main(){
     int max = 2e6;
@@ -16,10 +16,22 @@ int32_t main(){
     assert(!isPrime(1e9));
     assert(!isPrime(2e5));
 
-    vector<map<int, int>> factors(500'001);
+    int MAX_N = 1e6;
+    vector<map<int, int>> factors(MAX_N + 1);
+    vi nDivisors(MAX_N+1, 1);
 
-    for(int i = 1; i <= 500'000; i++)
-        factors[i] = getFactors(i);
+    int numberMostDivisors = 0, mostDivisors = 0;
+
+    for(int i = 1; i <= MAX_N + 1; i++){
+        for(auto [p_i, alpha] : getFactors(i))
+            nDivisors[i] *= alpha + 1;
+        if(nDivisors[i] > mostDivisors){
+            mostDivisors = nDivisors[i];
+            numberMostDivisors = i;
+        }
+    }
+
+    printf("The positive integer < %lld with the most divisors is %lld, with %lld divisors!\n", MAX_N, numberMostDivisors, mostDivisors);
 
     return 0;
 }

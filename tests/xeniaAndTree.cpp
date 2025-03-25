@@ -1,10 +1,12 @@
-#include "../algorithms/CentroidDecomposition.cpp"
-#include "../algorithms/lca.cpp"
+// see https://codeforces.com/problemset/problem/342/E
+// latest submission: https://codeforces.com/contest/342/submission/312483127
+
+#include "../algorithms/CentroidDecomposition.hpp"
+#include "../algorithms/LCA.hpp"
 
 
 int32_t main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+    fastIO();
 
     int n, m;
     vec<vi> al;
