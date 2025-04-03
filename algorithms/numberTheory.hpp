@@ -140,18 +140,23 @@ vi getDivisors(int x){
 }
 
 vi fact;
+vi factInv;
 
 void setFacts(int maxNum){
     fact = vi(maxNum + 1);
+    factInv = vi(maxNum + 1);
     fact[0] = 1;
     for(int i = 1; i <= maxNum; i++)
         fact[i] = (  fact[i-1] * i ) % MOD;
+    factInv[maxNum] = modInverse(fact[maxNum]);
+    for(int i = maxNum - 1; i >= 0; i--)
+        factInv[i] = ( factInv[i+1] * (i+1) ) % MOD;
 }
 
 int C(int n, int k){
     if (n < k) return 0;
     if (n >= MOD) return ( C(n%MOD, k%MOD) * C(n/MOD, k/MOD)) % MOD;
-    return (fact[n]*modInverse(fact[k])%MOD * modInverse(fact[n-k])) % MOD;
+    return (fact[n]*factInv[k]%MOD * factInv[n-k]) % MOD;
 }
 
 
