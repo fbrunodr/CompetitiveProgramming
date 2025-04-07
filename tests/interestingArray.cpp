@@ -1,5 +1,5 @@
 // see https://codeforces.com/problemset/problem/482/B
-// latest submission: https://codeforces.com/contest/482/submission/312356792
+// latest submission: https://codeforces.com/contest/482/submission/314308020
 
 #include "../dataStructures/SegTree.hpp"
 
@@ -13,7 +13,7 @@ int32_t main(){
     auto conquerer = [](int a, int b){
         return a & b;
     };
-    auto nodeUpdator = [](int& a, int update, int L, int R){
+    auto nodeUpdator = [](int& a, int update){
         a |= update;
     };
     auto updateUpdator = [](int& update1, int update2){
