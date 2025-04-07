@@ -1,5 +1,5 @@
 // see https://codeforces.com/problemset/problem/61/E
-// latest submission: https://codeforces.com/contest/61/submission/312348087
+// latest submission: https://codeforces.com/contest/61/submission/314308069
 
 #include "../dataStructures/SegTree.hpp"
 
@@ -17,7 +17,7 @@ int32_t main(){
         a_i = lower_bound(aux.begin(), aux.end(), a_i) - aux.begin();
 
     struct conquerer { int32_t operator()(int32_t a, int32_t b) {return a;} };
-    struct updateNode { void operator()(int32_t& a, int32_t up, int L, int R) { a += up; } };
+    struct updateNode { void operator()(int32_t& a, int32_t up) { a += up; } };
     struct updateUpdate { void operator()(int32_t& up1, int32_t up2) { up1 += up2; } };
 
     LazySegTree<int32_t, int32_t> segTree(vec<int32_t>(n, 0), conquerer(), updateNode(), updateUpdate());

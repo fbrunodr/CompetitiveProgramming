@@ -1,5 +1,5 @@
 // See https://codeforces.com/problemset/problem/380/C
-// latest submission: https://codeforces.com/contest/380/submission/312268104
+// latest submission: https://codeforces.com/contest/380/submission/314307880
 
 #include "../dataStructures/SegTree.hpp"
 
