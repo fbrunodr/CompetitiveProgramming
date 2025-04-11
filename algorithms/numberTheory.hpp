@@ -278,4 +278,28 @@ int get_frac(int up, int down){
     return mod(  up * modInverse(down) );
 }
 
+/*
+    Same as running:
+    ans = 0;
+    for(int i = a; i <= b; i++)
+        ans += x / i;
+    0 < x,
+    0 < a <= b
+
+    Runs in O(sqrt(x))
+*/
+int sum_x_over_i(int x, int a, int b) {
+    int ans = 0;
+    int i = a;
+    while (i <= b) {
+        int v = x / i;
+        if(v == 0) return ans;
+        int j = x / v;
+        j = min(j, b);
+        ans += v * (j - i + 1);
+        i = j + 1;
+    }
+    return ans;
+}
+
 #endif
