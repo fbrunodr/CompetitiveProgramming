@@ -67,6 +67,9 @@ struct custom_hash {
     }
 };
 
+std::mt19937 rng_32(std::random_device{}());
+std::mt19937_64 rng_64(std::random_device{}());
+
 template<typename Key, typename Value>
 using hash_map = typename std::conditional<
     std::is_same_v<Key, int>,
