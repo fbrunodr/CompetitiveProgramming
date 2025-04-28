@@ -1,5 +1,5 @@
 // see https://open.kattis.com/problems/fortunefromfolly
-// latest submission: https://open.kattis.com/submissions/16966390
+// latest submission: https://open.kattis.com/submissions/17280375
 
 #include "../algorithms/GaussianElimination.hpp"
 
@@ -18,24 +18,25 @@ int32_t main(){
 
     int N = (1<<n);
 
-    AugmentedMatrix M(N);
+    vec<vec<double>> mat(N, vec<double>(N+1, 0.0));
 
     for(int mask = 0; mask < N; mask++){
         if(countOnBits(mask) >= k){
-            M.mat[mask][mask] = 1;
+            mat[mask][mask] = 1;
         }
         else{
             int didntGetRareMask = (mask << 1) & (N-1);
             int gotRareMask = didntGetRareMask | 1;
-            M.mat[mask][mask] += 1;
-            M.mat[mask][gotRareMask] -= p;
-            M.mat[mask][didntGetRareMask] -= (1-p);
-            M.mat[mask][N] = 1;
+            mat[mask][mask] += 1;
+            mat[mask][gotRareMask] -= p;
+            mat[mask][didntGetRareMask] -= (1-p);
+            mat[mask][N] = 1;
         }
     }
 
-    auto ans = GaussianElimination(M);
-    cout << std::fixed << std::setprecision(10) << ans.Vec[0] << endl;
+    vec<double> ans;
+    UniqueSolutionGaussianEliminationOnR(mat, ans);
+    cout << std::fixed << std::setprecision(10) << ans[0] << endl;
 
     return 0;
 }

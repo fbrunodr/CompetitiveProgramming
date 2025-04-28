@@ -1,6 +1,18 @@
 #ifndef FBRUNODR_HEADER
 #define FBRUNODR_HEADER
 
+/*
+    This code was bought to you by
+
+    .-:::::':::::::. :::::::..    ...    ::::::.    :::.    ...    :::::::-.  :::::::..   
+    ;;;''''  ;;;'';;';;;;``;;;;   ;;     ;;;`;;;;,  `;;; .;;;;;;;.  ;;,   `';,;;;;``;;;;  
+    [[[,,==  [[[__[[\.[[[,/[[['  [['     [[[  [[[[[. '[[,[[     \[[,`[[     [[ [[[,/[[['  
+    `$$$"``  $$""""Y$$$$$$$$c    $$      $$$  $$$ "Y$c$$$$$,     $$$ $$,    $$ $$$$$$c    
+    888    _88o,,od8P888b "88bo,88    .d888  888    Y88"888,_ _,88P 888_,o8P' 888b "88bo,
+    "MM,   ""YUMMMP" MMMM   "W"  "YmmMMMM""  MMM     YM  "YMMMMMP"  MMMMP"`   MMMM   "W" 
+
+*/
+
 #include <bits/stdc++.h>
 
 #include <bits/extc++.h>                         // pbds
