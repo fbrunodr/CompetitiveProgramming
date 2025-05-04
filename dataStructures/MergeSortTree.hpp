@@ -10,7 +10,7 @@ class MergeSortTree{
     int n;
     vT A;
     vec<vT> mergeSort;
-    function<bool(T,T)> comparator;
+    f<bool(T,T)> comparator;
 
     int l(int p) { return p << 1; }        // go to left child
     int r(int p) { return (p << 1) + 1; }  // go to right child
@@ -65,7 +65,7 @@ class MergeSortTree{
     }
 
     public:
-    MergeSortTree(vT& _A, function<bool(T,T)> _comparator) : A(_A), comparator(_comparator) {
+    MergeSortTree(vT& _A, f<bool(T,T)> _comparator) : A(_A), comparator(_comparator) {
         n = A.size();
         mergeSort = vec<vT>(4*n);
         build(1, 0, n - 1);

@@ -13,8 +13,8 @@ private:
     // [0, N-1]
     int N;
 
-    function<T(int)> singleElement;
-    function<T(T&,int)> elementMerge;
+    f<T(int)> singleElement;
+    f<T(T&,int)> elementMerge;
 
     int maxRecursionDepth;
     vec<vec<T>> memo;
@@ -86,7 +86,7 @@ private:
     }
 
     public:
-    DivideAndConquerDP(int _n, function<T(int)> _ele, function<T(T&,int)> _eleMerge, int maxDepth = 15){
+    DivideAndConquerDP(int _n, f<T(int)> _ele, f<T(T&,int)> _eleMerge, int maxDepth = 15){
         maxRecursionDepth = maxDepth;
         N = _n;
         memo = vec<vec<T>>(N);

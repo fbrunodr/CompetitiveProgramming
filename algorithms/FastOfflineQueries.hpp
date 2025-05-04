@@ -6,12 +6,12 @@
 const int block_size = 512;
 
 template<typename D, typename T>
-vec<T> MoSolveQueries(
+vec<T> moSolveQueries(
     vii queries,
-    function<void(D&,int)> add,
-    function<void(D&,int)> remove,
+    f<void(D&,int)> add,
+    f<void(D&,int)> remove,
     D& initialVal,
-    function<T(D&)> save_answer
+    f<T(D&)> save_answer
 ){
     using i4 = tuple<int,int,int,int>;
     int n = queries.size();

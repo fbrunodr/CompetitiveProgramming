@@ -306,16 +306,17 @@ struct AVL {
     _node *head;
 
     // Used to compare two keys; returns true if lhs < rhs
-    function<bool(const Key&, const Key&)> comparator;
+    f<bool(const Key&, const Key&)> comparator;
 
     // Used to update node->metadata given node, children, etc.
     // Called in bottom-up fashion after we update node->height.
-    function<void(_node*)> updator;
+    f<void(_node*)> updator;
 
     // Constructor
-    AVL(function<bool(const Key&,const Key&)> _comparator,
-        function<void(_node*)> _updator)
-    {
+    AVL(
+        f<bool(const Key&,const Key&)> _comparator,
+        f<void(_node*)> _updator
+    ){
         comparator = _comparator;
         updator = _updator;
         head = nullptr;
@@ -343,9 +344,9 @@ struct AVL {
         _node* ans = nullptr;
         _node* current = head;
         while (current) {
-            // Recall: comparator(a, b) == true if a < b
+            // Recall: comparator(a, b) == true iff a < b
             // We want the first key that is NOT less than `key`.
-            // If current->key is NOT less than 'key', we move left 
+            // If current->key is NOT less than 'key', we move left
             // and record current as a potential answer.
             if (!comparator(current->key, key)) {
                 // This means current->key >= key

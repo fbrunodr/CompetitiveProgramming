@@ -8,7 +8,7 @@ template<typename T>
 class FenwickTree{
 
     using vT = vec<T>;
-    using opT = function<T(T,T)>;
+    using opT = f<T(T,T)>;
 
     private:
     int n;

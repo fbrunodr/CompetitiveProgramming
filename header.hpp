@@ -17,6 +17,12 @@
 
 #include <bits/extc++.h>                         // pbds
 
+/*
+    the judge's computer probably has instructions for
+    long long int that are as fast as instructions for integers
+
+    Remove the two lines below if you need to save memory
+*/
 #define int long long int
 static_assert(CHAR_BIT * sizeof(int) == 64);
 
@@ -61,6 +67,8 @@ using min_heap = std::priority_queue<T, vec<T>, std::greater<T>>;
 template<typename T>
 using max_heap = std::priority_queue<T>;
 using cd = std::complex<long double>;
+template<typename T>
+using f = function<T>;
 
 // Avoid those damned people doing hash colision attacks
 // see https://codeforces.com/contest/2057/problem/B
@@ -86,7 +94,7 @@ template<typename Key, typename Value>
 using hash_map = typename std::conditional<
     std::is_same_v<Key, int>,
     std::unordered_map<Key, Value, custom_hash>, // specialized
-    std::unordered_set<Key> // default
+    std::unordered_map<Key, Value> // default
 >::type;
 template<typename T>
 using hash_set = typename std::conditional<
@@ -113,6 +121,12 @@ const double PI = 3.14159265358979323846264338327950288;
 void fastIO(){
     std::ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
+}
+
+template<typename T>
+void uniqueSorted(vec<T>& arr){
+    sort(arr.begin(), arr.end());
+    arr.erase(std::unique(arr.begin(), arr.end()), arr.end());
 }
 
 #endif

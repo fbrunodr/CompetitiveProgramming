@@ -38,7 +38,7 @@ struct Vec{
     int x, y;
 
     Vec() {}
-    
+
     Vec(int _x, int _y) : x(_x), y(_y) {}
 
     Vec(Point A, Point B){
@@ -100,7 +100,7 @@ class Angle{
             exit(4278);
         if(OB.x == 0 && OB.y == 0)
             exit(4278);
-        
+
         int dot = OA.dot(OB);
         int cross = OA.cross(OB);
         int d = gcd(dot, cross);
@@ -155,7 +155,7 @@ class Segment{
 
         if(!isCollinear(P))
             return false;
-        
+
         Vec AP = Vec(A, P);
         return AB.dot(AP) > 0 && AP.sqrMod() < AB.sqrMod();
     }
@@ -250,7 +250,7 @@ class Polygon{
     bool isConvex(){
         auto polygon = closeLoop();
         int n = (int)polygon.size();
-        // a point/sz=2 or a line/sz=3 is not convex  
+        // a point/sz=2 or a line/sz=3 is not convex
         if (n <= 3) return false;
 
         auto ccw = [](const Point& A, const Point& O, const Point& B) {

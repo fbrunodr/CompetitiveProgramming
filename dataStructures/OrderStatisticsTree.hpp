@@ -68,7 +68,7 @@ public:
     }
 
     int size(){
-        return findByOrder(maxVal+1);
+        return orderOfKey(maxVal+1);
     }
 };
 

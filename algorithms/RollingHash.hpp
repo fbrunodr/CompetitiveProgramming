@@ -82,7 +82,7 @@ class RollingHash{
     }
 
     public:
-    RollingHash(string& _T) : T(_T) {
+    RollingHash(const string& _T) : T(_T) {
         n = T.size();
         h = vec<vi>(4, vi(n));
         computeRollingHash();
@@ -108,8 +108,7 @@ class RollingHash{
 };
 
 
-// For debugging purposes
-bitset<128> get_bitset(string& s){
+bitset<128> get_bitset(const string& s){
     return RollingHash(s).getHash(0, s.size() - 1);
 }
 

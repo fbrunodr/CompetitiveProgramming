@@ -10,7 +10,7 @@ class PointUpdateSegTree{
     using vT = vec<T>;
 
 private:
-    function<T(T,T)> merge;
+    f<T(T,T)> merge;
 
     int n;
     vT st;
@@ -61,7 +61,7 @@ public:
     PointUpdateSegTree() {}
 
     // O(n)
-    PointUpdateSegTree(const vT& _A, function<T(T,T)> _merge) : A(_A), merge(_merge) {
+    PointUpdateSegTree(const vT& _A, f<T(T,T)> _merge) : A(_A), merge(_merge) {
         n = A.size();
         st = vT(4*n);
         build(1, 0, n - 1);
@@ -95,9 +95,9 @@ class LazySegTree{
     using vQ = vec<Q>;
 
 private:
-    function<T(T,T)> merge;
-    function<void(T&,Q,int,int)> internalNodeUpdator;
-    function<void(Q&,Q)> lazyUpdator;
+    f<T(T,T)> merge;
+    f<void(T&,Q,int,int)> internalNodeUpdator;
+    f<void(Q&,Q)> lazyUpdator;
 
     int n;
     vT st;
@@ -175,24 +175,24 @@ public:
     // O(n)
     LazySegTree(
         const vT& _A,
-        function<T(T,T)> _merge,
+        f<T(T,T)> _merge,
         std::variant<
-            function<void(T&,Q)>,
-            function<void(T&,Q,int,int)>
+            f<void(T&,Q)>,
+            f<void(T&,Q,int,int)>
         > _nodeUpdator,
-        function<void(Q&,Q)> _lazyUpdator
+        f<void(Q&,Q)> _lazyUpdator
     ){
         n = _A.size();
         merge = _merge;
         lazyUpdator = _lazyUpdator;
 
-        if (std::holds_alternative<function<void(T&,Q)>>(_nodeUpdator)) {
-            auto f = std::get<function<void(T&,Q)>>(_nodeUpdator);
-            internalNodeUpdator = [f](T& a, Q b, int, int) {
-                f(a, b);
+        if (std::holds_alternative<f<void(T&,Q)>>(_nodeUpdator)) {
+            auto userUpdator = std::get<f<void(T&,Q)>>(_nodeUpdator);
+            internalNodeUpdator = [userUpdator](T& a, Q b, int, int) {
+                userUpdator(a, b);
             };
         } else {
-            internalNodeUpdator = std::get<function<void(T&,Q,int,int)>>(_nodeUpdator);
+            internalNodeUpdator = std::get<f<void(T&,Q,int,int)>>(_nodeUpdator);
         }
 
         st = vT(4*n);

@@ -15,7 +15,7 @@ const int    NONE = 0;   // no solution
     fixed[i] = 1  ->  x_i has the same value in *every* solution
     fixed[i] = 0  ->  x_i is a free parameter (or depends on one)
 */
-int GaussianEliminationOnR (
+int gaussianEliminationOnR (
     vector<vector<double>> a,
     vector<double>& ans,
     vector<int>& fixed,
@@ -83,12 +83,12 @@ int GaussianEliminationOnR (
     You have a system of equations that you KNOW has
     an unique solution? Use this function.
 */
-void UniqueSolutionGaussianEliminationOnR(
+void uniqueSolutionGaussianEliminationOnR(
     vector<vector<double>> a,
     vector<double>& ans
 ){
     vi fixed; // dummy
-    GaussianEliminationOnR(a, ans, fixed, 0.0);
+    gaussianEliminationOnR(a, ans, fixed, 0.0);
 }
 
 #endif

@@ -4,7 +4,7 @@
 #include "../header.hpp"
 
 template<typename T>
-vi firstElementToLeft(vec<T>& arr, function<bool(T,T)> op){
+vi firstElementToLeft(vec<T>& arr, f<bool(T,T)> op){
     stack<int> st;
     vi left(arr.size());
     for(int i = 0; i < arr.size(); i++){
@@ -20,7 +20,7 @@ vi firstElementToLeft(vec<T>& arr, function<bool(T,T)> op){
 }
 
 template<typename T>
-vi firstElementToRight(vec<T>& arr, function<bool(T,T)> op){
+vi firstElementToRight(vec<T>& arr, f<bool(T,T)> op){
     reverse(arr.begin(), arr.end());
     vi ans = firstElementToLeft(arr, op);
     reverse(arr.begin(), arr.end());

@@ -1,7 +1,7 @@
 #ifndef FBRUNODR_RURQ
 #define FBRUNODR_RURQ
 
-#include "../dataStructures/FenwickTree.hpp"
+#include "FenwickTree.hpp"
 
 /**
  * Range increment update
@@ -40,7 +40,7 @@ public:
         if(j + 1 < n)
             purq.increment(j + 1, -v * j);  // +(uj-ui+1)*v after uj
     }
-    
+
     int rsq(int j){
         return rupq_pointQuery(j) * j -  // optimistic calculation
                purq.cumulative(j);       // cancelation factor

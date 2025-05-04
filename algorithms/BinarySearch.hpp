@@ -3,7 +3,7 @@
 
 #include "../header.hpp"
 
-int firstTrue(int low, int high, function<bool(int)> op){
+int firstTrue(int low, int high, f<bool(int)> op){
     while(low < high){
         int mid = (low + high) / 2;
         if(op(mid))
@@ -14,7 +14,7 @@ int firstTrue(int low, int high, function<bool(int)> op){
     return low;
 }
 
-int lastTrue(int low, int high, function<bool(int)> op){
+int lastTrue(int low, int high, f<bool(int)> op){
     while(low < high){
         int mid = (low + high + 1) / 2;
         if(op(mid))

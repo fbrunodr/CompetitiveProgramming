@@ -6,6 +6,6 @@
 *.dSYM
 *.dSYM/
 
-exercises_and_contests/
+sources/
 
 .venv/
