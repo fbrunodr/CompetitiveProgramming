@@ -28,28 +28,20 @@ struct AVL {
     using _node = _Tree_Vertex<Key, Metadata>;
 
     private:
-
-    // Helper: get the height of a node
     int getHeight(_node* node) {
         return (node ? node->height : 0);
     }
 
-    // Helper: compute balance factor = height(left) - height(right)
     int getBalance(_node* node) {
         if (!node) return 0;
         return getHeight(node->left) - getHeight(node->right);
-    }
-
-    // Helper: get the size of a node
-    int getSize(_node* node) {
-        return (node ? node->size : 0);
     }
 
     // Recompute node->height, then call updator(node).
     void updateNode(_node* node) {
         if (!node) return;
         node->height = max(getHeight(node->left), getHeight(node->right)) + 1;
-        node->size = getSize(node->left) + getSize(node->right) + 1;
+        node->size = size(node->left) + size(node->right) + 1;
         // Call the user’s updator so the metadata can be updated
         updator(node);
     }
@@ -312,14 +304,21 @@ struct AVL {
     // Called in bottom-up fashion after we update node->height.
     f<void(_node*)> updator;
 
-    // Constructor
     AVL(
         f<bool(const Key&,const Key&)> _comparator,
-        f<void(_node*)> _updator
+        f<void(_Tree_Vertex<Key, Metadata>*)> _updator
     ){
         comparator = _comparator;
         updator = _updator;
         head = nullptr;
+    }
+
+    static int size(_node* node){
+        return (node ? node->size : 0);
+    }
+
+    int size() {
+        return AVL<Key, Metadata>::size(head);
     }
 
     // Insert public method
@@ -327,12 +326,52 @@ struct AVL {
         head = insertNode(head, key, nullptr);
     }
 
-    // Find the node with min key in subtree
-    _node* getMinNode(_node* node) {
-        while (node && node->left) {
+    static _node* getMinNode(_node* node){
+        if(!node)
+            return nullptr;
+        while(node->left)
             node = node->left;
-        }
         return node;
+    }
+
+    static _node* getMaxNode(_node* node){
+        if(!node)
+            return nullptr;
+        while(node->right)
+            node = node->right;
+        return node;
+    }
+
+    _node* getMinNode(){
+        return AVL<Key, Metadata>::getMinNode(head);
+    }
+
+    _node* getMaxNode(){
+        return AVL<Key, Metadata>::getMaxNode(head);
+    }
+
+    static _node* getKthNode(int k, _node* node){
+        if(!node)
+            return nullptr;
+        if(node->size <= k)
+            return nullptr;
+        int prevLessThan = 0;
+        while(true){
+            int lessThan = prevLessThan + AVL<Key, Metadata>::size(node->left);
+            if(lessThan == k)
+                return node;
+            else if(lessThan < k){
+                prevLessThan = lessThan + 1;
+                node = node->right;
+            }
+            else
+                node = node->left;
+        }
+    }
+
+    // 0 indexed
+    _node* getKthNode(int k){
+        return AVL<Key, Metadata>::getKthNode(k, head);
     }
 
     // Erase public method
@@ -376,10 +415,6 @@ struct AVL {
         AVL newAVL(leftAVL.comparator, leftAVL.updator);
         newAVL.head = newAVL._join(leftAVL.head, rightAVL.head);
         return newAVL;
-    }
-
-    int size(){
-        return getSize(head);
     }
 };
 
