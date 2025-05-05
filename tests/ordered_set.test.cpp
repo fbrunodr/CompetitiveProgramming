@@ -16,39 +16,15 @@ int solve(){
     while(q--){
         int type, x; cin >> type >> x;
 
-        if(type == 0){
-            auto it = bst.lower_bound(x);
-            if(it && it->key == x)
-                continue;
-            else
-                bst.insert(x);
-        }
-        else if(type == 1){
-            auto it = bst.lower_bound(x);
-            if(it && it->key == x)
-                bst.erase(x);
-        }
+        if(type == 0)
+            bst.insert(x);
+        else if(type == 1)
+            bst.erase(x);
         else if(type == 2){
             if(bst.size() < x)
                 cout << "-1\n";
-            else{
-                int lessThan = 0;
-                auto it = bst.head;
-                while(true){
-                    int currLess = lessThan + (it->left ? it->left->size : 0);
-                    if(currLess == x-1){
-                        cout << it->key << '\n';
-                        break;
-                    }
-                    else if(currLess < x-1){
-                        lessThan = currLess + 1;
-                        it = it->right;
-                    }
-                    else if(currLess > x-1){
-                        it = it->left;
-                    }
-                }
-            }
+            else
+                cout << bst.getKthNode(x-1)->key << '\n';
         }
         else if(type == 3){
             auto [left, right] = bst.split(x + 1);
@@ -58,21 +34,17 @@ int solve(){
         else if(type == 4){
             auto [left, right] = bst.split(x + 1);
             if(left.size() == 0)
-                cout << -1 << '\n';
-            else{
-                auto it = left.head;
-                while(it->right != nullptr)
-                    it = it->right;
-                cout << it->key << '\n';
-            }
+                cout << "-1\n";
+            else
+                cout << left.getMaxNode()->key << '\n';
             bst = bst.join(left, right);
         }
         else if(type == 5){
             auto [left, right] = bst.split(x);
             if(right.size() == 0)
-                cout << -1 << '\n';
+                cout << "-1\n";
             else
-                cout << right.getMinNode(right.head)->key << '\n';
+                cout << right.getMinNode()->key << '\n';
             bst = bst.join(left, right);
         }
     }
