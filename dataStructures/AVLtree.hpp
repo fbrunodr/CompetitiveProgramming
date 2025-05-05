@@ -157,71 +157,59 @@ struct AVL {
         return node;
     }
 
-    // Recursive helper to insert a new key in subtree rooted at 'node'
-    // 'parent' is to set node->parent if you want to maintain parent pointers
     _node* insertNode(_node* node, const Key &key, _node* parent = nullptr) {
-        // 1. Standard BST insertion
-        if (!node) {
+        if(!node){
             _node* newNode = new _Tree_Vertex<Key, Metadata>(key, parent);
-            // If you want to call updateNode on newNode (some folks do),
-            // but typically you do it after children are set, so it's fine here too:
             updator(newNode);
             return newNode;
         }
 
-        if (comparator(key, node->key)) {
+        if(comparator(key, node->key))
             node->left = insertNode(node->left, key, node);
-        }
-        else if (comparator(node->key, key)) {
+        else if(comparator(node->key, key))
             node->right = insertNode(node->right, key, node);
-        }
-        else {
-            // Equal keys case: you can decide to do nothing or always go right or left
-            // For example, let's choose to always go right if equal
-            node->right = insertNode(node->right, key, node);
-        }
+        // equal keys -> do nothing
 
-        // 2. Balance the node
         node = balance(node, key);
-
-        // 3. Update this node's height & metadata
         updateNode(node);
 
         return node;
     }
 
     // Recursive helper to erase 'key' from subtree
-    _node* eraseNode(_node* node, const Key &key) {
-        if (!node) return nullptr;
+    _node* eraseNode(_node* node, const Key &key){
+        if(!node)
+            return nullptr;
 
-        if (comparator(key, node->key)) {
+        if(comparator(key, node->key)){
             // key < node->key
             node->left = eraseNode(node->left, key);
         }
-        else if (comparator(node->key, key)) {
+        else if(comparator(node->key, key)){
             // key > node->key
             node->right = eraseNode(node->right, key);
         }
-        else {
+        else{
             // This is the node to be deleted
-            if (!node->left || !node->right) {
+            if(!node->left || !node->right){
                 // One child or no child
                 _node* temp = (node->left) ? node->left : node->right;
 
                 // No child case
-                if (!temp) {
+                if(!temp){
                     // free node
                     delete node;
                     node = nullptr;
                 }
-                else {
+                else{
                     // One child
                     // Copy the contents of the child
                     temp->parent = node->parent;  // keep parent pointer updated
                     *node = *temp;                 // tricky: copies all fields
                     delete temp;                   // free the "duplicate" node
                 }
-            } else {
+            }
+            else{
                 // Node with two children:
                 // Get the inorder successor (smallest in the right subtree)
                 _node* successor = getMinNode(node->right);
@@ -245,11 +233,10 @@ struct AVL {
     }
 
     pair<_node*, _node*> _split(_node* root, const Key &k) {
-        if (!root) {
+        if(!root)
             return {nullptr, nullptr};
-        }
         // If root->key < k, root goes to the LEFT part
-        if (comparator(root->key, k)) {
+        if(comparator(root->key, k)){
             // Split the right subtree
             auto [leftSub, rightSub] = _split(root->right, k);
             root->right = leftSub;
@@ -259,7 +246,8 @@ struct AVL {
             root = balanceErase(root);  // or a suitable balance(...) call
             // Return the pair ( everything < k, everything >= k )
             return {root, rightSub};
-        } else {
+        }
+        else{
             // root->key >= k, root goes to the RIGHT part
             auto [leftSub, rightSub] = _split(root->left, k);
             root->left = rightSub;
@@ -405,6 +393,7 @@ struct AVL {
         AVL rightAVL(comparator, updator);
         leftAVL.head = splitted.first;
         rightAVL.head = splitted.second;
+        head = nullptr;
         return {leftAVL, rightAVL};
     }
 
