@@ -43,7 +43,7 @@ vi multiply(vi p1, vi p2){
     int n = 1;  // n needs to be a power of 2
     while (n < p1.size() + p2.size() - 1)
         n <<= 1;
-        
+
     vec<cd> A(p1.begin(), p1.end());
     vec<cd> B(p2.begin(), p2.end());
     A.resize(n);

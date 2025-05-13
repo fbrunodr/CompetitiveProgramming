@@ -45,7 +45,7 @@ int countInv(vec<T>& arr, int l, int r){
 }
 
 template<typename T>
-int inversionCount(vec<T> &arr) {
+int inversionCount(vec<T> arr) {
       int n = arr.size();
       return countInv(arr, 0, n-1);
 }
