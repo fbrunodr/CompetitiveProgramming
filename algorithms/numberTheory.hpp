@@ -48,14 +48,15 @@ int maxTestable;
 void setPrimes(int maxNum){
     _isPrime = vec<bool>(maxNum + 1, true);
     _isPrime[0] = _isPrime[1] = false;
+    int primeCount = 0;
     for(int i = 2; i*i <= maxNum; i++){
         if(!_isPrime[i]) continue;
+        ++primeCount;
         for(int j = i*i; j <= maxNum; j += i)
             _isPrime[j] = false;
     }
 
-    int estimatedPrimes = (double)maxNum * (1.15) / log(maxNum + 1.0);
-    primes.reserve(estimatedPrimes);
+    primes.reserve(primeCount + 1);
 
     for(int i = 2; i <= maxNum; i++)
         if(_isPrime[i])
