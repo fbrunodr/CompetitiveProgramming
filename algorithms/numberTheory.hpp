@@ -3,8 +3,13 @@
 
 #include "../header.hpp"
 
-int mod(int x, int m){
-    return ((x%m) + m) % m;
+template<auto MOD>
+int mod(int x){
+    return ((x%MOD) + MOD) % MOD;
+}
+
+int mod(int x, int MOD){
+    return ((x%MOD) + MOD) % MOD;
 }
 
 int extEuclid(int a, int b, int &x, int &y){ // pass x and y by ref
@@ -27,13 +32,30 @@ int modInverse(int b, int m){       // returns b^(-1) (mod m)
     return (x + m) % m;
 }
 
-int modPow(int base, int power, int m){
+template<auto MOD>
+int modInverse(int x){
+	return x == 1 ? 1 : modInverse<MOD>(x - MOD % x) * (MOD / x + 1) % MOD;
+}
+
+template<auto MOD>
+int modPow(int base, int power){
     int ans = 1;
     while(power > 0){
         if(power&1)
-            ans =  ans * base % m;
+            ans =  ans * base % MOD;
         power >>= 1;
-        base =  base * base % m;
+        base =  base * base % MOD;
+    }
+    return ans;
+}
+
+int modPow(int base, int power, int MOD){
+    int ans = 1;
+    while(power > 0){
+        if(power&1)
+            ans =  ans * base % MOD;
+        power >>= 1;
+        base =  base * base % MOD;
     }
     return ans;
 }
@@ -169,6 +191,11 @@ int C_dp(int n, int k, int MOD){
     return (C_dp(n-1, k-1, MOD) + C_dp(n-1, k, MOD)) % MOD;
 }
 
+
+template<auto MOD>
+int get_frac(int up, int down){
+    return mod<MOD>(up * modInverse(down, MOD));
+}
 
 int get_frac(int up, int down, int MOD){
     return mod(up * modInverse(down, MOD), MOD);
