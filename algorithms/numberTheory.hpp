@@ -3,9 +3,7 @@
 
 #include "../header.hpp"
 
-int MOD = 1e9 + 7;
-
-int mod(int x, int m = MOD){
+int mod(int x, int m){
     return ((x%m) + m) % m;
 }
 
@@ -21,15 +19,15 @@ int extEuclid(int a, int b, int &x, int &y){ // pass x and y by ref
     return a; // returns gcd(a, b)
 }
 
-int modInverse(int b, int m = MOD){  // returns b^(-1) (mod m)
+int modInverse(int b, int m){       // returns b^(-1) (mod m)
     int x, y;
-    int d = extEuclid(b, m, x, y);   // to get b*x + m*y == d
+    int d = extEuclid(b, m, x, y);  // to get b*x + m*y == d
     if (d != 1)
-        exit(1809);            // to indicate failure
+        exit(1809);                 // to indicate failure
     return (x + m) % m;
 }
 
-int modPow(int base, int power, int m = MOD){
+int modPow(int base, int power, int m){
     int ans = 1;
     while(power > 0){
         if(power&1)
@@ -145,35 +143,35 @@ vi getDivisors(int x){
 vi fact;
 vi factInv;
 
-void setFacts(int maxNum){
+void setFacts(int maxNum, int MOD){
     fact = vi(maxNum + 1);
     factInv = vi(maxNum + 1);
     fact[0] = 1;
     for(int i = 1; i <= maxNum; i++)
         fact[i] = (  fact[i-1] * i ) % MOD;
-    factInv[maxNum] = modInverse(fact[maxNum]);
+    factInv[maxNum] = modInverse(fact[maxNum], MOD);
     for(int i = maxNum - 1; i >= 0; i--)
         factInv[i] = ( factInv[i+1] * (i+1) ) % MOD;
 }
 
-int C(int n, int k){
+int C(int n, int k, int MOD){
     if (n < k) return 0;
-    if (n >= MOD) return ( C(n%MOD, k%MOD) * C(n/MOD, k/MOD)) % MOD;
+    if (n >= MOD) return ( C(n%MOD, k%MOD, MOD) * C(n/MOD, k/MOD, MOD)) % MOD;
     return (fact[n]*factInv[k]%MOD * factInv[n-k]) % MOD;
 }
 
 
 vec<vi> chooses_memo;
-int C_dp(int n, int k){
+int C_dp(int n, int k, int MOD){
     if(n < k) return 0;
     int& ans = chooses_memo[n][k];
     if(ans != -1) return ans;
-    return (C_dp(n-1, k-1) + C_dp(n-1, k)) % MOD;
+    return (C_dp(n-1, k-1, MOD) + C_dp(n-1, k, MOD)) % MOD;
 }
 
 
-int get_frac(int up, int down){
-    return mod(  up * modInverse(down) );
+int get_frac(int up, int down, int MOD){
+    return mod(up * modInverse(down, MOD), MOD);
 }
 
 /*
