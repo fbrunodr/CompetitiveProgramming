@@ -66,23 +66,28 @@ vec<bool> _isPrime;
 int maxTestable;
 
 void setPrimes(int maxNum){
-    _isPrime = vec<bool>(maxNum + 1, true);
-    _isPrime[0] = _isPrime[1] = false;
-    int primeCount = 0;
-    for(int i = 2; i*i <= maxNum; i++){
-        if(!_isPrime[i]) continue;
-        ++primeCount;
-        for(int j = i*i; j <= maxNum; j += i)
+    if(maxNum < 2) return;
+    primes.reserve(maxNum / log(maxNum + 1) * 1.2);
+    primes.push_back(2);
+    _isPrime = vec<bool>(maxNum / 2 + 1, true);
+    _isPrime[0] = false;
+    int i = 1;
+    for (; 4 * (i*i + i) < maxNum; ++i){
+        if(!_isPrime[i])
+            continue;
+        int p = 2 * i + 1;
+        primes.emplace_back(p);
+        // p^2 = 4i^2 + 4i + 1 = 2(2i^2 + 2i) + 1
+        for(int j = 2 * i * (i + 1); j <= maxNum / 2; j += p)
             _isPrime[j] = false;
     }
+    for (; i <= maxNum / 2; ++i) {
+        int p = 2 * i + 1;
+        if (!_isPrime[i] || p > maxNum) continue;
+        primes.emplace_back(p);
+    }
 
-    primes.reserve(primeCount + 1);
-
-    for(int i = 2; i <= maxNum; i++)
-        if(_isPrime[i])
-            primes.push_back(i);
-
-    maxTestable = maxNum*maxNum;
+    maxTestable = maxNum * maxNum;
 }
 
 bool isPrime(int x){
@@ -91,9 +96,12 @@ bool isPrime(int x){
     if(x > maxTestable)
         exit(8011);
 
+    if(x % 2 == 0)
+        return x == 2;
+
     // O(1)
-    if(x < _isPrime.size())
-        return _isPrime[x];
+    if((x/2) < _isPrime.size())
+        return _isPrime[x / 2];
     // O(sqrt(n/log(n)))
     else{
         for(auto& prime : primes){
@@ -107,7 +115,7 @@ bool isPrime(int x){
     return true;
 }
 
-map<int, int> getFactors(int x){
+vii getFactors(int x){
     if(x < 0)
         exit(1765);
     if(x > maxTestable)
@@ -115,20 +123,23 @@ map<int, int> getFactors(int x){
 
     // btw this is faster than unordered, as all INT have at most
     // 9 different prime factors (2 * 3 * 7 * ... * 29 > INT_MAX)
-    map<int, int> ans;
+    vii ans; ans.reserve(10);
 
     // O(sqrt(n/log(n)))
     for(auto& prime : primes){
         if(prime*prime > x)
             break;
+        int count = 0;
         while(x % prime == 0){
             x /= prime;
-            ans[prime]++;
+            ++count;
         }
+        if(count)
+            ans.emplace_back(prime, count);
     }
 
     if(x != 1)
-        ans[x]++;
+        ans.emplace_back(x, 1);
 
     return ans;
 }
@@ -165,6 +176,18 @@ vi getDivisors(int x){
 vi fact;
 vi factInv;
 
+template<auto MOD>
+void setFacts(int maxNum){
+    fact = vi(maxNum + 1);
+    factInv = vi(maxNum + 1);
+    fact[0] = 1;
+    for(int i = 1; i <= maxNum; i++)
+        fact[i] = (  fact[i-1] * i ) % MOD;
+    factInv[maxNum] = modInverse(fact[maxNum], MOD);
+    for(int i = maxNum - 1; i >= 0; i--)
+        factInv[i] = ( factInv[i+1] * (i+1) ) % MOD;
+}
+
 void setFacts(int maxNum, int MOD){
     fact = vi(maxNum + 1);
     factInv = vi(maxNum + 1);
@@ -176,19 +199,17 @@ void setFacts(int maxNum, int MOD){
         factInv[i] = ( factInv[i+1] * (i+1) ) % MOD;
 }
 
-int C(int n, int k, int MOD){
+template<auto MOD>
+int C(int n, int k){
     if (n < k) return 0;
     if (n >= MOD) return ( C(n%MOD, k%MOD, MOD) * C(n/MOD, k/MOD, MOD)) % MOD;
     return (fact[n]*factInv[k]%MOD * factInv[n-k]) % MOD;
 }
 
-
-vec<vi> chooses_memo;
-int C_dp(int n, int k, int MOD){
-    if(n < k) return 0;
-    int& ans = chooses_memo[n][k];
-    if(ans != -1) return ans;
-    return (C_dp(n-1, k-1, MOD) + C_dp(n-1, k, MOD)) % MOD;
+int C(int n, int k, int MOD){
+    if (n < k) return 0;
+    if (n >= MOD) return ( C(n%MOD, k%MOD, MOD) * C(n/MOD, k/MOD, MOD)) % MOD;
+    return (fact[n]*factInv[k]%MOD * factInv[n-k]) % MOD;
 }
 
 
