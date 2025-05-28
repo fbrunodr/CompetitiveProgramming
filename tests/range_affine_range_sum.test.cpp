@@ -24,7 +24,7 @@ int solve(){
         up1 = make_pair((up1.first * up2.first) % MOD, (up2.first * up1.second + up2.second) % MOD);
     };
 
-    LazySegTree<int, ii> lazySegTree(a, merge, update, compose);
+    LazySegTree<int, ii, f<void(int&,ii,int,int)>> lazySegTree(a, merge, update, compose);
 
     while(q--){
         int type; cin >> type;

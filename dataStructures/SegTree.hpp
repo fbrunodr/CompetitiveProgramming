@@ -86,7 +86,11 @@ public:
 };
 
 
-template<typename DataType, typename LazyType>
+template<
+    typename DataType,
+    typename LazyType,
+    typename internalUpdatorType = f<void(DataType&, LazyType)>
+>
 class LazySegTree{
 
     using T = DataType;
@@ -95,8 +99,14 @@ class LazySegTree{
     using vQ = vec<Q>;
 
 private:
+    static_assert(
+        std::is_same_v<internalUpdatorType, f<void(T&,Q)>> ||
+        std::is_same_v<internalUpdatorType, f<void(T&,Q,int,int)>>,
+        "internalUpdatorType must be either f<void(T&,Q)> or f<void(T&,Q,int,int)>"
+    );
+
     f<T(T,T)> merge;
-    f<void(T&,Q,int,int)> internalNodeUpdator;
+    internalUpdatorType internalNodeUpdator;
     f<void(Q&,Q)> lazyUpdator;
 
     int n;
@@ -130,7 +140,10 @@ private:
     void propagate(int p, int L, int R){
         if (!hasLazy[p]) return;
 
-        internalNodeUpdator(st[p], lazy[p], L, R);
+        if constexpr (std::is_same_v<internalUpdatorType, f<void(T&,Q,int,int)>>)
+            internalNodeUpdator(st[p], lazy[p], L, R);
+        else
+            internalNodeUpdator(st[p], lazy[p]);
 
         if (L != R){
             applyLazy(l(p), lazy[p]);
@@ -176,24 +189,13 @@ public:
     LazySegTree(
         const vT& _A,
         f<T(T,T)> _merge,
-        std::variant<
-            f<void(T&,Q)>,
-            f<void(T&,Q,int,int)>
-        > _nodeUpdator,
+        internalUpdatorType _nodeUpdator,
         f<void(Q&,Q)> _lazyUpdator
     ){
         n = _A.size();
         merge = _merge;
+        internalNodeUpdator = _nodeUpdator;
         lazyUpdator = _lazyUpdator;
-
-        if (std::holds_alternative<f<void(T&,Q)>>(_nodeUpdator)) {
-            auto userUpdator = std::get<f<void(T&,Q)>>(_nodeUpdator);
-            internalNodeUpdator = [userUpdator](T& a, Q b, int, int) {
-                userUpdator(a, b);
-            };
-        } else {
-            internalNodeUpdator = std::get<f<void(T&,Q,int,int)>>(_nodeUpdator);
-        }
 
         st = vT(4*n);
         lazy = vQ(4*n);
