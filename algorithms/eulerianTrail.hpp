@@ -4,8 +4,8 @@
 #include "../header.hpp"
 
 // Hierholzer algorithm
-template<typename MapLike, typename T>
-vec<T> getEulerianTrail(MapLike adj, T start_vertex, bool undirected=false){
+template<bool undirected = false, typename MapLike, typename T>
+vec<T> getEulerianTrail(MapLike adj, T start_vertex){
     stack<T> path;
     vec<T> circuit;
 
@@ -19,10 +19,16 @@ vec<T> getEulerianTrail(MapLike adj, T start_vertex, bool undirected=false){
         if (adj[u].size() > 0) {
             // Find and remove the next vertex that is
             // adjacent to the current vertex
-            auto iterator_u = adj[u].begin();
-            T v = *iterator_u;
-            adj[u].erase(iterator_u);
-            if(undirected){
+            T v;
+            if constexpr (std::is_same_v<MapLike, vec<vec<T>>>) {
+                v = adj[u].back();
+                adj[u].pop_back();
+            } else {
+                auto iterator_u = adj[u].begin();
+                v = *iterator_u;
+                adj[u].erase(iterator_u);
+            }
+            if constexpr (undirected) {
                 auto iterator_v = adj[v].find(u);
                 if(iterator_v != adj[v].end())
                     adj[v].erase(iterator_v);

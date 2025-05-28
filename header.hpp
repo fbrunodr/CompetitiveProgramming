@@ -93,7 +93,7 @@ std::mt19937_64 rng_64(std::random_device{}());
 template<typename Key, typename Value>
 using hash_map = typename std::conditional<
     std::is_same_v<Key, int>,
-    std::unordered_map<Key, Value, custom_hash>, // specialized
+    std::unordered_map<int, Value, custom_hash>, // specialized
     std::unordered_map<Key, Value> // default
 >::type;
 template<typename T>
@@ -101,6 +101,12 @@ using hash_set = typename std::conditional<
     std::is_same_v<T, int>,
     std::unordered_set<int, custom_hash>, // specialized
     std::unordered_set<T> // default
+>::type;
+template<typename T>
+using hash_multiset = typename std::conditional<
+    std::is_same_v<T, int>,
+    std::unordered_multiset<int, custom_hash>, // specialized
+    std::unordered_multiset<T> // default
 >::type;
 
 template<typename T>
