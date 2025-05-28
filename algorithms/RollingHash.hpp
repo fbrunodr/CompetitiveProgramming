@@ -7,6 +7,8 @@ const vi hashPrimes{131, 167, 173, 199};
 vec<vi> hashPrimePow;
 vec<vi> hashPrimePowInv;
 
+const int RH_MOD = 1e9 + 7;
+
 void setRollingHashPowers(int maxN){
     hashPrimePow = vec<vi>(4, vi(maxN));
     hashPrimePowInv = vec<vi>(4, vi(maxN));
@@ -14,10 +16,10 @@ void setRollingHashPowers(int maxN){
     for(int idx = 0; idx < 4; idx++){
         hashPrimePow[idx][0] = 1;
         for(int i = 1; i < maxN; i++)
-            hashPrimePow[idx][i] = (hashPrimePow[idx][i-1] * hashPrimes[idx]) % MOD;
-        hashPrimePowInv[idx][maxN-1] = modInverse(hashPrimePow[idx][maxN-1]);
+            hashPrimePow[idx][i] = (hashPrimePow[idx][i-1] * hashPrimes[idx]) % RH_MOD;
+        hashPrimePowInv[idx][maxN-1] = modInverse<RH_MOD>(hashPrimePow[idx][maxN-1]);
         for(int i = maxN-2; i >= 0; i--)
-            hashPrimePowInv[idx][i] = (hashPrimePowInv[idx][i+1] * hashPrimes[idx]) % MOD;
+            hashPrimePowInv[idx][i] = (hashPrimePowInv[idx][i+1] * hashPrimes[idx]) % RH_MOD;
     }
 }
 
@@ -27,7 +29,7 @@ bitset<128> moveRight(bitset<128> str_hashed, int move_size){
     constexpr bitset<128> lowest_32(0xFFFFFFFF);
     for(int idx = 0; idx < 4; idx++){
         int curr = ((str_hashed >> (idx*32)) & lowest_32).to_ullong();
-        curr = (curr * hashPrimePow[idx][move_size]) % MOD;
+        curr = (curr * hashPrimePow[idx][move_size]) % RH_MOD;
         bitset<128> piece(curr);
         piece <<= 32 * idx;
         ans |= piece;
@@ -41,7 +43,7 @@ bitset<128> moveLeft(bitset<128> str_hashed, int move_size){
     constexpr bitset<128> lowest_32(0xFFFFFFFF);
     for(int idx = 0; idx < 4; idx++){
         int curr = ((str_hashed >> (idx*32)) & lowest_32).to_ullong();
-        curr = (curr * hashPrimePowInv[idx][move_size]) % MOD;
+        curr = (curr * hashPrimePowInv[idx][move_size]) % RH_MOD;
         bitset<128> piece(curr);
         piece <<= 32 * idx;
         ans |= piece;
@@ -56,7 +58,7 @@ bitset<128> sum(bitset<128> str_hashed_1, bitset<128> str_hashed_2){
     for(int idx = 0; idx < 4; idx++){
         int curr_1 = ((str_hashed_1 >> (idx*32)) & lowest_32).to_ullong();
         int curr_2 = ((str_hashed_2 >> (idx*32)) & lowest_32).to_ullong();
-        int curr = (curr_1 + curr_2) % MOD;
+        int curr = (curr_1 + curr_2) % RH_MOD;
         bitset<128> piece(curr);
         piece <<= 32 * idx;
         ans |= piece;
@@ -75,8 +77,8 @@ class RollingHash{
             h[idx][0] = 0;
             for (int i = 0; i < n; ++i) {
                 if (i != 0) h[idx][i] = h[idx][i-1];
-                h[idx][i] += (T[i] * hashPrimePow[idx][i]) % MOD;
-                h[idx][i] %= MOD;
+                h[idx][i] += (T[i] * hashPrimePow[idx][i]) % RH_MOD;
+                h[idx][i] %= RH_MOD;
             }
         }
     }
@@ -96,8 +98,8 @@ class RollingHash{
                 current = h[idx][R];
             }
             else{
-                current = (h[idx][R] - h[idx][L-1] + MOD) % MOD;
-                current = (current * hashPrimePowInv[idx][L]) % MOD;
+                current = (h[idx][R] - h[idx][L-1] + RH_MOD) % RH_MOD;
+                current = (current * hashPrimePowInv[idx][L]) % RH_MOD;
             }
             bitset<128> piece(current);
             piece <<= 32 * idx;

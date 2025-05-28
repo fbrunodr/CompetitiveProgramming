@@ -3,7 +3,7 @@
 
 #include "../header.hpp"
 
-template<typename T>
+template<typename T, typename cmp = std::less<T>>
 int countAndMerge(vec<T>& arr, int l, int m, int r) {
     int n1 = m - l + 1, n2 = r - m;
 
@@ -16,12 +16,12 @@ int countAndMerge(vec<T>& arr, int l, int m, int r) {
     int res = 0;
     int i = 0, j = 0, k = l;
     while (i < n1 && j < n2) {
-        if (left[i] <= right[j])
-            arr[k++] = left[i++];
-        else {
+        if(cmp{}(right[j], left[i])){
             arr[k++] = right[j++];
             res += (n1 - i);
         }
+        else
+            arr[k++] = left[i++];
     }
 
     while (i < n1)
@@ -32,22 +32,31 @@ int countAndMerge(vec<T>& arr, int l, int m, int r) {
     return res;
 }
 
-template<typename T>
-int countInv(vec<T>& arr, int l, int r){
+template<typename T, typename cmp = std::less<T>>
+int countInversions(vec<T>& arr, int l, int r){
+    const int THRESHOLD = 16;
     int res = 0;
+    if(r - l + 1 <= THRESHOLD){
+        for(int i = l; i <= r; i++)
+            for(int j = i + 1; j <= r; j++)
+                if(cmp{}(arr[j], arr[i]))
+                    res++;
+        sort(arr.begin() + l, arr.begin() + r + 1, cmp{});
+        return res;
+    }
     if (l < r) {
         int m = (r + l) / 2;
-        res += countInv(arr, l, m);
-        res += countInv(arr, m + 1, r);
-        res += countAndMerge(arr, l, m, r);
+        res += countInversions<T, cmp>(arr, l, m);
+        res += countInversions<T, cmp>(arr, m + 1, r);
+        res += countAndMerge<T, cmp>(arr, l, m, r);
     }
     return res;
 }
 
-template<typename T>
-int inversionCount(vec<T> arr) {
-      int n = arr.size();
-      return countInv(arr, 0, n-1);
+template<typename T, typename cmp = std::less<T>>
+int countInversions(vec<T> arr) {
+    int n = arr.size();
+    return countInversions<T, cmp>(arr, 0, n-1);
 }
 
 #endif

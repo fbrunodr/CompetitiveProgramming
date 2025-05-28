@@ -9,23 +9,23 @@ python3 expand_local_includes.py [FileName]
 
 Test Coverage Report
 
-🔴 AVLtree
+🟡 AVLtree (need to test custom user updator)
 
-🟢 ArticulationPointsAndBridges
+🔴 ArticulationPointsAndBridges
 
-🔴 BinarySearch
+🟡 BinarySearch (only last true has been used in tests)
 
-🟡 CentroidDecomposition
+🔴 CentroidDecomposition
 
-🟡 DivideAndConquerDP
+🔴 DivideAndConquerDP
 
-🔴 EulerianTrail
+🟢 EulerianTrail
 
 🔴 FastOfflineQueries
 
 🟢 FenwickTree
 
-🟡 GaussianElimination
+🔴 GaussianElimination
 
 🟢 GraphCompression
 
@@ -37,39 +37,39 @@ Test Coverage Report
 
 🔴 MergeSortTree
 
-🟡 OrderStatisticsTree
+🟢 OrderStatisticsTree
 
-🟡 RURQ
+🔴 RURQ
 
-🟡 RollingHash
+🟡 RollingHash (tested using tree Isomorphism, not directly)
 
 🟢 SegTree
 
-🔴 SparseTable
+🟢 SparseTable
 
-🔴 Trie
+🟢 treeIsomorphism
 
-🔴 UnionFind
+🟢 UnionFind
 
 🔴 centerOfSubtree
 
-🔴 countInversions
+🟢 countInversions
 
-🟡 fastPolynomialMultiplication
+🔴 fastPolynomialMultiplication
 
-🟢 firstElementToLeft
+🔴 firstElementToLeft
 
-🟢 integerGeometry
+🔴 integerGeometry
 
-🟢 numberTheory
+🟡 numberTheory (not all methods have been tested)
 
-🟢 stringUtils
+🟡 stringUtils (todo: prefixFunction and matchingPositions)
 
 ---
 
-🟢 -> at least two tests
+🟢 -> complete coverage
 
-🟡 -> only one test
+🟡 -> some coverage
 
 🔴 -> no tests
 

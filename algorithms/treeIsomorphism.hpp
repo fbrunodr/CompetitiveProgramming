@@ -43,30 +43,38 @@ struct SubtreeHashInfo{
     }
 };
 
-SubtreeHashInfo subtreeHash(int u, int p, vec<vi>& al){
-    if(al[u].empty())
-        return SubtreeHashInfo(2, sum(openHash, moveRight(closedHash, 1)));
-    if(al[u].size() == 1 && al[u][0] == p)
-        return SubtreeHashInfo(2, sum(openHash, moveRight(closedHash, 1)));
+// SubtreeHashInfo subtreeHash
 
-    vec<SubtreeHashInfo> hashes;
-    for(int v : al[u]){
-        if(v == p) continue;
-        hashes.push_back(subtreeHash(v, u, al));
-    }
 
-    sort(hashes.begin(), hashes.end());
-    bitset<128> hashed = openHash;
-    int currSize = 1;
-    for(auto [size, h] : hashes){
-        hashed = sum(hashed, moveRight(h, currSize));
-        currSize += size;
-    }
-    hashed = sum(hashed, moveRight(closedHash, currSize++));
+vec<SubtreeHashInfo> subtreeHashes(vec<vi>& al, int root){
+    int n = al.size();
+    vec<SubtreeHashInfo> hashes(n);
+    f<void(int,int)> dfs = [&](int u, int p){
+        if(al[u].empty())
+            hashes[u] = SubtreeHashInfo(2, sum(openHash, moveRight(closedHash, 1)));
+        if(al[u].size() == 1 && al[u][0] == p)
+            hashes[u] = SubtreeHashInfo(2, sum(openHash, moveRight(closedHash, 1)));
 
-    return SubtreeHashInfo(currSize, hashed);
-};
+        vec<SubtreeHashInfo> children;
+        for(int v : al[u]){
+            if(v == p) continue;
+            dfs(v, u);
+            children.push_back(hashes[v]);
+        }
 
+        sort(children.begin(), children.end());
+        bitset<128> h = openHash;
+        int currSize = 1;
+        for(auto [size, childHash] : children){
+            h = sum(h, moveRight(childHash, currSize));
+            currSize += size;
+        }
+        h = sum(h, moveRight(closedHash, currSize++));
+        hashes[u] = SubtreeHashInfo(currSize, h);
+    };
+    dfs(root, -1);
+    return hashes;
+}
 
 bool isomorphicTrees(vec<vi>& al1, vec<vi>& al2, int start1 = 0, int start2 = 0){
     int n1 = 0, n2 = 0;
@@ -111,11 +119,11 @@ bool isomorphicTrees(vec<vi>& al1, vec<vi>& al2, int start1 = 0, int start2 = 0)
 
     vec<SubtreeHashInfo> hashes1;
     for(int c : c1)
-        hashes1.push_back(subtreeHash(c, -1, al1));
+        hashes1.push_back(subtreeHashes(al1, c)[c]);
 
     vec<SubtreeHashInfo> hashes2;
     for(int c : c2)
-        hashes2.push_back(subtreeHash(c, -1, al2));
+        hashes2.push_back(subtreeHashes(al2, c)[c]);
 
     if(hashes1.front() != hashes2.front())
         reverse(hashes2.begin(), hashes2.end());

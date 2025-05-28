@@ -36,7 +36,7 @@ vi zFunction(const T& s) {
 }
 
 template<typename T, typename U>
-vi matching_positions(const T& text, const T& pattern, U separator){
+vi matchingPositions(const T& text, const T& pattern, U separator){
     T aux = pattern;
     aux.push_back(separator);
     aux.insert(aux.end(), text.begin(), text.end());
@@ -48,7 +48,7 @@ vi matching_positions(const T& text, const T& pattern, U separator){
     return ans;
 }
 
-vi getSuffixArray(string s) {
+vi suffixArray(string s) {
     s.push_back(5);
     int n = s.size(), N = max(n, (int)260);
     vi sa(n), ra(n);
@@ -69,6 +69,9 @@ vi getSuffixArray(string s) {
     return vi(sa.begin()+1, sa.end());
 }
 
+/*
+    Returns longest common prefix between suffix i and suffix i+1 in sa
+*/
 vi kasai(const string& s, const vi& sa) {
     int n = s.size(), k = 0;
     vi ra(n), lcp(n);
