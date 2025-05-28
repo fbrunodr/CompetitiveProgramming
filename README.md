@@ -25,7 +25,7 @@ Test Coverage Report
 
 🟢 FenwickTree
 
-🔴 GaussianElimination
+🟡 GaussianElimination (need to add test to real valued one)
 
 🟢 GraphCompression
 
@@ -47,7 +47,7 @@ Test Coverage Report
 
 🟢 SparseTable
 
-🟢 treeIsomorphism
+🟡 treeIsomorphism (need to add test the unrooted version)
 
 🟢 UnionFind
 

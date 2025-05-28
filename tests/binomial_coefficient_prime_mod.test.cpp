@@ -1,17 +1,15 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/factorial"
+#define PROBLEM "https://judge.yosupo.jp/problem/binomial_coefficient_prime_mod"
 
 #include "../header.hpp"
 #include "../algorithms/numberTheory.hpp"
 
 int solve(){
     fastIO();
-    const int MOD = 998244353;
-    setFacts<MOD>(998244353-1);
-
-    int t; cin >> t;
+    int t, m; cin >> t >> m;
+    setFacts(min((int)1e7, m-1), m);
     while(t--){
-        int n; cin >> n;
-        cout << fact[n] << '\n';
+        int n, k; cin >> n >> k;
+        cout << C(n, k, m) << '\n';
     }
 
     return 0;

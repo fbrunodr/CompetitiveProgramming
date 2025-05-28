@@ -3,185 +3,130 @@
 
 #include "numberTheory.hpp"
 
-const int    ONE  = 1;   // unique solution
-const int    INF  = 1e9; // infinitely many solutions
-const int    NONE = 0;   // no solution
-
-/*
-    returns number of solutions (either 0, 1 or INF)
-    a -> augmented matrix, of size n_equations x (n_vars + 1)
-    ans -> one of the answers, if there is one
-
-    fixed[i] = 1  ->  x_i has the same value in *every* solution
-    fixed[i] = 0  ->  x_i is a free parameter (or depends on one)
-*/
 template<auto MOD>
-int gaussianEliminationOnRing(
+void gaussianEliminationOnField(
     vec<vi> a,
     vi& ans,
-    vi& fixed
+    vec<vi>& basis
 ){
-    int n = (int)a.size();
-    int m = (int)a[0].size() - 1;
-    vi where(m, -1);
+    const int n = (int)a.size();
+    const int m = (int)a[0].size() - 1;
 
-    /* ------- Gaussian elimination triangularization ------- */
-    for(int var = 0, row = 0; var < m && row < n; ++var){
-        for(int i = row; i < n; ++i)
-            if(a[i][var]){
-                if(i != row)
-                    swap(a[i], a[row]);
-                break;
-            }
-        if(a[row][var] == 0)
-            continue;
+    vi where(m,-1);          // where[col] = row of pivot or -1
+    int row = 0;
 
-        where[var] = row;
+    for(int col=0; col<m && row<n; ++col){
+        /* find pivot */
+        int sel = -1;
+        for(int i=row;i<n;++i) if(a[i][col]) { sel=i; break; }
+        if(sel==-1) continue;
 
-        int currModInverse = modInverse<MOD>(a[row][var]);
-        for(int j = var; j <= m; ++j)
-            a[row][j] = (a[row][j] * currModInverse) % MOD;
+        swap(a[sel],a[row]);
+        where[col] = row;
 
-        for(int i = row + 1; i < n; ++i){
-            for(int j = var + 1; j <= m; ++j)
-                a[i][j] = mod<MOD>(a[i][j] - a[row][j] * a[i][var]);
-            a[i][var] = 0;
+        /* scale pivot row to 1 */
+        int inv = modInverse<MOD>(a[row][col]);
+        for(int j=col;j<=m;++j)
+            a[row][j] = a[row][j]*inv % MOD;
+
+        /* eliminate from other rows */
+        for(int i=0;i<n;++i) if(i!=row && a[i][col]){
+            int factor = a[i][col];
+            for(int j=col;j<=m;++j)
+                a[i][j] = mod<MOD>(a[i][j] - factor*a[row][j]);
         }
         ++row;
     }
 
-    /* ------- Diagonalization of non-zero values ------- */
-    for(int var = m-1; var >= 0; var--){
-        if(where[var] == -1) continue;
-        int row = where[var];
-        for(int i = 0; i < row; i++){
-            a[i][m] = mod<MOD>(a[i][m] - a[row][m] * a[i][var]);
-            a[i][var] = 0;
+    /* check consistency */
+    for(int i=row;i<n;++i){
+        if(a[i][m]){            // 0 … 0 | non-zero
+            ans.clear(); basis.clear();
+            return;             // no solution
         }
     }
 
-    /* ---------- consistency check ---------- */
-    ans.assign(m, 0);
-    for(int i = 0; i < m; ++i)
-        if(where[i] != -1)
-            ans[i] = (a[where[i]][m] * modInverse<MOD>(a[where[i]][i])) % MOD;
+    /* one particular solution (free vars = 0) */
+    ans.assign(m,0);
+    for(int j=0;j<m;++j)
+        if(where[j]!=-1)
+            ans[j] = a[where[j]][m];
 
-    for(int i = 0; i < n; ++i){
-        int sum = 0;
-        for(int j = 0; j < m; ++j)
-            sum += ans[j] * a[i][j];
-        if((sum - a[i][m]) % MOD != 0) return NONE;     // no solution
+    /* basis for the kernel */
+    basis.clear();
+    for(int j=0;j<m;++j) if(where[j]==-1){
+        vi vec(m,0);
+        vec[j] = 1;
+        for(int k=0;k<m;++k)
+            if(where[k]!=-1){
+                int r = where[k];
+                vec[k] = (MOD - a[r][j]) % MOD; // move to other side
+            }
+        basis.push_back(std::move(vec));
     }
-
-    /* ---------- classify variables ---------- */
-    fixed.assign(m, 0);                                 // default: not fixed
-
-    bool unique = true;
-    vi freeCols;
-    for(int i = 0; i < m; ++i)
-        if(where[i] == -1) { freeCols.push_back(i); unique = false; }
-
-    if(unique){                                         // the usual “unique solution” case
-        fill(fixed.begin(), fixed.end(), 1);
-        return ONE;
-    }
-
-    /* we have ≥1 free columns — check the pivot columns */
-    for(int i = 0; i < m; ++i)
-        if(where[i] != -1){
-            int r = where[i];
-            bool depends = false;
-            for(int j : freeCols)
-                if(a[r][j] != 0)
-                    { depends = true; break; }
-            if(!depends) fixed[i] = 1;                  // truly fixed
-        }
-
-    return INF;                                         // many solutions, info in 'fixed'
 }
 
-/*
-    returns number of solutions (either 0, 1 or INF)
-    a -> augmented matrix, of size n_equations x (n_vars + 1)
-    ans -> one of the answers, if there is one
-
-    fixed[i] = 1  ->  x_i has the same value in *every* solution
-    fixed[i] = 0  ->  x_i is a free parameter (or depends on one)
-*/
-int gaussianEliminationOnR (
-    vector<vector<double>> a,
-    vector<double>& ans,
-    vector<int>& fixed,
-    double EPS = 1e-9
+template<auto EPS = 1e-9>
+void gaussianEliminationOnR (
+    vec<vec<double>> a,
+    vec<double>& ans,
+    vec<vec<double>>& basis
 ){
-    int n = (int)a.size();
-    int m = (int)a[0].size() - 1;
+    using std::fabs;
+    const int n = (int)a.size();
+    const int m = (int)a[0].size() - 1;
 
-    vector<int> where(m, -1);
+    vi where(m, -1);   // pivot row for each column
+    int row = 0;
 
-    /* ---------- standard Gaussian elimination ---------- */
-    for (int col = 0, row = 0; col < m && row < n; ++col) {
+    for (int col = 0; col < m && row < n; ++col) {
+        /* ------ choose pivot (partial pivoting) ------ */
         int sel = row;
         for (int i = row; i < n; ++i)
-            if (fabs(a[i][col]) > fabs(a[sel][col])) sel = i;
+            if (fabs(a[i][col]) > fabs(a[sel][col]))
+                sel = i;
+        if(fabs(a[sel][col]) < EPS) continue;   // no pivot in this col
 
-        if (fabs(a[sel][col]) <= EPS) continue;
-        for (int i = col; i <= m; ++i) swap(a[sel][i], a[row][i]);
+        swap(a[sel], a[row]);
         where[col] = row;
 
-        for (int i = 0; i < n; ++i) if (i != row) {
-            double c = a[i][col] / a[row][col];
-            for (int j = col; j <= m; ++j) a[i][j] -= a[row][j] * c;
+        /* ------ scale pivot row to 1 ------ */
+        const double inv = 1.0 / a[row][col];
+        for (int j = col; j <= m; ++j) a[row][j] *= inv;
+
+        /* ------ eliminate current column from all other rows ------ */
+        for (int i = 0; i < n; ++i) if (i != row && fabs(a[i][col]) > EPS) {
+            const double factor = a[i][col];
+            for (int j = col; j <= m; ++j)
+                a[i][j] -= factor * a[row][j];
         }
-        row++;
+        ++row;
     }
 
-    /* ---------- consistency check ---------- */
+    /* ------ check consistency: 0 … 0 | b  with  b ≠ 0 ------ */
+    for (int i = row; i < n; ++i)
+        if (fabs(a[i][m]) > EPS) {        // inconsistent
+            ans.clear();
+            basis.clear();
+            return;
+        }
+
+    /* ------ one particular solution (free vars = 0) ------ */
     ans.assign(m, 0.0);
-    for (int i = 0; i < m; ++i)
-        if (where[i] != -1) ans[i] = a[where[i]][m] / a[where[i]][i];
+    for (int j = 0; j < m; ++j)
+        if (where[j] != -1)
+            ans[j] = a[where[j]][m];
 
-    for (int i = 0; i < n; ++i) {
-        double sum = 0;
-        for (int j = 0; j < m; ++j) sum += ans[j] * a[i][j];
-        if (fabs(sum - a[i][m]) >= EPS) return NONE;        // no solution
+    /* ------ kernel basis vectors (one per free variable) ------ */
+    basis.clear();
+    for (int j = 0; j < m; ++j) if (where[j] == -1) {
+        vec<double> v(m, 0.0);
+        v[j] = 1.0;                      // free variable = 1
+        for (int k = 0; k < m; ++k)
+            if (where[k] != -1)
+                v[k] = -a[where[k]][j];  // move terms to LHS
+        basis.push_back(std::move(v));
     }
-
-    /* ---------- classify variables ---------- */
-    fixed.assign(m, 0);                      // default: not fixed
-
-    bool unique = true;
-    vector<int> freeCols;
-    for (int i = 0; i < m; ++i)
-        if (where[i] == -1) { freeCols.push_back(i); unique = false; }
-
-    if (unique) {                            // the usual “unique solution” case
-        fill(fixed.begin(), fixed.end(), 1);
-        return ONE;
-    }
-
-    /* we have ≥1 free columns — check the pivot columns */
-    for (int i = 0; i < m; ++i) if (where[i] != -1) {
-        int r = where[i];
-        bool depends = false;
-        for (int j : freeCols)
-            if (fabs(a[r][j]) >= EPS) { depends = true; break; }
-        if (!depends) fixed[i] = 1;          // truly fixed
-    }
-
-    return INF;                              // many solutions, info in 'fixed'
-}
-
-/*
-    You have a system of equations that you KNOW has
-    an unique solution? Use this function.
-*/
-void uniqueSolutionGaussianEliminationOnR(
-    vector<vector<double>> a,
-    vector<double>& ans
-){
-    vi fixed; // dummy
-    gaussianEliminationOnR(a, ans, fixed, 0.0);
 }
 
 #endif
