@@ -53,7 +53,7 @@ private:
                 update(l(p), L, m, i, newVal);
             else
                 update(r(p), m + 1, R, i, newVal);
-            st[p] = conquer(st[l(p)], st[r(p)]);
+            st[p] = merge(st[l(p)], st[r(p)]);
         }
     }
 

@@ -1,3 +1,5 @@
+// #pragma GCC optimize("Ofast,fast-math,unroll-loops")
+
 #ifndef FBRUNODR_HEADER
 #define FBRUNODR_HEADER
 
