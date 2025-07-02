@@ -82,4 +82,88 @@ class IdempotentHLD {
     }
 };
 
+
+template<
+    typename DataType,
+    typename LazyType,
+    typename internalUpdatorType = f<void(DataType&, LazyType)>
+>
+class LazyHLD {
+    using T = DataType;
+    using Q = LazyType;
+
+    private:
+    f<T(T,T)> merge;
+    LazySegTree<T, Q, internalUpdatorType> lazySegTree;
+
+    vi in, out, chainTop, parent, siz;
+    vec<T> a;
+
+    T queryDescending(int ancestor, int u){
+        T ans = a[in[u]];
+        while(chainTop[u] != chainTop[ancestor]){
+            ans = merge(ans, lazySegTree.RQ(in[chainTop[u]], in[u]));
+            u = parent[chainTop[u]];
+        }
+        return merge(ans, lazySegTree.RQ(in[ancestor], in[u]));
+    }
+
+    void updateDescending(int ancestor, int u, Q val){
+        while(chainTop[u] != chainTop[ancestor]){
+            lazySegTree.rangeUpdate(in[chainTop[u]], in[u], val);
+            u = parent[chainTop[u]];
+        }
+        lazySegTree.rangeUpdate(in[ancestor], in[u], val);
+    }
+
+    public:
+    BinaryLiftLCA lca;
+
+    LazyHLD() {}
+
+    LazyHLD(
+        const vec<vi>& al,
+        const vec<T>& _vals,
+        int root,
+        f<T(T,T)> _merge,
+        internalUpdatorType _nodeUpdator,
+        f<void(Q&,Q)> _lazyUpdator
+    ) : lca(al, root), merge(_merge) {
+        setParentSizeInOutChainTop(al, root, parent, siz, in, out, chainTop);
+
+        int n = al.size();
+        a = vec<T>(n);
+        for(int u = 0; u < n; u++)
+            a[in[u]] = _vals[u];
+
+        lazySegTree = LazySegTree<T, Q, internalUpdatorType>(a, merge, _nodeUpdator, _lazyUpdator);
+    }
+
+    T queryPath(int u, int v){
+        int l = lca.lca(u, v);
+        if(l == v)
+            return queryDescending(l, u);
+        int l2 = lca.k_ancestor(v, lca.depth(v) - lca.depth(l) - 1);
+        return merge(queryDescending(l, u), queryDescending(l2, v));
+    }
+
+    void updatePath(int u, int v, Q val){
+        int l = lca.lca(u, v);
+        updateDescending(l, u, val);
+
+        if(l != v){
+            int l2 = lca.k_ancestor(v, lca.depth(v) - lca.depth(l) - 1);
+            updateDescending(l2, v, val);
+        }
+    }
+
+    T querySubtree(int u){
+        return lazySegTree.RQ(in[u], out[u] - 1);
+    }
+
+    void updateSubtree(int u, Q val){
+        lazySegTree.rangeUpdate(in[u], out[u] - 1, val);
+    }
+};
+
 #endif
