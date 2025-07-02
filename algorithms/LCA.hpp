@@ -60,6 +60,12 @@ class SegLCA{
 };
 
 
+/*
+    Don't use the move constructor or move assignment operator
+    because the lambda captures the this pointer
+
+    You will get a dangling pointer if you do not follow this instruction
+*/
 class SpTLCA{
     private:
     int n;
@@ -83,6 +89,8 @@ class SpTLCA{
     }
 
     public:
+    SpTLCA() {}
+
     SpTLCA(const vec<vi>& AL_, int root){
         AL = AL_;
         n = AL.size();
@@ -142,6 +150,8 @@ class BinaryLiftLCA {
     }
 
     public:
+    BinaryLiftLCA() {}
+
     BinaryLiftLCA(const vec<vi>& _AL, int root){
         AL = _AL;
         n = AL.size();
