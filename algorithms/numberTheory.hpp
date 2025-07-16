@@ -33,8 +33,12 @@ int modInverse(int b, int m){       // returns b^(-1) (mod m)
 }
 
 template<auto MOD>
-int modInverse(int x){
-	return x == 1 ? 1 : modInverse<MOD>(x - MOD % x) * (MOD / x + 1) % MOD;
+int modInverse(int b){
+    int x, y;
+    int d = extEuclid(b, MOD, x, y);  // to get b*x + m*y == d
+    if (d != 1)
+        exit(1809);                 // to indicate failure
+    return (x + MOD) % MOD;
 }
 
 template<auto MOD>
